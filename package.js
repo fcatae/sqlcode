@@ -46,25 +46,22 @@
 
 	var React = __webpack_require__(1);
 
+	var LINHAS = [
+	        '  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, enim.',
+	        'Lorem ipsum eu dolor sit amet, consectetur adipisicing elit. Ipsam, dolorem.',
+	        'Lorem ipsum dolor sit amet, consectetur  eu adipisicing elit. Blanditiis, soluta.',
+	        'Lorem ipsum dolor eu sit                 amet, consectetur adipisicing eu elit. Ratione, et.',
+	        'Lorem ipsum dolor sit amet,              consectetur eu adipisicing elit. Tempora, aspernatur!',
+	        'Lorem ipsum dolor sit amet,              consectetur adipisicing elit. Iste, quo!',
+	        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, voluptates!',
+	        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, qui.'    
+	        ]; 
 
-	    var lines = [
-	  '  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, enim.',
-	  'Lorem ipsum eu dolor sit amet, consectetur adipisicing elit. Ipsam, dolorem.',
-	  'Lorem ipsum dolor sit amet, consectetur  eu adipisicing elit. Blanditiis, soluta.',
-	  'Lorem ipsum dolor eu sit                 amet, consectetur adipisicing eu elit. Ratione, et.',
-	  'Lorem ipsum dolor sit amet,              consectetur eu adipisicing elit. Tempora, aspernatur!',
-	  'Lorem ipsum dolor sit amet,              consectetur adipisicing elit. Iste, quo!',
-	  'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, voluptates!',
-	  'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, qui.'    
-	]; 
-
-
-
-	function transformarLinhas() {
+	function transformarLinhas() {    
 	    
-	    var linhas = lines;
+	    var lines = LINHAS; 
 	    
-	    var linhas_tokenized = linhas.map(function(line) {
+	    var linhas_tokenized = lines.map(function(line) {
 	        var tokens = line.match(/(\S+)|(\s+)/g) || [''];
 	        return tokens;                
 	    });
@@ -95,9 +92,8 @@
 	        var tokens = this.props.tokens;
 	        var position = 0;
 	        
-	        var palavras = tokens.map(function(token) {
-	           var node = React.createElement(Palavra, {key: position, token: token})
-	           position += token.length;
+	        var palavras = tokens.map(function(token,i) {
+	           var node = React.createElement(Palavra, {key: i, token: token})
 	           return node;
 	        });
 	          
@@ -106,9 +102,16 @@
 	});
 
 	var TextSpace = React.createClass({displayName: "TextSpace",
-	    
+	    getInitialState: function() {
+	        return {
+	            tokens: this.props.init,
+	            selection: null
+	        }
+	    },
 	    handlekey: function(ev) {
 	        console.log('press: ' + ev.key);
+	        ev.preventDefault();
+	        
 	        var selection = window.getSelection();
 	        var anchor = selection.anchorNode;
 	        var offset = selection.anchorOffset;
@@ -116,26 +119,31 @@
 	        if(!selection.isCollapsed) {
 	            ev.preventDefault();  
 	        }
+
+	        // identifica o SPAN em edicao
+	        var span = anchor.parentNode;
+	        var nodename = span.nodeName;
+	        
+	        var path = span.dataset['reactid'];
+	        var path_components = path.split('.$');
+	        
+	        var curline = (path_components[1] | 0);
+	        var curtoken = (path_components[2] | 0);
+	        var token = this.state.tokens[curline][curtoken];
+	        var reactid = span.dataset['reactid'];
 	        
 	        // adiciona uma nova linha                
 	        if(ev.charCode == 13) {
-	            var span = anchor.parentNode;
-	            var nodename = span.nodeName;
-	            
-	            var path = span.dataset['reactid'];
-	            var path_components = path.split('.$');
-	            
-	            var curposition = (path_components[1] | 0);
 	            var newposition = 1 + (path_components[1] | 0);
 	            var newline = '';
 	            
-	            lines.splice(newposition,0, newline);
+	            LINHAS.splice(newposition,0, newline);
 	            
 	            var currentline = lines[curposition]; 
 	            var start_text = (path_components[2] | 0) + offset;
 	             
-	            lines[curposition] = currentline.substring(0, start_text);              
-	            lines[newposition] = currentline.substring(start_text);           
+	            LINHAS[curposition] = currentline.substring(0, start_text);              
+	            LINHAS[newposition] = currentline.substring(start_text);           
 	             
 	            console.log('keydown: ' + ev.keyCode);
 	            
@@ -143,25 +151,47 @@
 	            
 	            this['actionCreateNewLine'] = [path_components[0],newposition,0].join('.$'); 
 	            
-	            ev.preventDefault();
+	            return;
 	        }
+	        
+	        var char = String.fromCharCode(ev.charCode);
+	        var newtoken = token.substring(0,offset) + char + token.substring(offset);
+	          
+	        // rever o token
+	        var getsubtokens = (function(token) {
+	            return token.match(/(\S+)|(\s+)/g) || [''];
+	        })(newtoken);
+	        
+	        if(getsubtokens.length == 1) {
+	            tokens[curline][curtoken] = newtoken;
+	            this.setState( {selection: {reactid: reactid, position: offset+1} } );            
+	        }
+	        else if(getsubtokens.length == 2){
+	            //MERGE
+	            // this.setState( {selection: {reactid: reactid, position: offset+1} } ); ???
+	            console.log('merge')
+	        } else {
+	            // BREAK
+	            console.log('break')
+	        }
+	        
+	        this.forceUpdate();
 	        
 	        ev.preventDefault();        
 	    },
 	    componentDidUpdate: function() {
 	        
-	        if(this['actionCreateNewLine']) {
-	            var selection = window.getSelection();
-	            var reactid = this['actionCreateNewLine'];
+	        var selection = this.state.selection;
+	         
+	        if(selection && selection.reactid ) {
+	            var element = document.querySelector('span[data-reactid="' + selection.reactid + '"]');
+	            var text = element.firstChild;
+	            var cursor = window.getSelection();
+	            cursor.collapse(text, selection.position);
 	            
-	            this['actionCreateNewLine'] = null;
-	            
-	            var element = document.querySelector('span[data-reactid="' + reactid + '"]');
-	            selection.collapse(element, 0);
+	            this.setState( {selection: null } );
 	        }
-	        
-	        console.log('componentDidUpdate');  
-	                    
+	                   
 
 	    },
 	    handleKeyDown: function(ev) {
@@ -174,7 +204,7 @@
 	    
 	    render: function() {
 	        
-	        var tokens = this.props.tokens;
+	        var tokens = this.state.tokens;
 	        
 	        var linhas = tokens.map(function(line,i) {
 	            return React.createElement(Linha, {key: i, tokens: tokens[i]})
@@ -190,10 +220,9 @@
 	    //textspace && (lines = textspace.innerText.replace('\r\n','\n').split('\n'));     
 	    
 	    ReactDOM.render(
-	        React.createElement(TextSpace, {tokens: tokens}),
+	        React.createElement(TextSpace, {init: tokens}),
 	        document.getElementById('container')
 	    );
-	    
 	    
 	}
 
