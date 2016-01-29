@@ -113,8 +113,10 @@ var Linha = React.createClass({
         
         var palavras = tokens.map(function(token,i) {
             
-           var onlyIfSelected = (selection) && (i == selection.curtoken) ? selection : null; 
+           var onlyIfSelected = (selection) && (i == selection.curline) ? selection : null; 
            var node = <Palavra key={i} token={token} selection={onlyIfSelected}></Palavra>
+           
+           // should we clean selection state after update?
            
            return node;
         });
@@ -188,9 +190,10 @@ var TextSpace = React.createClass({
             console.log(nextline);
             
             textlines.splice(curline+1,0,empty_line);
-
+            
             // is valid?
-            (nextline == 0) && (nextline = empty_line);    
+            (currentline.length == 0) && (currentline = ['']);
+            (nextline.length == 0) && (nextline = ['']);    
 
             this.state.tokens[curline] = currentline;
             this.state.tokens[curline+1] = nextline;
@@ -205,6 +208,13 @@ var TextSpace = React.createClass({
         }
         
         var char = String.fromCharCode(ev.charCode);
+        
+        if(token == null) {
+            // nao deveria acontecer isso. ou devemos ignorar?
+            console('assert: token == null')
+            return;
+        }
+        
         var newtoken = token.substring(0,offset) + char + token.substring(offset);
           
         // rever o token
@@ -300,6 +310,9 @@ var TextSpace = React.createClass({
             
             this.setState( {selection: null } );
         }
+        
+        // deveriamos verificar se selection == null sempre?
+        console.log();
                    
 
     },

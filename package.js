@@ -159,8 +159,10 @@
 	        
 	        var palavras = tokens.map(function(token,i) {
 	            
-	           var onlyIfSelected = (selection) && (i == selection.curtoken) ? selection : null; 
+	           var onlyIfSelected = (selection) && (i == selection.curline) ? selection : null; 
 	           var node = React.createElement(Palavra, {key: i, token: token, selection: onlyIfSelected})
+	           
+	           // should we clean selection state after update?
 	           
 	           return node;
 	        });
@@ -234,9 +236,10 @@
 	            console.log(nextline);
 	            
 	            textlines.splice(curline+1,0,empty_line);
-
+	            
 	            // is valid?
-	            (nextline == 0) && (nextline = empty_line);    
+	            (currentline.length == 0) && (currentline = ['']);
+	            (nextline.length == 0) && (nextline = ['']);    
 
 	            this.state.tokens[curline] = currentline;
 	            this.state.tokens[curline+1] = nextline;
@@ -251,6 +254,13 @@
 	        }
 	        
 	        var char = String.fromCharCode(ev.charCode);
+	        
+	        if(token == null) {
+	            // nao deveria acontecer isso. ou devemos ignorar?
+	            console('assert: token == null')
+	            return;
+	        }
+	        
 	        var newtoken = token.substring(0,offset) + char + token.substring(offset);
 	          
 	        // rever o token
@@ -346,6 +356,9 @@
 	            
 	            this.setState( {selection: null } );
 	        }
+	        
+	        // deveriamos verificar se selection == null sempre?
+	        console.log();
 	                   
 
 	    },
