@@ -91,7 +91,7 @@ var Palavra = React.createClass({
     }
     
 }); 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Linha = React.createClass({
     getInitialState: function() {
         return {
@@ -100,6 +100,13 @@ var Linha = React.createClass({
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         return true;
+    },
+    componentDidUpdate: function(nextprops) {
+        // make sure we don't update the cursor AGAIN
+        if(nextprops.selection != null) {
+            // it is causing infinite loop...
+            //this.setState({ selection: null });  
+        }
     },
     componentWillReceiveProps: function(nextprops) {
         this.setState( {selection: nextprops.selection} );
@@ -113,10 +120,10 @@ var Linha = React.createClass({
         
         var palavras = tokens.map(function(token,i) {
             
-           var onlyIfSelected = (selection) && (i == selection.curline) ? selection : null; 
+           var onlyIfSelected = (selection) && (i == selection.curtoken) ? selection : null; 
            var node = <Palavra key={i} token={token} selection={onlyIfSelected}></Palavra>
            
-           // should we clean selection state after update?
+           // should we clean selection state after update? yes... but how??
            
            return node;
         });
@@ -124,7 +131,7 @@ var Linha = React.createClass({
         return <div className={'line' + highlight} >{palavras}</div>;
     }
 });
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 var TextSpace = React.createClass({
     getInitialState: function() {
         return {
@@ -294,6 +301,12 @@ var TextSpace = React.createClass({
         var curtoken = (path_components[2] | 0);
                 
         this.setState( {selection: {curline: curline, curtoken: curtoken, position: 0} } );
+    },
+    componentWillReceiveProps: function(nextprops) {
+        // try to clean up the caret position before updating the layout 
+        // the exception is when we force update() from handlekey()
+        this.setState( {selection: null } ); 
+        // console.log('clean up the selection state'); 
     },
     componentDidUpdate: function() {
         
