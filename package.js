@@ -86,7 +86,6 @@
 	        var element = this.refs.spamElem;
 	        if(!element.firstChild) {
 	            // problem: we dont want to deal with span without text, so create one
-	            element.innerHtml = '<span/>';
 	            console.log('problem: we dont want to deal with span without text, so create one');
 	        }
 	                     
@@ -106,11 +105,11 @@
 	        if(selection) {
 	            var element = this.refs.spamElem;
 	            
+	            // assert: we should always have first child (<BR> when it is empty)
 	            if(!element.firstChild) {
 	                // should this be an error?
 	                console.log('create empty space (otherwise the caret disapear)');
 	                // problem: copy and past during the copy extra char
-	                element.innerHtml = '<span/>';
 	            }
 	            
 	            var text = element.firstChild;
@@ -215,6 +214,12 @@
 	            
 	            console.log('ENTER');
 	            var empty_line = [''];
+	            
+	            var currentline;
+	            var previousline;
+	            
+	            console.log(currentline);
+	            console.log(previousline);
 	            
 	            textlines.splice(curline+1,0,empty_line);
 	            this.setState( {selection: {curline: curline+1, curtoken: 0, position: 0} } );
