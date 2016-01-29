@@ -286,27 +286,26 @@
 	            //MERGE: 'char' define o caracter a ser inserido, que nao combina com o token anterior
 	            // portanto, deve ser adicionado ao próximo token 
 
-	            // underflow
+	            // quando inserimos um caracter na primeira posicao, diferente do caracter atual, entao
+	            // estamos inserindo um novo token. nesse caso, nao é necessario fazer merge. podemos
+	            // inserir o simbolo direto. 
 	            if(curtoken == 0 && offset == 0) {
-	                console.log('UNDERFLOW');
 	                tokens[curline].unshift(char.toString());
-	                //this.setState( {selection: {reactid: nextreactid, position: 0} } );
 	                this.setState( {selection: {curline: curline, curtoken: curtoken+1, position: 0} } );
 	            } else
 	            {
 	                curtoken++;
-	                // overflow            
+	                // quando estamos no limite superior, é recomendavel colocar um buffer para fazer merge
 	                if(curtoken == tokens[curline].length) {
 	                    tokens[curline].push('');
 	                }
 	                
+	                // merge!
 	                var nexttoken = tokens[curline][curtoken];
 	                var nextvalue = char + nexttoken;
 	                
 	                tokens[curline][curtoken] = nextvalue;
 
-	                //nextreactid = [ path_components[0], curline,curtoken].join('.$');
-	                //this.setState( {selection: {reactid: nextreactid, position: 1} } );
 	                this.setState( {selection: {curline: curline, curtoken: curtoken, position: 1} } );
 	            }
 	            
@@ -446,8 +445,42 @@
 	            // apos o ultimo caracter do ultimo token (ou passamos o ultimo token?)
 	            if(curtoken == this.state.tokens[curline].length) {
 	                
-	                // fazer o merge das linhas
-	                console.log('final da linha: precisamos juntar as linhas');
+	                // fazer o merge das linhas. o primeiro passo é se existe a proxima linha
+	                if(curline +1 < this.state.tokens.length) {
+	                    
+	                    console.log('final da linha: precisamos juntar as linhas');
+	                    var cur_line = this.state.tokens[curline];
+	                    var next_line = this.state.tokens[curline+1];
+	                    
+	                    var new_line = cur_line.concat(next_line);
+	                    
+	                    // substitui as 2 linhas por uma nova linha concatenada
+	                    this.state.tokens.splice(curline, 2, new_line);
+	                    
+	                    var ptoken = new_line[curtoken-1];
+	                    var ntoken = new_line[curtoken];
+	                    var mtoken = ptoken + ntoken;
+	                    
+	                    // previsamos fazer merge?
+	                    var unico_tipo = /^((\s+)|(\S+))$/.test(mtoken);
+
+	                    console.log('Token: [' + mtoken + '], merge? ' + unico_tipo);
+	                    
+	                    // merge dos 2 tokens e ajustes de offset 
+	                    if(unico_tipo) {
+	                        new_line.splice(curtoken-1, 2, mtoken);
+	                        
+	                        offset = ptoken.length;
+	                    }
+	                    
+	                    // ajustar posicao    
+	                    this.setState( {curline: curline, curtoken: curtoken, position: offset} ); 
+	                    this.forceUpdate();
+	                }
+	                else {
+	                    console.log('passamos pela linha.!');
+	                }                
+	                
 	                ev.preventDefault();
 	                return;
 	            }
