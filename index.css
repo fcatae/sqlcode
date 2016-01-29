@@ -5,8 +5,7 @@ textarea {
 
 .textspace {
     margin: 20px auto;
-    padding: 10px;
-    width: calc(100% - 40px);
+    padding: 10px;    
     height: 21rem;
     background-color: #202020;
 
@@ -21,6 +20,9 @@ textarea {
     height: 1rem;
     line-height: 1rem;
     border: 1px solid transparent;
+    
+    overflow-x: hidden; /* prevent wrapping text in chrome */
+    overflow-y: hidden; /* prevent showing the scrollbar per line! in chrome */
 }
 
 .textspace > .whitespace {

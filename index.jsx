@@ -48,8 +48,8 @@ var Palavra = React.createClass({
             var text = element.firstChild || element;
             var cursor = window.getSelection();
             cursor.collapse(text, selection.position);
-            console.log('caret: updated at MOUNT');
-            console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
+            // console.log('caret: updated at MOUNT');
+            // console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
         }
     },
     componentDidUpdate: function() {
@@ -70,9 +70,9 @@ var Palavra = React.createClass({
             var cursor = window.getSelection();
             cursor.collapse(text, selection.position);
             
-            console.log('caret: updated at update');
-            console.log('element type: ' + element.nodeType)
-            console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
+            // console.log('caret: updated at update');
+            // console.log('element type: ' + element.nodeType)
+            // console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
         }
     },
     
@@ -154,8 +154,6 @@ var TextSpace = React.createClass({
         var path = span.dataset['reactid'];
         var path_components = path.split('.$');
         
-        console.log('path: ' + path);
-        
         var curline = (path_components[1] | 0);
         var curtoken = (path_components[2] | 0);
         var token = this.state.tokens[curline][curtoken];
@@ -172,10 +170,34 @@ var TextSpace = React.createClass({
             var currentline;
             var previousline;
             
+            var tokenline = this.state.tokens[curline];
+            var tokensplit = this.state.tokens[curline][curtoken];
+            var splitIni = tokensplit.substring(0,offset);
+            var splitEnd = tokensplit.substring(offset);
+            
+            var currentline = tokenline.slice(0, curtoken);
+            // valid token?
+            splitIni && currentline.push(splitIni);
+            
+            var nextline = tokenline.slice(curtoken);
+            // valid token?            
+            nextline[0] = splitEnd;
+            (!splitEnd) && nextline.shift();
+            
             console.log(currentline);
-            console.log(previousline);
+            console.log(nextline);
             
             textlines.splice(curline+1,0,empty_line);
+
+            // is valid?
+            (nextline == 0) && (nextline = empty_line);    
+
+            this.state.tokens[curline] = currentline;
+            this.state.tokens[curline+1] = nextline;
+            
+            // check if it is the last char
+            
+            
             this.setState( {selection: {curline: curline+1, curtoken: 0, position: 0} } );
             
             ev.preventDefault();
