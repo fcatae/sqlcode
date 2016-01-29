@@ -281,7 +281,7 @@ var TextSpace = React.createClass({
         
         ev.preventDefault();        
     },
-    handleclick: function() {
+    handleclick: function(ev) {
         console.log('click: ')
         // show the current line
         
@@ -331,12 +331,128 @@ var TextSpace = React.createClass({
                    
 
     },
-    handleKeyDown: function(ev) {
+    handleKeyDown: function(ev) { 
         if(ev.keyCode == 8 || ev.keyCode == 46) {
             console.log('keydown: ' + ev.keyCode);
+            
+            // assume keycode = DEL (46)
+            var selection = window.getSelection();
+            
+            var anchor = selection.anchorNode;
+            var offset = selection.anchorOffset;
+
+            if(anchor == null ) {
+                console.log('onde estamos escrevendo???');
+            }    
+            
+            // 3 regioes a serem apagadas
+            // se for multilinhas entao..
+            if(!selection.isCollapsed) {
+                ev.preventDefault();  
+            }
+
+            // identifica o SPAN em edicao
+            var span = anchor.parentNode;
+            var nodename = span.nodeName;
+            
+            var path = span.dataset['reactid'];
+            var path_components = path.split('.$');
+            
+            var curline = (path_components[1] | 0);
+            var curtoken = (path_components[2] | 0);
+            var token = this.state.tokens[curline][curtoken];
+            var tokenline = this.state.tokens[curline];
+            
+            // primeiro verificamos se esta tudo vazio, nao precisamos fazer nada
+            if( this.state.tokens.length == 0 ) {
+                ev.preventDefault();
+                //this.setState( {selection: null } ); // precisa?
+                //this.forceUpdate();
+                return;
+            }
+            
+            // e se a linha tiver somente um elmeneto e ele estiver vazio?
+            if(tokenline.length == 1 && tokenline[0]=='') {
+                
+                // apaga a linha
+                this.state.tokens.splice(curline,1);
+                ev.preventDefault();
+
+                // fica na mesma linha, embora exista a chance de ser a ultima linha (this.state.tokens === curline)
+                
+                this.setState( {curline: curline, curtoken: 0, position: 0} ); 
+                this.forceUpdate();
+                return;
+            }            
+
+
+            // REMOVER UM CARACTER
+            // se estamos posicionados dentro do SPAN, entao verificamos realmente dentro do 
+            // span. em seguida, removemos o caracter.
+            if(offset == token.length) {
+                // estamos no token seguinte, da mesma linha
+                curtoken++;
+                offset=0;
+                token = this.state.tokens[curline][curtoken];
+            }
+            
+            // ultrapassamos o final da linha?
+            // apos o ultimo caracter do ultimo token (ou passamos o ultimo token?)
+            if(curtoken == this.state.tokens[curline].length) {
+                
+                // fazer o merge das linhas
+                console.log('final da linha: precisamos juntar as linhas');
+                ev.preventDefault();
+                return;
+            }
+            
+            // assume que agora estamos correto
+            //if(offset < token.length) {
+            var newtoken = token.substring(0,offset) + token.substring(offset+1);
+            this.state.tokens[curline][curtoken] = newtoken;
+            
+            //console.log('antes: '+ token +'newtoken char-1: ' + newtoken);
+
+            // mas esse token é valido?
+            if(newtoken.length == 0) {
+                //console.log('adicionalmente removemos o token inteiro e fazemos o merge');
+                
+                // REMOVER UM TOKEN COMPLETO:
+                
+                // cuidado nas operacoes para evitar modificar o indice. 
+                // por isso, modificar primeiro o next depois o prev.
+                // apagar um token significa fazer o merge dele.
+                var prev_token = (curtoken > 0) ? this.state.tokens[curline][curtoken-1] : '';
+                var next_token = (curtoken < this.state.tokens[curline].length-1) ? this.state.tokens[curline][curtoken+1] : '';
+                var merge_token = prev_token + next_token;
+                
+                // armazena o merge no token atual
+                this.state.tokens[curline][curtoken] = merge_token; 
+                
+                // ao inves de remover o token atual, vamos remover as pontas. assim usamos o 
+                // token atual para guardar o resultado do merge. apagamos primeiro o next e depois o prev 
+                if(curtoken < this.state.tokens[curline].length-1) {
+                    this.state.tokens[curline].splice(curtoken+1, 1);    
+                }
+                if(curtoken > 0) {
+                    this.state.tokens[curline].splice(curtoken-1, 1);
+                }
+
+                // apos o merge, movemos o curtoken
+                curtoken = (curtoken > 0 ) ? curtoken - 1 : 0 ; 
+                    
+                // ajusta o offset:  (?)
+                offset = prev_token.length;
+            }
+            
+            //
+            this.setState( {selection: {curline: curline, curtoken: curtoken, position: offset} } );
+            
+            this.forceUpdate();
+            
             ev.preventDefault();
         }
-        handleKeyDown_lastSelection = window.getSelection();
+        
     },
     
     render: function() {
@@ -353,7 +469,7 @@ var TextSpace = React.createClass({
         return <div className="textspace" spellCheck="false" onKeyPress={this.handlekey} onKeyDown={this.handleKeyDown} contentEditable="true" onClick={this.handleclick}>{linhas}</div>; 
     }
 });
-var handleKeyDown_lastSelection;
+
 
 function render() {
    
