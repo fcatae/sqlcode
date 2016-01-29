@@ -1,0 +1,31 @@
+textarea {
+    height: 20em;
+    width: 100%;
+}
+
+.textspace {
+    margin: 20px auto;
+    padding: 10px;
+    width: calc(100% - 40px);
+    height: 21rem;
+    background-color: #202020;
+
+    color: whitesmoke;
+    font-family: monospace;
+        
+    white-space: pre;
+}
+
+.textspace > .line {
+    height: 1rem;
+    line-height: 1rem;
+}
+
+.textspace > .whitespace {
+    white-space: pre;
+}
+
+.importante {
+    color: red;
+    font-weight: bold;
+}
