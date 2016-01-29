@@ -36,12 +36,21 @@ var Palavra = React.createClass({
     componentDidMount: function() {
         
         var selection = this.props.selection;
-         
+
+        var element = this.refs.spamElem;
+        if(!element.firstChild) {
+            // problem: we dont want to deal with span without text, so create one
+            element.innerHtml = '<span/>';
+            console.log('problem: we dont want to deal with span without text, so create one');
+        }
+                     
         if(selection) {
             var element = this.refs.spamElem;
-            var text = element.firstChild;
+            var text = element.firstChild || element;
             var cursor = window.getSelection();
             cursor.collapse(text, selection.position);
+            console.log('caret: updated at MOUNT');
+            console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
         }
     },
     componentDidUpdate: function() {
@@ -50,9 +59,21 @@ var Palavra = React.createClass({
          
         if(selection) {
             var element = this.refs.spamElem;
+            
+            if(!element.firstChild) {
+                // should this be an error?
+                console.log('create empty space (otherwise the caret disapear)');
+                // problem: copy and past during the copy extra char
+                element.innerHtml = '<span/>';
+            }
+            
             var text = element.firstChild;
             var cursor = window.getSelection();
             cursor.collapse(text, selection.position);
+            
+            console.log('caret: updated at update');
+            console.log('element type: ' + element.nodeType)
+            console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
         }
     },
     
@@ -63,10 +84,14 @@ var Palavra = React.createClass({
         var importante = (token == 'consectetur') ? ' importante' : '';
         var spaces = /\s/.test(token) ? ' spaces' : '';
         var classnames = importante + spaces + highlight;
-        return <span ref="spamElem" className={classnames} >{token}</span>;
+        
+        // <BR> trick - se nao colocar, a linha fica fantasma e nao pode ser selecionada por teclado (so por mouse)
+        var empty_or_token = ( token.length == 0 ) ? <br/> : token ;
+         
+        return <span ref="spamElem" className={classnames} >{empty_or_token}</span>;
     }
     
-});
+}); 
 
 var Linha = React.createClass({
     getInitialState: function() {
@@ -111,8 +136,13 @@ var TextSpace = React.createClass({
         ev.preventDefault();
         
         var selection = window.getSelection();
+        
         var anchor = selection.anchorNode;
         var offset = selection.anchorOffset;
+
+        if(anchor == null ) {
+            console.log('onde estamos escrevendo???');
+        }    
         
         if(!selection.isCollapsed) {
             ev.preventDefault();  
@@ -125,30 +155,25 @@ var TextSpace = React.createClass({
         var path = span.dataset['reactid'];
         var path_components = path.split('.$');
         
+        console.log('path: ' + path);
+        
         var curline = (path_components[1] | 0);
         var curtoken = (path_components[2] | 0);
         var token = this.state.tokens[curline][curtoken];
-        var reactid = span.dataset['reactid'];
+        //var reactid = span.dataset['reactid'];
+        
+        var textlines = this.state.tokens;
         
         // adiciona uma nova linha                
         if(ev.charCode == 13) {
-            var newposition = 1 + (path_components[1] | 0);
-            var newline = '';
             
-            LINHAS.splice(newposition,0, newline);
+            console.log('ENTER');
+            var empty_line = [''];
             
-            var currentline = lines[curposition]; 
-            var start_text = (path_components[2] | 0) + offset;
-             
-            LINHAS[curposition] = currentline.substring(0, start_text);              
-            LINHAS[newposition] = currentline.substring(start_text);           
-             
-            console.log('keydown: ' + ev.keyCode);
+            textlines.splice(curline+1,0,empty_line);
+            this.setState( {selection: {curline: curline+1, curtoken: 0, position: 0} } );
             
-            this.forceUpdate();
-            
-            this['actionCreateNewLine'] = [path_components[0],newposition,0].join('.$'); 
-            
+            ev.preventDefault();
             return;
         }
         
@@ -160,11 +185,12 @@ var TextSpace = React.createClass({
             return token.match(/(\S+)|(\s+)/g) || [''];
         })(newtoken);
         
-        var nextreactid = [ path_components[0], curline,curtoken+1].join('.$');
+        //var nextreactid = [ path_components[0], curline,curtoken+1].join('.$');
         
         if(getsubtokens.length == 1) {
             tokens[curline][curtoken] = newtoken;
-            this.setState( {selection: {reactid: reactid, position: offset+1} } );            
+            //this.setState( {selection: {reactid: reactid, position: offset+1} } );     
+            this.setState( {selection: {curline: curline, curtoken: curtoken, position: offset+1} } );       
         }
         else if(getsubtokens.length == 2){
             //MERGE: 'char' define o caracter a ser inserido, que nao combina com o token anterior
@@ -174,7 +200,8 @@ var TextSpace = React.createClass({
             if(curtoken == 0 && offset == 0) {
                 console.log('UNDERFLOW');
                 tokens[curline].unshift(char.toString());
-                this.setState( {selection: {reactid: nextreactid, position: 0} } );
+                //this.setState( {selection: {reactid: nextreactid, position: 0} } );
+                this.setState( {selection: {curline: curline, curtoken: curtoken+1, position: 0} } );
             } else
             {
                 curtoken++;
@@ -188,8 +215,9 @@ var TextSpace = React.createClass({
                 
                 tokens[curline][curtoken] = nextvalue;
 
-                nextreactid = [ path_components[0], curline,curtoken].join('.$');
-                this.setState( {selection: {reactid: nextreactid, position: 1} } );
+                //nextreactid = [ path_components[0], curline,curtoken].join('.$');
+                //this.setState( {selection: {reactid: nextreactid, position: 1} } );
+                this.setState( {selection: {curline: curline, curtoken: curtoken, position: 1} } );
             }
             
         } else {
@@ -202,11 +230,10 @@ var TextSpace = React.createClass({
             var flatline = _.flatten(line);
             tokens[curline] = flatline;
             
-            //var nextreactid = [ path_components[0], curline,curtoken].join('.$');
             this.setState( {selection: {curline: curline, curtoken: curtoken+1, position: 1} } );
         }
         
-        this.forceUpdate();
+        //this.forceUpdate();
         
         ev.preventDefault();        
     },
@@ -237,6 +264,8 @@ var TextSpace = React.createClass({
         var selection = this.state.selection;
          
         if(selection && selection.reactid ) {
+            console.log('remover reactid');
+            
             var element = document.querySelector('span[data-reactid="' + selection.reactid + '"]');
             var text = element.firstChild;
             var cursor = window.getSelection();
@@ -252,7 +281,7 @@ var TextSpace = React.createClass({
             console.log('keydown: ' + ev.keyCode);
             ev.preventDefault();
         }
-        
+        handleKeyDown_lastSelection = window.getSelection();
     },
     
     render: function() {
@@ -269,6 +298,7 @@ var TextSpace = React.createClass({
         return <div className="textspace" spellCheck="false" onKeyPress={this.handlekey} onKeyDown={this.handleKeyDown} contentEditable="true" >{linhas}</div>; 
     }
 });
+var handleKeyDown_lastSelection;
 
 function render() {
    
