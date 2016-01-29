@@ -51,6 +51,7 @@ var Palavra = React.createClass({
             // console.log('caret: updated at MOUNT');
             // console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
         }
+        
     },
     componentDidUpdate: function() {
         
@@ -302,7 +303,7 @@ var TextSpace = React.createClass({
         var curline = (path_components[1] | 0);
         var curtoken = (path_components[2] | 0);
                 
-        this.setState( {selection: {curline: curline, curtoken: curtoken, position: 0} } );
+        this.setState( {selection: {curline: curline, curtoken: curtoken, position: offset} } );
     },
     componentWillReceiveProps: function(nextprops) {
         // try to clean up the caret position before updating the layout 
@@ -349,7 +350,7 @@ var TextSpace = React.createClass({
             return <Linha key={i} tokens={tokens[i]} selection={onlyIfSelected}></Linha>
         });
         
-        return <div className="textspace" spellCheck="false" onKeyPress={this.handlekey} onKeyDown={this.handleKeyDown} contentEditable="true" >{linhas}</div>; 
+        return <div className="textspace" spellCheck="false" onKeyPress={this.handlekey} onKeyDown={this.handleKeyDown} contentEditable="true" onClick={this.handleclick}>{linhas}</div>; 
     }
 });
 var handleKeyDown_lastSelection;
