@@ -478,7 +478,8 @@
 	                    this.forceUpdate();
 	                }
 	                else {
-	                    console.log('passamos pela linha.!');
+	                    // ignora se for a ultima linha
+	                    //console.log('passamos pela linha.!');
 	                }                
 	                
 	                ev.preventDefault();
@@ -552,6 +553,8 @@
 
 	function render() {
 	   
+	    console.log('bug do scroll: chrome - quando colocamos uma lnha bem longa, ele fica com scroll');
+	    
 	    var textspace = document.querySelector('.textspace');
 	    //textspace && (lines = textspace.innerText.replace('\r\n','\n').split('\n'));     
 	    
