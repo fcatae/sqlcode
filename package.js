@@ -169,7 +169,27 @@
 	        else if(getsubtokens.length == 2){
 	            //MERGE
 	            // this.setState( {selection: {reactid: reactid, position: offset+1} } ); ???
-	            console.log('merge')
+	            // caso1: '\s \w'
+	            // caso1: '\w \s'
+	            
+	            // 'char' define o caracter a ser inserido, que nao combina com o token anterior
+	            // portanto, deve ser adicionado ao próximo token 
+	            curtoken++;
+
+	            // overflow            
+	            if(curtoken == tokens[curline]) {
+	                tokens[curline].push('');
+	            }
+	            
+	            var nexttoken = tokens[curline][curtoken];
+	            var nextvalue = char + nexttoken;
+	             
+	            tokens[curline][curtoken] = nextvalue;
+	            console.log('merge: ' + nextvalue);
+
+	            var nextreactid = [ path_components[0], curline,curtoken].join('.$');
+	            this.setState( {selection: {reactid: nextreactid, position: 1} } );
+	            
 	        } else {
 	            // BREAK
 	            console.log('break')
