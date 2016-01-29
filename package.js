@@ -553,7 +553,7 @@
 
 	function render() {
 	   
-	    console.log('bug do scroll: chrome - quando colocamos uma lnha bem longa, ele fica com scroll');
+	    console.log('bug do scroll: chrome - quando colocamos uma lnha bem longa, ele fica com scroll (invisivel)');
 	    
 	    var textspace = document.querySelector('.textspace');
 	    //textspace && (lines = textspace.innerText.replace('\r\n','\n').split('\n'));     

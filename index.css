@@ -21,8 +21,11 @@ textarea {
     line-height: 1rem;
     border: 1px solid transparent;
     
-    overflow-x: hidden; /* prevent wrapping text in chrome */
-    overflow-y: hidden; /* prevent showing the scrollbar per line! in chrome */
+    
+    /*--overflow-x: hidden; -- prevent wrapping text in chrome 
+    --overflow-y: hidden; -- prevent showing the scrollbar per line! in chrome */
+    
+    overflow-wrap: normal; /* weird behavior in chrome */ 
 }
 
 .textspace > .whitespace {
