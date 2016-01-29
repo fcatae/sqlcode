@@ -1,4 +1,5 @@
 var React = require('react');
+var _ = require('lodash');
 
 var LINHAS = [
         '  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, enim.',
@@ -10,6 +11,7 @@ var LINHAS = [
         'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, voluptates!',
         'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, qui.'    
         ]; 
+var LINHAS2 = ['asdfk saklfdj alskjdf lksjdf llsdj sad'];
 
 function transformarLinhas() {    
     
@@ -31,27 +33,69 @@ var Palavra = React.createClass({
         var s = ev.key;
         console.log(s);
     },
+    componentDidMount: function() {
+        
+        var selection = this.props.selection;
+         
+        if(selection) {
+            var element = this.refs.spamElem;
+            var text = element.firstChild;
+            var cursor = window.getSelection();
+            cursor.collapse(text, selection.position);
+        }
+    },
+    componentDidUpdate: function() {
+        
+        var selection = this.props.selection;
+         
+        if(selection) {
+            var element = this.refs.spamElem;
+            var text = element.firstChild;
+            var cursor = window.getSelection();
+            cursor.collapse(text, selection.position);
+        }
+    },
+    
     render: function() {
         var token = this.props.token;
+        var selection = this.props.selection;
+        var highlight = (selection != null) ? ' selectedspan' : '';
         var importante = (token == 'consectetur') ? ' importante' : '';
         var spaces = /\s/.test(token) ? ' spaces' : '';
-        var classnames = importante + spaces;
-        return <span className={classnames} >{token}</span>;
+        var classnames = importante + spaces + highlight;
+        return <span ref="spamElem" className={classnames} >{token}</span>;
     }
     
 });
 
 var Linha = React.createClass({
+    getInitialState: function() {
+        return {
+            selection: this.props.selection
+        }
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return true;
+    },
+    componentWillReceiveProps: function(nextprops) {
+        this.setState( {selection: nextprops.selection} );
+    },
     render: function() {
         var tokens = this.props.tokens;
         var position = 0;
+        var selection = this.state.selection;
+        
+        var highlight = (selection != null) ? ' lineborder' : '';
         
         var palavras = tokens.map(function(token,i) {
-           var node = <Palavra key={i} token={token}></Palavra>
+            
+           var onlyIfSelected = (selection) && (i == selection.curtoken) ? selection : null; 
+           var node = <Palavra key={i} token={token} selection={onlyIfSelected}></Palavra>
+           
            return node;
         });
-          
-        return <div className="line" >{palavras}</div>;
+        
+        return <div className={'line' + highlight} >{palavras}</div>;
     }
 });
 
@@ -63,7 +107,7 @@ var TextSpace = React.createClass({
         }
     },
     handlekey: function(ev) {
-        console.log('press: ' + ev.key);
+        //console.log('press: ' + ev.key);
         ev.preventDefault();
         
         var selection = window.getSelection();
@@ -116,42 +160,77 @@ var TextSpace = React.createClass({
             return token.match(/(\S+)|(\s+)/g) || [''];
         })(newtoken);
         
+        var nextreactid = [ path_components[0], curline,curtoken+1].join('.$');
+        
         if(getsubtokens.length == 1) {
             tokens[curline][curtoken] = newtoken;
             this.setState( {selection: {reactid: reactid, position: offset+1} } );            
         }
         else if(getsubtokens.length == 2){
-            //MERGE
-            // this.setState( {selection: {reactid: reactid, position: offset+1} } ); ???
-            // caso1: '\s \w'
-            // caso1: '\w \s'
-            
-            // 'char' define o caracter a ser inserido, que nao combina com o token anterior
+            //MERGE: 'char' define o caracter a ser inserido, que nao combina com o token anterior
             // portanto, deve ser adicionado ao próximo token 
-            curtoken++;
 
-            // overflow            
-            if(curtoken == tokens[curline]) {
-                tokens[curline].push('');
+            // underflow
+            if(curtoken == 0 && offset == 0) {
+                console.log('UNDERFLOW');
+                tokens[curline].unshift(char.toString());
+                this.setState( {selection: {reactid: nextreactid, position: 0} } );
+            } else
+            {
+                curtoken++;
+                // overflow            
+                if(curtoken == tokens[curline].length) {
+                    tokens[curline].push('');
+                }
+                
+                var nexttoken = tokens[curline][curtoken];
+                var nextvalue = char + nexttoken;
+                
+                tokens[curline][curtoken] = nextvalue;
+
+                nextreactid = [ path_components[0], curline,curtoken].join('.$');
+                this.setState( {selection: {reactid: nextreactid, position: 1} } );
             }
             
-            var nexttoken = tokens[curline][curtoken];
-            var nextvalue = char + nexttoken;
-             
-            tokens[curline][curtoken] = nextvalue;
-            console.log('merge: ' + nextvalue);
-
-            var nextreactid = [ path_components[0], curline,curtoken].join('.$');
-            this.setState( {selection: {reactid: nextreactid, position: 1} } );
-            
         } else {
-            // BREAK
-            console.log('break')
+            // CREATE TOKENS
+            // Substituimos o token na posicao 'curtoken' por outros 3 tokens
+            var numDeletes = 1;
+            var line = tokens[curline];
+            
+            line.splice(curtoken, numDeletes, getsubtokens);
+            var flatline = _.flatten(line);
+            tokens[curline] = flatline;
+            
+            //var nextreactid = [ path_components[0], curline,curtoken].join('.$');
+            this.setState( {selection: {curline: curline, curtoken: curtoken+1, position: 1} } );
         }
         
         this.forceUpdate();
         
         ev.preventDefault();        
+    },
+    handleclick: function() {
+        console.log('click')
+        var selection = window.getSelection();
+        var anchor = selection.anchorNode;
+        var offset = selection.anchorOffset;
+        
+        if(!selection.isCollapsed) {
+            ev.preventDefault();  
+        }
+
+        // identifica o SPAN em edicao
+        var span = anchor.parentNode;
+        var nodename = span.nodeName;
+        
+        var path = span.dataset['reactid'];
+        var path_components = path.split('.$');
+        
+        var curline = (path_components[1] | 0);
+        var curtoken = (path_components[2] | 0);
+                
+        this.setState( {selection: {curline: curline, curtoken: curtoken, position: 0} } );
     },
     componentDidUpdate: function() {
         
@@ -179,9 +258,12 @@ var TextSpace = React.createClass({
     render: function() {
         
         var tokens = this.state.tokens;
+        var selection = this.state.selection;
         
         var linhas = tokens.map(function(line,i) {
-            return <Linha key={i} tokens={tokens[i]}></Linha>
+            var onlyIfSelected = (selection) && (i == selection.curline) ? selection : null;
+            
+            return <Linha key={i} tokens={tokens[i]} selection={onlyIfSelected}></Linha>
         });
         
         return <div className="textspace" spellCheck="false" onKeyPress={this.handlekey} onKeyDown={this.handleKeyDown} contentEditable="true" >{linhas}</div>; 
@@ -202,7 +284,7 @@ function render() {
 
 
 var a = render();
-setInterval(render, 1000);
+setInterval(render, 5000);
 // bug1 : incluir espacos dentro de um SPAN incorreto
 // bug2 : adicionar chaves incorretas
 
