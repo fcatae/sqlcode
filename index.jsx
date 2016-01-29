@@ -281,7 +281,9 @@ var TextSpace = React.createClass({
         ev.preventDefault();        
     },
     handleclick: function() {
-        console.log('click')
+        console.log('click: ')
+        // show the current line
+        
         var selection = window.getSelection();
         var anchor = selection.anchorNode;
         var offset = selection.anchorOffset;
