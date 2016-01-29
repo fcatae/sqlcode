@@ -212,6 +212,8 @@
 	        // adiciona uma nova linha                
 	        if(ev.charCode == 13) {
 	            
+	            // skipping the first character of the first line ends in the third character (second token). why not second char (first token)?
+	            
 	            console.log('ENTER');
 	            var empty_line = [''];
 	            
@@ -231,10 +233,7 @@
 	            // valid token?            
 	            nextline[0] = splitEnd;
 	            (!splitEnd) && nextline.shift();
-	            
-	            console.log(currentline);
-	            console.log(nextline);
-	            
+	                        
 	            textlines.splice(curline+1,0,empty_line);
 	            
 	            // is valid?
