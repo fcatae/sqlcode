@@ -334,7 +334,7 @@ var TextSpace = React.createClass({
         if(ev.keyCode == 8 || ev.keyCode == 46) {
             console.log('keydown: ' + ev.keyCode);
             
-            // assume keycode = DEL (46)
+            
             var selection = window.getSelection();
             
             var anchor = selection.anchorNode;
@@ -359,6 +359,40 @@ var TextSpace = React.createClass({
             
             var curline = (path_components[1] | 0);
             var curtoken = (path_components[2] | 0);
+
+            // se keycode = BACKSPACE, então movimenta o cursor para tras 
+            if( ev.keyCode == 8 ) {
+                console.log('backspace')
+                // caso esteja na primeira posicao, então ignora
+                // console.log('nao precisa fazer nada');
+                if(curline == 0 && curtoken == 0 && offset == 0 ){
+                    ev.preventDefault();
+                    return;
+                }                
+                
+                // Movimenta o cursor para tras. Inicialmente basta decrementar do offset.
+                // Entretanto, pode ser necessario decrementar um do curtoken ou curline.
+                if( offset==0 ) {
+                    if( curtoken==0 ) {
+                        // assert(curline>0)
+                        curline--;
+                        curtoken = this.state.tokens[curline].length;
+                        console.log('curtoken=0: curline=' + curline + ', curtoken=' + curtoken);                        
+                    }
+                                                                       
+                    // curtoken: comeco da linha
+                    curtoken--;
+                    offset = this.state.tokens[curline][curtoken].length;
+
+                    // remove o BR ao inves do ultimo caracter 
+                    offset += 1;    
+                }
+                // offset: borda da palavra
+                offset--;
+                                       
+            } // a logica continua como se houvesse pressionado DEL ...
+
+            // assume keycode = DEL (46)
             var token = this.state.tokens[curline][curtoken];
             var tokenline = this.state.tokens[curline];
             
