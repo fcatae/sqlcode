@@ -45,11 +45,12 @@ var Palavra = React.createClass({
                      
         if(selection) {
             var element = this.refs.spamElem;
-            var text = element.firstChild || element;
+            var text = element.firstChild;
             var cursor = window.getSelection();
             cursor.collapse(text, selection.position);
-            // console.log('caret: updated at MOUNT');
-            // console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
+            
+            console.log('caret: updated at MOUNT');
+            console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
         }
         
     },
@@ -69,11 +70,10 @@ var Palavra = React.createClass({
             
             var text = element.firstChild;
             var cursor = window.getSelection();
-            cursor.collapse(text, selection.position);
-            
-            // console.log('caret: updated at update');
-            // console.log('element type: ' + element.nodeType)
-            // console.log('offset: ' + selection.position + ' (curline: ' + selection.curline + ', ' + selection.curtoken + ')');
+
+            console.log('Caret Positioning (componentDidUpdate): ' + element.nodeName + '(curline: ' + selection.curline + ', ' + selection.curtoken + ')+offset: ' + selection.position);            
+
+            cursor.collapse(text, selection.position);            
         }
     },
     
@@ -281,7 +281,6 @@ var TextSpace = React.createClass({
         ev.preventDefault();        
     },
     handleclick: function(ev) {
-        console.log('click: ')
         // show the current line
         
         var selection = window.getSelection();
@@ -377,7 +376,7 @@ var TextSpace = React.createClass({
                         // assert(curline>0)
                         curline--;
                         curtoken = this.state.tokens[curline].length;
-                        console.log('curtoken=0: curline=' + curline + ', curtoken=' + curtoken);                        
+                        //console.log('curtoken=0: curline=' + curline + ', curtoken=' + curtoken);                        
                     }
                                                                        
                     // curtoken: comeco da linha
@@ -413,7 +412,7 @@ var TextSpace = React.createClass({
 
                 // fica na mesma linha, embora exista a chance de ser a ultima linha (this.state.tokens === curline)
                 
-                this.setState( {curline: curline, curtoken: 0, position: 0} ); 
+                this.setState( { selection: {curline: curline, curtoken: 0, position: 0}} ); 
                 this.forceUpdate();
                 return;
             }            
@@ -436,7 +435,7 @@ var TextSpace = React.createClass({
                 // fazer o merge das linhas. o primeiro passo é se existe a proxima linha
                 if(curline +1 < this.state.tokens.length) {
                     
-                    console.log('final da linha: precisamos juntar as linhas');
+                    //console.log('final da linha: precisamos juntar as linhas');
                     var cur_line = this.state.tokens[curline];
                     var next_line = this.state.tokens[curline+1];
                     
@@ -452,7 +451,7 @@ var TextSpace = React.createClass({
                     // previsamos fazer merge?
                     var unico_tipo = /^((\s+)|(\S+))$/.test(mtoken);
 
-                    console.log('Token: [' + mtoken + '], merge? ' + unico_tipo);
+                    //console.log('Token: [' + mtoken + '], merge? ' + unico_tipo);
                     
                     // merge dos 2 tokens e ajustes de offset 
                     if(unico_tipo) {
@@ -461,13 +460,13 @@ var TextSpace = React.createClass({
                         offset = ptoken.length;
                     }
                     
-                    // ajustar posicao    
-                    this.setState( {curline: curline, curtoken: curtoken, position: offset} ); 
+                    // ajustar posicao: para ptoken (curtoken-1)                     
+                    this.setSelection(curline,curtoken-1,offset);
                     this.forceUpdate();
                 }
                 else {
                     // ignora se for a ultima linha
-                    //console.log('passamos pela linha.!');
+                    console.log('passamos pela linha.!');
                 }                
                 
                 ev.preventDefault();
@@ -522,11 +521,19 @@ var TextSpace = React.createClass({
         }
         
     },
-    
+    setSelection: function(curline, curtoken, offset) {
+        if( curline && curtoken && offset ) {
+            this.setState( {selection: {curline: curline, curtoken: curtoken, position: offset} } );
+        } else {
+            console.log('Invalid setSelection()');
+        }     
+    },
     render: function() {
         
         var tokens = this.state.tokens;
         var selection = this.state.selection;
+        
+        console.log('main:render()')
         
         var linhas = tokens.map(function(line,i) {
             var onlyIfSelected = (selection) && (i == selection.curline) ? selection : null;
@@ -541,7 +548,7 @@ var TextSpace = React.createClass({
 
 function render() {
    
-    console.log('implementar o backspace');
+    //console.log('implementar o backspace');
     
     var textspace = document.querySelector('.textspace');
     //textspace && (lines = textspace.innerText.replace('\r\n','\n').split('\n'));     
