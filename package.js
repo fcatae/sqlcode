@@ -201,6 +201,7 @@
 	        
 	        if(!selection.isCollapsed) {
 	            ev.preventDefault();  
+	            return;
 	        }
 
 	        // identifica o SPAN em edicao
@@ -328,13 +329,14 @@
 	    },
 	    handleclick: function(ev) {
 	        // show the current line
-	        
+	                
 	        var selection = window.getSelection();
 	        var anchor = selection.anchorNode;
 	        var offset = selection.anchorOffset;
 	        
 	        if(!selection.isCollapsed) {
-	            ev.preventDefault();  
+	            ev.preventDefault();
+	            return;  
 	        }
 
 	        // identifica o SPAN em edicao
