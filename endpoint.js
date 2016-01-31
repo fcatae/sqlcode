@@ -1,3 +1,23 @@
+var express = require('express');
+var app = express();
+
+app.post('/getConnection', function(req, res) {
+    var a = req;
+    res.end('hello world 2')
+});
+
+app.get('/execute', function(req, res) {
+    var a = req;
+    res.end('hello world 2')
+});
+
+
+
+app.listen(3000);
+
+
+function initDb() {
+
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 
@@ -79,31 +99,4 @@ var Request = require('tedious').Request;
     });
 
 
-
-
-
-
-
-
-
-/*
-var sql = require('msnodesqlv8');
-var conn_str = 'Driver={SQL Server Native Client 11.0};Server=(local));Database=(master);Trusted_Connection={Yes};';
-
-sql.open(conn_str, function (err, conn) {
-    if (err) {
-        console.log("Error opening the connection!");
-        return;
-    }
-    conn.queryRaw("SELECT * FROM sys.dm_exec_requests", function (err, results) {
-        if (err) {
-            console.log("Error running query!");
-            return;
-        }
-        for (var i = 0; i < results.rows.length; i++) {
-            console.log("0:" + results.rows[i][0]);
-        }
-    });
-});
-*/
-
+}

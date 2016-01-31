@@ -59,3 +59,8 @@ O objetivo é reconhecer visualmente:
 * Tabelas de sistema
 * Colunas
 * Symbol table (highlights)
+
+# Scanner
+
+Leitura de bytes transformando em caracteres (atenção a codificação UTF)
+
