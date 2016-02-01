@@ -7,12 +7,30 @@ var activeConnection = null;
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+
+});
+
+
+app.get('/getConnection', function(req, res) {
+
+    activeConnection = API_getConnection(null, function(err) {
+        if(err) {
+            res.send({error: err.message});
+        }
+        res.end('true');
+    });
+
+});
 app.post('/getConnection', function(req, res) {
 
     activeConnection = API_getConnection(null, function(err) {
         if(err) {
             res.send({error: err.message});
         }
+        
         res.end();
     });
 
