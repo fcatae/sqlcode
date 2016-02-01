@@ -1,0 +1,10 @@
+{
+  "port": 8080,
+  "files": ["./src/**/*.{html,htm,css,js}"],
+  "server": { "baseDir": "." },
+  "ghostMode": {
+    "clicks": true,
+    "forms": true,
+    "scroll": false
+    }
+}
