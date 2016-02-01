@@ -1,14 +1,21 @@
+var bodyParser = require('body-parser')
 var express = require('express');
 var app = express();
+
+//app.use(bodyParser.json({ type: 'application/*+json' }));
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.post('/getConnection', function(req, res) {
     var a = req;
     res.end('hello world 2')
 });
 
-app.get('/execute', function(req, res) {
+app.post('/execute', function(req, res) {
     var a = req;
-    res.end('hello world 2')
+    res.end('hello world 2');
+    
+    // executa o request;
+    
 });
 
 

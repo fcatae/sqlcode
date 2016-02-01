@@ -18,6 +18,7 @@
     "webpack-stream": "^3.1.0"
   },
   "dependencies": {
+    "body-parser": "^1.14.2",
     "express": "^4.13.4",
     "jquery": "^2.2.0",
     "lodash": "^4.1.0",
