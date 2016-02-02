@@ -2,7 +2,8 @@
 "use strict";
 
 require(['xmlclass.js'], function(xml) {
-    console.log(xml.nome);    
+    console.log(xml.nome);
+    xml.teste();    
 }); 
 
 $(document).ready(function() {
