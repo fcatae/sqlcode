@@ -1,6 +1,6 @@
 {
   "port": 8080,
-  "files": ["./src/**/*.{html,htm,css,js}"],
+  "files": ["*.{html,htm,css,js}"],
   "server": { "baseDir": "." }
   ,
   "INVLIAD ghostMode": {

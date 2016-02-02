@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack --progress --color --watch",
     "web": "webpack-dev-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lite": "node node_modules/lite-server/bin/lite-server"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
+    "htmlparser2": "^3.9.0",
     "jquery": "^2.2.0",
     "lodash": "^4.1.0",
     "react-contenteditable": "^1.1.0"
