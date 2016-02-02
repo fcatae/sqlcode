@@ -28,14 +28,10 @@ $(document).ready(function() {
         var text = $('#txtXml').val();
 
         require(['xmlclass.js'], function(xmlparse) {
-            console.log(xmlparse.nome);
-            xmlparse.teste(text);    
+            xmlparse.teste(text, function(data) {
+                console.dir(data);
+            });    
         }); 
-
-
-       // read RingBufferTarget
-       // read Event
-       // read Data Type/Value
    }
    
 });
