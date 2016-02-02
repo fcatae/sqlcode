@@ -4,8 +4,8 @@
   "server": { "baseDir": "." }
   ,
   "ghostMode": {
-    "clicks": false,
-    "forms": false,
+    "clicks": true,
+    "forms": true,
     "scroll": false
     }
 }
