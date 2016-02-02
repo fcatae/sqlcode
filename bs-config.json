@@ -3,9 +3,9 @@
   "files": ["*.{html,htm,css,js}"],
   "server": { "baseDir": "." }
   ,
-  "INVLIAD ghostMode": {
-    "clicks": true,
-    "forms": true,
+  "ghostMode": {
+    "clicks": false,
+    "forms": false,
     "scroll": false
     }
 }
