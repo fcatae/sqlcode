@@ -36,16 +36,34 @@ app.post('/getConnection', function(req, res) {
 
 });
 
-app.post('/execute', function(req, res) {
-    
-    var request = req.body.request;
-    
-    API_execute(activeConnection, request, function(obj) {
-        res.send(obj);
-    }, function() {
-        res.end();
-    });
+app.get('/execute', function(req, res) {
+    var request = 'select * from sys.databases';
+    api_execute(request,res);
 });
+
+app.post('/execute', function(req, res) {
+    var request = req.body.request;
+    api_execute(request,res);
+});
+
+function api_execute(request,res) {
+        if(activeConnection == null) {
+        activeConnection = API_getConnection(null, function(err) {
+            continueAPI();
+        });    
+    } else {
+        continueAPI();
+    }
+    
+    function continueAPI() {        
+        API_execute(activeConnection, request, function(obj) {
+            res.write(JSON.stringify(obj) + '[;;;]');
+        }, function() {
+            res.end();
+        });
+    }
+}
+
 
 app.listen(3000);
 
@@ -289,13 +307,13 @@ function PostCode(path, codestring, callback) {
 
 }
 
-console.log('PostCode(/getConnection)');
-PostCode('/getConnection', null, function() {
-
-    console.log('PostCode(/execute)');
-    PostCode('/execute', 'select * from sys.dm_exec_requests', function(chunk) {
-        console.log('Response: ' + JSON.stringify (chunk) );
-    });
-    
-});
+// console.log('PostCode(/getConnection)');
+// PostCode('/getConnection', null, function() {
+// 
+//     console.log('PostCode(/execute)');
+//     PostCode('/execute', 'select * from sys.dm_exec_requests', function(chunk) {
+//         console.log('Response: ' + JSON.stringify (chunk) );
+//     });
+//     
+// });
 

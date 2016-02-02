@@ -13,20 +13,24 @@
         textarea.form-control {
             max-width: 100%;
         }
+        .container {
+            position: relative;
+        }
+        .alert {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            background-color: white;
+            z-index: 100;
+        }
     </style>
+
 
     <div class="container">
 
         <div class="row">
-            <h1>Endpoint Client</h1>
+            <h2>Endpoint Client</h2>
         </div>       
-        
-        <div class="row">
-            <div class="stateConnecting alert alert-warning">
-                <p>Connecting to database...</p> 
-                <progress>
-            </div>
-        </div>     
         
         <div class="row">
             <form action="">
@@ -36,7 +40,26 @@
             </form>
         </div>
         
+        <div class="row">
+            <div>
+                <h3>Results</h3>
+                <p id="lastCommand">Last command</p>
+            </div>            
+        </div>
+        <div class="row">
+            <div id="results">Results</div>            
+        </div>
+    
+        <div class="alertplaceholder stateConnecting">
+        <div class="alert alert-warning">
+            <p>Connecting to database...</p> 
+            <progress>
+        </div>  
+        </div>
+        
     </div>
+    
+    
     
     <script src="endpointclient.js"></script>
     

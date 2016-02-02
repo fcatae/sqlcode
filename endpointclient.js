@@ -9,14 +9,16 @@ $(document).ready(function() {
     $.post(SQL_ENDPOINT_GETCONNECTION, null, function() {
         setInterval(function() {
             enableAccess();
-        }, 1500)
+        }, 500)
     });
     
-    $('#btnExecute').click(function() {
+    $('#btnExecute').click(function(ev) {
+
+        ev.preventDefault();
+
         executeSql();
-        alert('bom dia'); 
+        //alert('bom dia'); 
         
-        return true; 
     });
 
 })
@@ -28,7 +30,25 @@ function enableAccess() {
 
 function executeSql() {
 
-
-    $.post(SQL_ENDPOINT_EXECUTE, { request: 'test' } );
+    var request = $('#txtCommand').val();
+    
+    $.post(SQL_ENDPOINT_EXECUTE, { request: request }, function(data) {
+        var datarows = data.split('[;;;]');
+        datarows.pop();
+        
+        var rows = datarows.map(function(v) { return JSON.parse(v); });
+        
+        showResults(rows);
+    });
+    
+    $('#lastCommand').text(request);
     
 }
+
+function showResults(rows) {
+
+    $('#results').html(JSON.stringify(rows));
+    
+}
+
+
