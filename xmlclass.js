@@ -1,4 +1,5 @@
 /* global sax */
+"use strict";
 
 define([], function() {
    
@@ -9,8 +10,7 @@ define([], function() {
    return my;  
 
 
-   function parse() {
-       var text = $('#txtXml').val();
+   function parse(text) {
        
        var parser = sax.parser(true);
        
@@ -36,7 +36,7 @@ define([], function() {
        parser.onclosetag = function (tag) {
             console.log('onclosetag');
         };
-       parser.write('<xml>Hello, <who name="world">world</who>!</xml>').close();
+       parser.write(text).close();
    }
    
 });
