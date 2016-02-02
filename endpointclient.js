@@ -47,8 +47,38 @@ function executeSql() {
 
 function showResults(rows) {
 
-    $('#results').html(JSON.stringify(rows));
+    var resultDom = $('#results');
+     
+    resultDom.empty();
+    
+    var tableDom = $('<table></table>');
+    var theadDom = $('<thead></thead>'); 
+    var tbodyDom = $('<tbody></tbody>');
+    
+    rows.map(function(row) {
+        var columns = row.map(function(col) {
+           return '<td>' + col + '</td>'; 
+        });
+        var rowHtml =  '<tr>' + columns.join('') + '</tr>'
+        
+        tbodyDom.append(rowHtml);
+    })
+    tableDom.append(theadDom);
+    tableDom.append(tbodyDom);
+    
+    resultDom.append(tableDom);
+    
+    //$('#results').html(JSON.stringify(rows));
     
 }
 
-
+function escapeHtml(str) {
+    var tagsToReplace = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;'
+    };
+    return str.replace(/[&<>]/g, function(tag) {
+        return tagsToReplace[tag] || tag;
+    });
+};
