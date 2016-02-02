@@ -3,21 +3,10 @@
 
 define([], function() {
    
-   var my = { nome: 'classe exportada',
-    teste: parse
-    };
-      
-   return my;  
+   var parserExport = { ringbuffer: parse };
 
-
-   function show(target) {
-       
-       console.log(`RingBufferTarget: EventCount=${target.count}`);
-       target.events.map(function(evt) {
-           
-       })
-   }
-   
+   return parserExport;  
+  
    function parse(text, callback) {
        
        var parser = sax.parser(true);
@@ -69,9 +58,6 @@ define([], function() {
         
         target.count = node.attributes["eventCount"];
         target.events = eventList;
-        
-        console.log(`RingBufferTarget: EventCount=${node.attributes["eventCount"]}`);        
-        
    }
 
     function processEvent(parser, node, eventList) {
@@ -91,7 +77,6 @@ define([], function() {
                 // exit this process state
                 cleanup();
                 eventList.push(event)
-                console.log(data);
             }
         };
         
@@ -106,33 +91,58 @@ define([], function() {
             data: data
         }
         
-        console.log(`  Event: name=${event.name} at ${event.timestamp}`);
     }   
 
     function processEventData(parser, node, root) {
 
         var old_open = parser.onopentag;
         var old_close = parser.onclosetag;
-          
+        var old_text = parser.ontext;
+        
         parser.onopentag = function (node) {
+            if(node.name == 'type') {
+                type = node.name;
+            }
+            if(node.name == 'value') {
+                captureValue = true;
+                value = null;
+            }
         };
+        parser.ontext = function(tval) {
+            if(captureValue) {
+                (value == null) || console.log('Assert. Non-empty value');
+                value = tval;
+            }            
+        }
+
         parser.onclosetag = function (tag) {
             if(tag == 'data') {
                 // exit this process state
                 cleanup();
+
+                // value can be NULL!
+                // eg. sp_statement_completed.object_name, rpc_completed.data_stream, 
+                // rpc_completed.output_parameters, sql_statement_completed.parameterized_plan_handle 
+                    
+                root[name] = value;
+            }
+            if(tag == 'value') {
+                captureValue = false;
             }
         };
         
         function cleanup() {
             parser.onopentag = old_open;
             parser.onclosetag = old_close;
+            parser.ontext = old_text;
         }       
         
         var name = node.attributes["name"];
         var type;
         var value;
+        var captureValue = false;
         
-        root[name] = '1';
+        root[name] = null;
     }
    
 });

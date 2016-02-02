@@ -27,9 +27,11 @@ $(document).ready(function() {
        
         var text = $('#txtXml').val();
 
+        var $results = $('#results');
+
         require(['xmlclass.js'], function(xmlparse) {
-            xmlparse.teste(text, function(data) {
-                console.dir(data);
+            xmlparse.ringbuffer(text, function(data) {
+                $results.text(JSON.stringify(data))
             });    
         }); 
    }
