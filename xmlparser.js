@@ -1,6 +1,10 @@
 /* global $ */
 "use strict";
 
+require(['xmlclass'], function(xml) {
+    console.log(xml.nome);
+});
+
 $(document).ready(function() {
    
    function initTeste() {
@@ -52,6 +56,9 @@ $(document).ready(function() {
         };
        parser.write('<xml>Hello, <who name="world">world</who>!</xml>').close();
 
+       // read RingBufferTarget
+       // read Event
+       // read Data Type/Value
    }
    
 });
