@@ -136,14 +136,24 @@ function API_execute(connection, sqlcmd, progress, done) {
         });
 
     request.on('columnMetadata', function(c) {
-        console.log('columnMetadata');
         //console.dir(c);
+
+        var a = c.map(function(elem) {
+            var header = {
+                name: elem.colName,
+                rawLength: elem.dataLength,
+                type: elem.type.type,
+                typeSize: elem.type.maximumLength
+            };
+            return header.name;
+        });
+        
+        progress && progress(a);
         // flatten
         //_.map(function(col) {})
             
     });
     request.on('row', function(c) {
-        console.log('row');    
         //console.dir(c);
         
         var a = c.map(function(elem) {
