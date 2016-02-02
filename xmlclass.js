@@ -1,6 +1,8 @@
 /* global define */
-define('xmlclass', [], function() {
-   var my = { nome: 'classe exportada' };
+define('/xmlclass.js', [], function() {
    
+   alert('a');
+   var my = { nome: 'classe exportada' };   
    return my;  
+   
 });

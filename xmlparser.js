@@ -1,9 +1,9 @@
 /* global $ */
 "use strict";
 
-require(['xmlclass'], function(xml) {
-    console.log(xml.nome);
-});
+require(['xmlclass.js'], function(xml) {
+    console.log(xml.nome);    
+}); 
 
 $(document).ready(function() {
    
