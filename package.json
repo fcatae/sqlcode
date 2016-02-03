@@ -7,7 +7,8 @@
     "start": "webpack --progress --color --watch",
     "web": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lite": "node node_modules/lite-server/bin/lite-server"
+    "lite": "node node_modules/lite-server/bin/lite-server",
+    "mocha": "mocha"
   },
   "author": "",
   "license": "ISC",
