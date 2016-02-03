@@ -54,3 +54,11 @@ d.database_id, d.name, state_desc=CAST(d.state_desc AS VARCHAR(20)), user_access
 FROM sys.databases d
 
 PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)'
+
+select * from sys.dm_os_schedulers -- 24 processors
+SELECT * FROM sys.dm_os_memory_clerks mc -- 136GB
+
+SELECT * FROM sys.dm_os_waiting_tasks wt -- 129 waiting tasks: VDI_CLIENT_OTHER, BROKER_TASK_STOP
+SELECT * FROM sys.dm_os_memory_brokers mb -- varios pools 
+
+DBCC SQLPERF(LOGSPACE) -- curioso!
