@@ -53,3 +53,24 @@ Adicionamos um arquivo de configuração:
         }
     };
 
+
+# TSX
+
+Usando typescript:
+
+Basta usar um arquivo chamado .TSX e deixar compilando:
+
+    tsc file.tsx --jsx react
+
+Podemos adicionar a flag -w para watch mode:
+
+    tsc file.tsx --jsx react -w 
+
+Será gerado um arquivo .js no diretório com a definição da classe React. Durante a 
+compilação, TSC vai reclamar das classes React e ReactDOM. Uma forma fácil de 
+ignorar o problema é adicionar uma definição.
+
+    declare var React: any;
+    declare var ReactDOM: any;
+    
+Simples!
