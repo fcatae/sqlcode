@@ -6,12 +6,14 @@ var fs = require('fs');
 
 describe('Parser XML', function() {
 
+    
     var _parser;
     var _xmltext;
     var _sax;
     
     before(function Load_ParserAndText() {
-        _parser = require( path.join(process.cwd(), '/src/xmlparser') );
+        _sax = require( path.join(process.cwd(), '/lib/sax') )
+        _parser = require( path.join(process.cwd(), '/src/xmlparser') ).init(_sax);
         _xmltext = fs.readFileSync( path.join(process.cwd(), '/test/ringbuffer.xml') );
     });
     

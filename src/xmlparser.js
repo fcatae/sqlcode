@@ -1,27 +1,20 @@
 /* global sax */
 
-//var s = require('lib/sax');
-var sax = '';
-
-(function(sax) {
-
-//sax = sax || require('lib/sax'); 
+// TODO: transform into AMD module
 
 "use strict";
 
-module.exports = { name: 'parser', parse: function() {} };
+function Parser(saxLibrary) {
 
-/*
-
-define([], function() {
+   var _saxLib = saxLibrary;
    
-   var parserExport = { ringbuffer: parse };
-
-   return parserExport;  
-  
+   return {
+       parse: parse
+   }
+ 
    function parse(text, callback) {
        
-       var parser = sax.parser(true);
+       var parser = _saxLib.parser(true);
        var result = {};
        
         parser.onerror = function (e) {
@@ -156,9 +149,10 @@ define([], function() {
         
         root[name] = null;
     }
-   
-});
 
-*/
+}
 
-})(sax);
+module.exports = { 
+    name: 'parser', 
+    init: Parser
+    };
