@@ -1,3 +1,13 @@
+select * from sys.database_connection_stats 
+-- select * from sys.database_usage  NULL
+select * from sys.elastic_pool_resource_stats 
+select * from sys.event_log where event_category <> 'connectivity'
+select * from sys.database_connection_stats 
+ 
+ select * from sys.event_log
+ --select * from sys.resource_usage 
+ 
+
 declare @detailed int = 1
 declare @logininfo int = 1
 declare @layout int = 1
@@ -30,8 +40,6 @@ BEGIN
 	PRINT 'ResourceVersion: ' + CAST(SERVERPROPERTY('ResourceVersion') AS VARCHAR)
 	PRINT 'ResourceLastUpdateDateTime: ' + CONVERT(VARCHAR,SERVERPROPERTY('ResourceLastUpdateDateTime'),102)
 	PRINT 'Edition: ' + CAST(SERVERPROPERTY('Edition') AS VARCHAR)
-
-	PRINT 'BLOCKER_PFE_END MachineInfo ' + convert(VARCHAR(12), datediff(ms,@time,getdate())) 
 END
 ELSE
 BEGIN
