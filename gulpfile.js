@@ -17,7 +17,7 @@ gulp.task('lib', function() {
         .pipe(gulp.dest(LIB));
 });
 
-gulp.task('mocha', function() {
-    return gulp.src('test/test1.js')
+gulp.task('test', function() {
+    return gulp.src('test/**/*.js')
         .pipe(mocha({ reporter: 'spec'}));
 })

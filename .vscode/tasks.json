@@ -7,7 +7,7 @@
     ],
     "tasks": [
         {
-            "taskName": "mocha", 
+            "taskName": "test", 
             "isTestCommand": true
         }
     ]

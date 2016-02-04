@@ -1,10 +1,18 @@
 var assert = require('assert');
 
-describe('Array', function() {
-  describe('#indexOf()', function () {
-    it('should return -1 when the value is not present', function () {
-      assert.equal(-1, [1,2,3].indexOf(5));
-      assert.equal(-1, [1,2,3].indexOf(0));
-    });
-  });
-});
+var path = require('path');
+
+describe('Xml Parser', function() {
+    it('test1', function() {
+        
+        var _parser = require( path.join(process.cwd(), '/src/xmlparser') );
+
+        it('Importar o parser', function() {
+            assert.notEqual(_parser, null);
+        });
+
+        // it('Teste2', function() {
+        //     throw "Not implemented";
+        // });
+    })
+})

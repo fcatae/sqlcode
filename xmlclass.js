@@ -1,4 +1,6 @@
 /* global sax */
+sax = sax || require('lib/sax'); 
+
 "use strict";
 
 define([], function() {
