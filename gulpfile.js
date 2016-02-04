@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 
-var LIB = 'lib/';
+var LIB = 'src/lib/';
 
 gulp.task('lib', function() {
     return gulp.src([
