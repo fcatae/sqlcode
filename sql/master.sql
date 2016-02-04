@@ -1,3 +1,6 @@
+
+select * from sys.databases
+
 select * from sys.database_connection_stats 
 -- select * from sys.database_usage  NULL
 select * from sys.elastic_pool_resource_stats 
@@ -199,3 +202,5 @@ begin
 end
 
 PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)'
+
+select * from sys.dm_os_performance_counters
