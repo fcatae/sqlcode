@@ -18,6 +18,6 @@ gulp.task('lib', function() {
 });
 
 gulp.task('test', function() {
-    return gulp.src('test/**/*.js')
+    return gulp.src('test/**/test*.js')
         .pipe(mocha({ reporter: 'spec'}));
 })
