@@ -12,7 +12,13 @@ function Parser(saxLibrary) {
        parse: parse
    }
  
-   function parse(text, callback) {
+   function parse(valueText) {
+       
+       var text = valueText.toString();
+       
+       if(!(typeof text == 'string' || text instanceof String)) {
+           throw "Invalid parameter data type";
+       }       
        
        var parser = _saxLib.parser(true);
        var result = {};
@@ -28,14 +34,17 @@ function Parser(saxLibrary) {
         };
         
         parser.onend = function () {
-            callback && callback(result);
+            // finish the process
         };
 
         parser.ontext = null;
         parser.onattribute = null;
         parser.onclosetag = null;
 
-       parser.write(text).close();
+        // synchronous call
+        parser.write(text).close();
+       
+        return result;
    }
    
    function processRingBufferTarget(parser, node, target) {

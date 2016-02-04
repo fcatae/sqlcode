@@ -1,4 +1,4 @@
-<RingBufferTarget truncated="0" processingTime="0" totalEventsProcessed="56" eventCount="56" droppedCount="0" memoryUsed="115573">
+<RingBufferTarget truncated="0" processingTime="0" totalEventsProcessed="10" eventCount="10" droppedCount="0" memoryUsed="115573">
   <event name="sql_batch_completed" package="sqlserver" timestamp="2016-02-02T12:39:39.063Z">
     <data name="cpu_time">
       <type name="uint64" package="package0" />
