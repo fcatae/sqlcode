@@ -15,6 +15,7 @@ function dateParse(dateWithTimezone) {
     return new Date(Date.UTC(tokens[1],tokens[2],tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]));
 }
 
+
 var Evento = React.createClass({
     render: function() {
         var id = this.props.id; 
@@ -42,6 +43,30 @@ var Evento = React.createClass({
     }    
 });
 
+var EventoWait = React.createClass({
+    render: function() {
+        var id = this.props.id; 
+        var timestamp = dateParse(this.props.timestamp).toLocaleString();
+        var start = getStartTime(dateParse(this.props.timestamp), this.props.data.duration/1000).toLocaleTimeString();
+        var name = this.props.name;
+        var duration = (this.props.data.duration) ? (this.props.data.duration/1000000).toFixed(1) : '';
+        var cpu_time = (this.props.data.cpu_time) ? (this.props.data.cpu_time/1000000).toFixed(1) : '';
+        var physical_reads = (this.props.data.physical_reads) ? this.props.data.physical_reads : '';
+        var writes = (this.props.data.writes) ? this.props.data.writes : '';
+        var statement = this.props.data.statement || this.props.data.batch_text;
+        
+        var data = JSON.stringify(this.props.data);
+        return <tr>
+                <td>{id}</td>
+                <td>{start}</td>
+                <td>{timestamp}</td>
+                <td>{name}</td>
+                <td>{duration}</td>
+                <td>{statement}</td>                
+                <td>{data}</td></tr>;
+    }    
+});
+
 var App = React.createClass({
     render: function() {
         var events = this.props.data.events;
@@ -52,7 +77,7 @@ var App = React.createClass({
             //     el.name != 'attention')
             //     return null;
             // 
-            return <Evento key={i} id={i} name={el.name} timestamp={el.timestamp} data={el.data}>Evento</Evento>
+            return <EventoWait key={i} id={i} name={el.name} timestamp={el.timestamp} data={el.data}>Evento</EventoWait>
         });
         
         return <table className="table"><tbody>
