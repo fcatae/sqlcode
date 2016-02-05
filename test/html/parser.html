@@ -2,29 +2,43 @@
 <head>
   <meta charset="utf-8">
   <title>Mocha Tests</title>
-  <link href="lib/mocha.css" rel="stylesheet" />
+  <link rel="stylesheet" href="lib/bootstrap.css">
+  <link rel="stylesheet" href="lib/mocha.css" />
+  <link rel="stylesheet" href="parser.css">
 </head>
 <body>
-  <div id="mocha"></div>
 
-  <script src="lib/jquery.min.js"></script>
-  <script src="lib/chai.js"></script>
-  <script src="lib/mocha.js"></script>
+    <div class="container">
 
-  <script>
-    mocha.setup('bdd');
-    var assert = chai.assert;
-  </script>
+        <div class="row">
+            <textarea name="" id="" cols="100" rows="10" class="form-control"></textarea>
+        </div>
+        
+        <div class="row">
+            <div id="mocha"></div>
+        </div>
 
-  <script src="html.parser.js"></script>
-  
-  <script>
-  </script>
-  
-  <script>
-    mocha.checkLeaks();
-    mocha.globals(['jQuery']);
-    mocha.run();
-  </script>
+    </div>
+
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/chai.js"></script>
+    <script src="lib/mocha.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script>
+        mocha.setup('bdd');
+        var assert = chai.assert;
+    </script>
+
+    <script src="../../src/lib/sax.js"></script>
+    <script src="../../src/xmlparser.js"></script>
+
+    <script src="html.parser.js"></script>
+
+    <script>
+        mocha.checkLeaks();
+        mocha.globals(['jQuery']);
+        mocha.run();
+    </script>
+    
 </body>
 </html>

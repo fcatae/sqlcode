@@ -31,7 +31,9 @@ $(document).ready(function() {
 
         require(['xmlclass.js'], function(xmlparse) {
             xmlparse.ringbuffer(text, function(data) {
+                
                 $results.text(JSON.stringify(data))
+                
             });    
         }); 
    }
