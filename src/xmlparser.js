@@ -119,12 +119,18 @@ function Parser(saxLibrary) {
             }
             if(node.name == 'value') {
                 captureValue = true;
-                value = null;
+                //value = null;
             }
+            if(node.name == 'text') {
+                captureText = true;
+                //value = null;
+            }            
         };
         parser.ontext = function(tval) {
-            if(captureValue) {
-                (value == null) || console.log('Assert. Non-empty value');
+            if(captureValue && value == null) {
+                value = tval;
+            }            
+            if( captureText ) {
                 value = tval;
             }            
         }
@@ -143,6 +149,9 @@ function Parser(saxLibrary) {
             if(tag == 'value') {
                 captureValue = false;
             }
+            if(tag == 'text') {
+                captureText = false;
+            }
         };
         
         function cleanup() {
@@ -153,8 +162,9 @@ function Parser(saxLibrary) {
         
         var name = node.attributes["name"];
         var type;
-        var value;
+        var value = null;
         var captureValue = false;
+        var captureText = false;
         
         root[name] = null;
     }
