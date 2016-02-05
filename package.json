@@ -4,7 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+<<<<<<< HEAD
     "lite": "lite-server",
+=======
+    "start": "webpack --progress --color --watch",
+    "web": "webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lite": "lite-server --startPath \"/xmlparser.html\"",
+>>>>>>> 4171cdd24576292568355c4a5ffcbd4c4c6f7f36
     "mocha": "mocha"
   },
   "author": "",

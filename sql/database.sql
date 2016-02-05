@@ -483,3 +483,15 @@ GO
 select * from sys.dm_xe_database_sessions
 
 max_event_limit
+
+select * from sys.dm_xe_objects where object_type='event'
+
+create event session fabricio2 on database
+	add event wait_info
+
+alter event session fabricio2 on database
+	add target ring_buffer(set max_events_limit=10000,max_memory=10000)
+
+select * from sys.dm_os_performance_counters
+
+select * from sys.databases
