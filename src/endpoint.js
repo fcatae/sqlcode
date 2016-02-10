@@ -1,5 +1,20 @@
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
+// class RowOutput
+var RowOutput = (function () {
+    function RowOutput() {
+        this._headerColumns = [];
+        this._rows = [];
+    }
+    RowOutput.prototype.progressHeader = function (header) {
+        this._headerColumns = header;
+    };
+    RowOutput.prototype.progressRow = function (row) {
+        this._rows.push(row);
+    };
+    return RowOutput;
+})();
+// class ErrorOutput
 var ErrorOutput = (function () {
     function ErrorOutput() {
         this._infoMessages = [];
@@ -55,7 +70,7 @@ var SqlConnection = (function () {
                 cancelTimeout: 5000,
                 requestTimeout: 0,
                 packetSize: 8000
-            }
+            },
         };
         this._options = config;
         this._listener = (listener) ? listener : new ConsoleErrorOutput();
@@ -86,6 +101,48 @@ var SqlConnection = (function () {
         this._connection = connection;
         return this;
     };
+    SqlConnection.prototype.execute = function (sql_request, done) {
+        var row_output = new RowOutput();
+        this.executeBatch(sql_request, row_output.progressHeader, row_output.progressRow, function (err, rowCount) {
+            done(err, row_output);
+        });
+    };
+    SqlConnection.prototype.executeBatch = function (sql_batch, progress_header, progress_row, done) {
+        var connection = this._connection;
+        var request = new Request(sql_batch, function (err, rowCount) {
+            done && done(err, rowCount);
+        });
+        request.on('columnMetadata', function (columns) {
+            var columnOutput = columns.map(function (elem) {
+                var header = {
+                    name: elem.colName,
+                    rawLength: elem.dataLength,
+                    type: elem.type.type,
+                    typeSize: elem.type.maximumLength
+                };
+                return header;
+            });
+            progress_header && progress_header(columnOutput);
+        });
+        request.on('row', function (columns) {
+            var columnOutput = columns.map(function (elem) {
+                return elem.value;
+                //return (elem.value instanceof Uint8Array) ? getArray(elem.value) : elem.value;
+            });
+            progress_row && progress_row(columnOutput);
+            // function getArray(arr) {
+            //     var p = '0x';
+            //     var b = arr.reduce(function(prev,cur) {
+            //     var hex = cur.toString(16);
+            //     hex = (hex.length == 1) ? '0' + hex : hex;
+            //     
+            //     return prev + hex; 
+            //     });
+            //     return p + b;
+            // }
+        });
+        connection.execSql(request);
+    };
     return SqlConnection;
 })();
 function getConnection(parameters, done) {
@@ -106,7 +163,7 @@ function getConnection2(parameters, done) {
             //cancelTimeout
             requestTimeout: 0,
             packetSize: 8000
-        }
+        },
     };
     var connection = new Connection(config);
     connection.on('infoMessage', function (e) {

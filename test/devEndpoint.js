@@ -2,7 +2,7 @@ var path = require('path');
 var assert = require('assert');
 
 
-describe.only('SQL Connection', function() {
+describe('SQL Connection', function() {
     
     var SqlConnection;
     var ErrorOutput;
@@ -81,11 +81,50 @@ describe.only('SQL Connection', function() {
             
             done();
         })
-    });
-    
+    });  
+        
+    describe.only('SQL Execute', function() {
+        
+        var _output;
+        var _connection;
+        
+        before(function Open_SqlConnection(done) {
+            _output = new ErrorOutput();
+            _connection = new SqlConnection(_localCredentials, _output);
+            _connection.open(done)
+        });
+        
+        it('executeBatch', function(done) {
+            var count_header = 0;
+            var count_rows = 0;
+            
+            _connection.executeBatch('SELECT a=1, b=2, c=3; SELECT a=4, b=5, c=6; ', function(h) {
+                count_header++;
+                assert(h && h.length == 3);
+                
+            }, function(r) {
+                count_rows++;
+                assert(r && r.length == 3);
+                
+            }, function(err,rowcount) {
+                assert(err == null);
+                assert(rowcount == 2);
 
-    
+                assert(count_header == 2);
+                assert(count_rows == 2);
+                
+                done();
+            });
+        })
+        
+        it('execute', function(done) {
+            
+        })
+        
+    });
+      
 });
+
 
 describe('Endpoint SQL', function() {
     

@@ -5,7 +5,21 @@ declare var module: any;
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 
+// class RowOutput
+class RowOutput {
+    _headerColumns = [];
+    _rows = [];
+    
+    progressHeader(header) {
+        this._headerColumns = header;
+    }
+    
+    progressRow(row) {
+        this._rows.push(row);
+    }
+} 
 
+// class ErrorOutput
 class ErrorOutput {
     _infoMessages = [];
     _errorMessages = [];
@@ -91,6 +105,66 @@ class SqlConnection {
         
         return this;        
     }
+    
+    execute(sql_request, done) {
+        
+        var row_output = new RowOutput();
+        
+        this.executeBatch(sql_request, row_output.progressHeader, row_output.progressRow, function(err, rowCount) {
+            done(err, row_output);
+        })    
+    }   
+     
+    executeBatch(sql_batch, progress_header, progress_row, done) {
+        
+        var connection = this._connection;
+        
+        var request = new Request(sql_batch, function(err, rowCount) {
+            done && done(err, rowCount);        
+            });
+
+        request.on('columnMetadata', function(columns) {
+
+            var columnOutput = columns.map(function(elem) {
+                var header = {
+                    name: elem.colName,
+                    rawLength: elem.dataLength,
+                    type: elem.type.type,
+                    typeSize: elem.type.maximumLength
+                };
+                return header;
+            });
+            
+            progress_header && progress_header(columnOutput);
+                
+        });
+        request.on('row', function(columns) {
+            
+            var columnOutput = columns.map(function(elem) {
+                return elem.value;
+                //return (elem.value instanceof Uint8Array) ? getArray(elem.value) : elem.value;
+            })
+
+            progress_row && progress_row(columnOutput);
+                    
+            // function getArray(arr) {
+            //     var p = '0x';
+            //     var b = arr.reduce(function(prev,cur) {
+            //     var hex = cur.toString(16);
+            //     hex = (hex.length == 1) ? '0' + hex : hex;
+            //     
+            //     return prev + hex; 
+            //     });
+            //     return p + b;
+            // }
+            
+        });
+        
+        connection.execSql(request);    
+    }
+    
+    
+    
 }
 
 function getConnection(parameters, done) {
