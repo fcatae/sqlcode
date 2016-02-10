@@ -1,6 +1,6 @@
 var path = require('path');
 var assert = require('assert');
-
+var config = require( path.join(process.cwd(), '/.config') ).db_server_config;
 
 describe('SQL Connection', function() {
     
@@ -14,14 +14,14 @@ describe('SQL Connection', function() {
         SqlConnection = require( path.join(process.cwd(), '/src/endpoint')).SqlConnection;
         ErrorOutput = require( path.join(process.cwd(), '/src/endpoint')).ErrorOutput;
         _credentials = {
-            username: process.env.SQLSERVER_USER,
-            password: process.env.SQLSERVER_PWD,
-            servername: process.env.SQLSERVER_SRV,
-            database: process.env.SQLSERVER_DB
+            username: config.SQLSERVER_USER,
+            password: config.SQLSERVER_PWD,
+            servername: config.SQLSERVER_SRV,
+            database: config.SQLSERVER_DB
         };
         _localCredentials = {
             username: 'fabteste',
-            password: process.env.SQLSERVER_PWD,
+            password: config.SQLSERVER_PWD,
             servername: 'localhost',
             database: 'master'
         }; 
