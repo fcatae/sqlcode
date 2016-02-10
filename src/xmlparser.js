@@ -171,7 +171,7 @@ function Parser(saxLibrary) {
 
 }
 
-// module.exports = { 
-//     name: 'parser', 
-//     init: Parser
-//     };    
+module.exports = { 
+    name: 'parser', 
+    init: Parser
+    };    
