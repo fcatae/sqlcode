@@ -38,6 +38,14 @@ Plano
 
 v1.0: Cenário : entrar no aplicativo para obter as últimas informações sobre o desempenho do sistema.
 
+console:
+- listagem das colunas resource_stats
+- listagem das colunas sys.dm_exec_requests
+- carregamento do SQL Text
+- carregamento do Query Plan
+- carregamento do XML
+
+
 Módulo NodeJS com endpoint SQL.
 - login armazendo em process.env
 
