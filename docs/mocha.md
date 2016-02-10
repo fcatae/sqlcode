@@ -7,10 +7,9 @@ Launch.json
 			"name": "Debug Test",
 			"type": "node",
 			"request": "launch",
-			"program": "node_modules/mocha/bin/_mocha",
+			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
 			"stopOnEntry": false,
-			"args": ["test/test1.js"],
-			"cwd": ".",
+			"args": ["test/dev*.js","--timeout", "0"],
 			"runtimeExecutable": null,
 			"env": {
 				"NODE_ENV": "development"
@@ -18,4 +17,4 @@ Launch.json
 			"externalConsole": false,
 			"sourceMaps": false,
 			"outDir": null
-		},
+		},      
