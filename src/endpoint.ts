@@ -7,15 +7,15 @@ var Request = require('tedious').Request;
 
 // class RowOutput
 class RowOutput {
-    _headerColumns = [];
-    _rows = [];
+    header = [];
+    rows = [];
     
     progressHeader(header) {
-        this._headerColumns = header;
+        this.header = header;
     }
     
     progressRow(row) {
-        this._rows.push(row);
+        this.rows.push(row);
     }
 } 
 
@@ -87,13 +87,11 @@ class SqlConnection {
 
         connection.on('end', function(e) {
             // TODO: handle persistent connection
-            console.log('end'); 
-            console.log(e); 
+            //console.log('end'); 
         });
         connection.on('error', function(e) {
             // TODO: handle persistent connection
             console.log('error'); 
-            console.log(e); 
         });
         
         connection.on('connect', function(err) {
@@ -110,8 +108,11 @@ class SqlConnection {
         
         var row_output = new RowOutput();
         
-        this.executeBatch(sql_request, row_output.progressHeader, row_output.progressRow, function(err, rowCount) {
-            done(err, row_output);
+        this.executeBatch(sql_request, 
+            row_output.progressHeader.bind(row_output), 
+            row_output.progressRow.bind(row_output), 
+            function(err, rowCount) {
+                done(err, row_output);
         })    
     }   
      
@@ -125,14 +126,18 @@ class SqlConnection {
 
         request.on('columnMetadata', function(columns) {
 
-            var columnOutput = columns.map(function(elem) {
+            var columnOutput = columns.map(function(elem, i) {
                 var header = {
+                    index: i,
                     name: elem.colName,
-                    rawLength: elem.dataLength,
-                    type: elem.type.type,
-                    typeSize: elem.type.maximumLength
+                    size: elem.dataLength,
+                    type: elem.type.type
+                    //typeSize: elem.type.maximumLength
                 };
                 return header;
+            });
+            columns.map(function(elem, i) {
+                (elem.colName.length > 0) && (columnOutput[elem.colName] = columnOutput[i]);                
             });
             
             progress_header && progress_header(columnOutput);

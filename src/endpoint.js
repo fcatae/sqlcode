@@ -3,14 +3,14 @@ var Request = require('tedious').Request;
 // class RowOutput
 var RowOutput = (function () {
     function RowOutput() {
-        this._headerColumns = [];
-        this._rows = [];
+        this.header = [];
+        this.rows = [];
     }
     RowOutput.prototype.progressHeader = function (header) {
-        this._headerColumns = header;
+        this.header = header;
     };
     RowOutput.prototype.progressRow = function (row) {
-        this._rows.push(row);
+        this.rows.push(row);
     };
     return RowOutput;
 })();
@@ -86,13 +86,11 @@ var SqlConnection = (function () {
         });
         connection.on('end', function (e) {
             // TODO: handle persistent connection
-            console.log('end');
-            console.log(e);
+            //console.log('end'); 
         });
         connection.on('error', function (e) {
             // TODO: handle persistent connection
             console.log('error');
-            console.log(e);
         });
         connection.on('connect', function (err) {
             var error = (err) ? new Error(err.message) : null;
@@ -103,7 +101,7 @@ var SqlConnection = (function () {
     };
     SqlConnection.prototype.execute = function (sql_request, done) {
         var row_output = new RowOutput();
-        this.executeBatch(sql_request, row_output.progressHeader, row_output.progressRow, function (err, rowCount) {
+        this.executeBatch(sql_request, row_output.progressHeader.bind(row_output), row_output.progressRow.bind(row_output), function (err, rowCount) {
             done(err, row_output);
         });
     };
@@ -113,14 +111,17 @@ var SqlConnection = (function () {
             done && done(err, rowCount);
         });
         request.on('columnMetadata', function (columns) {
-            var columnOutput = columns.map(function (elem) {
+            var columnOutput = columns.map(function (elem, i) {
                 var header = {
+                    index: i,
                     name: elem.colName,
-                    rawLength: elem.dataLength,
-                    type: elem.type.type,
-                    typeSize: elem.type.maximumLength
+                    size: elem.dataLength,
+                    type: elem.type.type
                 };
                 return header;
+            });
+            columns.map(function (elem, i) {
+                (elem.colName.length > 0) && (columnOutput[elem.colName] = columnOutput[i]);
             });
             progress_header && progress_header(columnOutput);
         });
