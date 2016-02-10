@@ -11,7 +11,7 @@ describe('Parser XML', function() {
     var _sax;
     
     before(function Load_ParserAndText() {
-        _sax = require( path.join(process.cwd(), '/lib/sax') )
+        _sax = require( path.join(process.cwd(), '/src/lib/sax') )
         _parser = require( path.join(process.cwd(), '/src/xmlparser') ).init(_sax);
         _xmltext = fs.readFileSync( path.join(process.cwd(), '/test/ringbuffer.xml') );
     });
