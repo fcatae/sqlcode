@@ -115,12 +115,22 @@ define([], function() {
             }            
         };
         parser.ontext = function(tval) {
+            // help debugging
+            if(captureValue && value != null) {
+                value = value + ' (' + tval + ')';
+                return; 
+            }
+            if( captureText && value != null) {
+                value = tval + ' (' + value + ')';
+                return;
+            }            
+            
             if(captureValue && value == null) {
                 value = tval;
             }            
             if( captureText ) {
                 value = tval;
-            }            
+            }       
         }
 
         parser.onclosetag = function (tag) {

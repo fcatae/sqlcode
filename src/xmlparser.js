@@ -82,7 +82,7 @@ function Parser(saxLibrary) {
         var data = {};
           
         parser.onopentag = function (node) {
-            if(node.name == 'data') {
+            if(node.name == 'data' || node.name == 'action') {
                 processEventData(parser, node, data);
             }
         };
@@ -136,7 +136,7 @@ function Parser(saxLibrary) {
         }
 
         parser.onclosetag = function (tag) {
-            if(tag == 'data') {
+            if(tag == 'data' || tag == 'action') {
                 // exit this process state
                 cleanup();
 
