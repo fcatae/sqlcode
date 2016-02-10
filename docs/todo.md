@@ -1,51 +1,57 @@
-Por que não usar um database.
 
-* Tokenizador
-* Paste
-* TAB
-* emmets
+Problemas
+==========
 
-* Syntax highlight
-* Keyboard tracking (similar ao mouse tracking)
-* keyboard.js
+* Limitações do SMSS
+   * Lentidão (carregamento)
+   * Gerenciamento de login/pwd
+Solução: Editor com Dashboard
 
-* Typescript
+* Limitação do Blocker Script
+   * Interpretação do resultado XML
 
-* Implementar um connection pooling
+* Limitação do serviço de endpoint SQL
+   * Necessidade de estar sempre conectado
+   * Dificuldade em depuração?
 
-
-Azure
-======
-Servername
-S0/S1/S2...
-DAtabases
-Resource_stats
-Region?
-Login?
+* Entender o impacto do Waitstats
+   * Não está claro o impacto dos waitstats sobre o resource-stats
 
 
-Etc
-====
+Objetivo
+==========
 
-Poderiamos criar atalhos:
+* Identificar os pontos de gargalo de uma aplicação
+* Obter um dashboard com informações básicas sobre o servidor
+* Levantamento do resource_stats para identificar os momentos mais críticos
+* Levantar o tempo de execução de query e o consumo correspondente
 
-* Teclado (f1, f2...)
-* Comandos (!clrstack, !dso)
-* Views de IDE (%v%)
-* Funcoes de saida/projecao (graficos resourcestats)
-* Automacao em cliente (bloquer infinito)
-* Pin Column results
+Outros
+=======
 
-* Gerenciamento de senha?
-* Arquivos de output (zip)
+* Editor de texto com suporte a syntax highlighting
 
-* command history (execution)
-* query stats - rodando multiplas vezes, depois combina um grafico com porcentagens
+Plano
+=======
+
+## Stable v1.0
+
+v1.0: Cenário : entrar no aplicativo para obter as últimas informações sobre o desempenho do sistema.
+
+Módulo NodeJS com endpoint SQL.
+- login armazendo em process.env
 
 
+O carregamento do XML deverá ser feito  
 
-Projetos.json para gerenciar multiplos servidores (criar alias)
-barra de status: @@rowcount; server/database/time spent/rows
+* Relatório sobre o resource stats
+* Relatório com o tempo de queries
 
-Gerenciamento de templates (Ctrl-M)
-gerenciamento de arquivos (esperar por vscode extension?)
+* UI: Tela de login (?)
+
+## Lab: Processar XMl
+
+## Lab: ChartJS
+* ChartJS: http://www.chartjs.org/docs/#bar-chart-introduction
+* NvD3: http://nvd3.org/examples/bullet.html
+
