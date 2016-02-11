@@ -1,29 +1,23 @@
 var path = require('path');
 var assert = require('assert');
+var SQLWebApi = require( path.join(process.cwd(), '/src/sqlapi') ).SQLWebApi;
 var SQLAPI = require( path.join(process.cwd(), '/src/sqlapi') );
 var request = require('request');
 
+var PORT = 3030;
+var SITEURL = 'http://localhost:' + PORT;
+
 describe('SQL API', function() {
-    
-    var PORT = 3030;
-    var SITEURL = 'http://localhost:' + PORT;
     
     describe('Express(Web)', function() {
         before(function StartWebServer() {
             // listen
-            SQLAPI.listen(PORT); 
+            SQLWebApi.listen(PORT); 
         });
         
         after(function() {
-            SQLAPI.close();
+            SQLWebApi.close();
         })
-        
-        function geturl(url, done) {
-            request( SITEURL + url , function (error, response, body) {
-                assert(!error && response.statusCode == 200, 'request succeeded: ' + url);        
-                done(body);       
-            });
-        }
         
         it('listen port', function(done) {
             geturl('/', function() {
@@ -34,7 +28,7 @@ describe('SQL API', function() {
         it('Test ECHO/connection', function(done) {
             var step = 0;
             
-            SQLAPI.attach('/connection', function(req,res) {
+            SQLWebApi.attach('/connection', function(req,res) {
                 assert(step == 0);
                 step = 1;           
                 res.end('reply-connection');
@@ -49,7 +43,7 @@ describe('SQL API', function() {
         
         it('Test ECHO/request?q={req}', function(done) {
             var step = 0;
-            SQLAPI.attach('/request', function(req,res) {
+            SQLWebApi.attach('/request', function(req,res) {
                 assert(step == 0);
                 step = 1;           
                 res.end('reply-request' + req.query.q);
@@ -66,14 +60,33 @@ describe('SQL API', function() {
        
     describe('SQL Connection', function() {
 
-        it('GET /connection', function() {
-        getconnection(); 
+        before(function() {
+            SQLAPI.init(PORT);
+        });
+        
+        after(function() {
+            SQLAPI.close(); 
+        });
+        
+        it('GET /connection', function(done) {
+            geturl('/connection',function(body) {
+                done();
+            });
         });
 
-        it('GET /request?q={req}', function() {
-        request(); 
+        it('GET /request?q={req}', function(done) {
+            geturl('/request?q={req}',function(body) {
+                done();
+            });
         });
                             
     });
       
 });
+        
+function geturl(url, done) {
+    request( SITEURL + url , function (error, response, body) {
+        assert(!error && response.statusCode == 200, 'request succeeded: ' + url);        
+        done(body);       
+    });
+}

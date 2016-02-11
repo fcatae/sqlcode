@@ -35,8 +35,33 @@ function close() {
     srv = null;
 }
 
-// SQL Endpoint
+var SQLWebApi = {
+    listen: listen,
+    attach: attach,
+    close: close  
+};
 
+// SQL Endpoint
+var config = require( path.join(__dirname, '../', '.config') ).db_server_config;
+var SqlConnection = require('./endpoint').SqlConnection;
+var ErrorOutput = require('./endpoint').ErrorOutput;
+
+var SQLEndpoint = {
+    init: function (port) {        
+        SQLWebApi.listen(port);
+        SQLWebApi.attach('/connection', this.connectionAPI);
+        SQLWebApi.attach('/request', this.requestAPI);
+    },        
+    close: function() {
+        SQLWebApi.close();
+    },
+    connectionAPI: function(req,res) {
+        res.end('hello') 
+    },
+    requestAPI: function(req,res) {
+        res.end('world')        
+    }
+};
 
 // We need this to build our post string
 var querystring = require('querystring');
@@ -93,6 +118,9 @@ function PostCode(path, codestring, callback) {
 //     
 // });
 
-module.exports.listen = listen;
-module.exports.attach = attach;
-module.exports.close = close;
+module.exports = SQLEndpoint; 
+module.exports.SQLWebApi = SQLWebApi;
+
+// module.exports.listen = listen;
+// module.exports.attach = attach;
+// module.exports.close = close;
