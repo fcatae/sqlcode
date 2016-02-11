@@ -2,32 +2,40 @@ var path = require('path');
 var SqlConnection = require('./endpoint').SqlConnection;
 var config = require( path.join(process.cwd(), '../.config') ).db_server_config;
 var Transform = require('./datatransform');
+var SQLAPI = require('./sqlapi');
 
-console.log('SQL Code');
+function init() {
+    
+    console.log('SQL Code');
 
-var cmd = process.argv[2];
+    var cmd = process.argv[2];
 
-var connection;
+    var connection;
 
-switch(cmd) {
-    case 'rs':
-        cmdResourceStats();
-        break;
-    case 'er':
-        cmdExecRequests();
-        break;
-    case 'sqltext':
-        cmdExecSqlText();
-        break;
-    case 'queryplan':
-        cmdExecQueryPlan();
-        break;
-    case 'xe':        
-        cmdXEventDatabaseSessionTargets();
-        break;
-    default: 
-        console.log('Invalid command: ' + cmd);
-        break;        
+    switch(cmd) {
+        case 'rs':
+            cmdResourceStats();
+            break;
+        case 'er':
+            cmdExecRequests();
+            break;
+        case 'sqltext':
+            cmdExecSqlText();
+            break;
+        case 'queryplan':
+            cmdExecQueryPlan();
+            break;
+        case 'xe':        
+            cmdXEventDatabaseSessionTargets();
+            break;
+        case 'endpoint':
+            cmdSetupEndpoint();
+            break;
+                    
+        default: 
+            console.log('Invalid command: ' + cmd);
+            break;        
+    }
 }
 
 function initSqlConnection(done) {
@@ -171,7 +179,27 @@ function cmdXEventDatabaseSessionTargets() {
     }); 
 }
 
+var config = require( path.join(__dirname, '../', '.config') ).db_server_config;
+
+var _remoteCredentials = {
+    username: config.SQLSERVER_USER,
+    password: config.SQLSERVER_PWD,
+    servername: config.SQLSERVER_SRV,
+    database: config.SQLSERVER_DB
+};
+var _localCredentials = {
+    username: 'fabteste',
+    password: config.SQLSERVER_PWD,
+    servername: 'localhost',
+    database: 'master'
+}; 
+
+function cmdSetupEndpoint() {
+    SQLAPI.init(8080, _localCredentials);    
+}
 
 function finish_process() {
     process.exit(0);
 }
+
+init();
