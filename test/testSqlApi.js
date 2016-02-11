@@ -6,7 +6,21 @@ var request = require('request');
 
 var PORT = 3030;
 var SITEURL = 'http://localhost:' + PORT;
+var config = require( path.join(__dirname, '../', '.config') ).db_server_config;
 
+var _remoteCredentials = {
+    username: config.SQLSERVER_USER,
+    password: config.SQLSERVER_PWD,
+    servername: config.SQLSERVER_SRV,
+    database: config.SQLSERVER_DB
+};
+var _localCredentials = {
+    username: 'fabteste',
+    password: config.SQLSERVER_PWD,
+    servername: 'localhost',
+    database: 'master'
+}; 
+        
 describe('SQL API', function() {
     
     describe('Express(Web)', function() {
@@ -61,7 +75,7 @@ describe('SQL API', function() {
     describe('SQL Connection', function() {
 
         before(function() {
-            SQLAPI.init(PORT);
+            SQLAPI.init(PORT, _localCredentials);
         });
         
         after(function() {

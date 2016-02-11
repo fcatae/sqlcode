@@ -42,30 +42,19 @@ var SQLWebApi = {
 };
 
 // SQL Endpoint
-var config = require( path.join(__dirname, '../', '.config') ).db_server_config;
 var SqlConnection = require('./endpoint').SqlConnection;
 var ErrorOutput = require('./endpoint').ErrorOutput;
 
-var _credentials = {
-    username: config.SQLSERVER_USER,
-    password: config.SQLSERVER_PWD,
-    servername: config.SQLSERVER_SRV,
-    database: config.SQLSERVER_DB
-};
-var _localCredentials = {
-    username: 'fabteste',
-    password: config.SQLSERVER_PWD,
-    servername: 'localhost',
-    database: 'master'
-}; 
-        
 var _currentConnection = null;
+var _credentials = null;
 
 var SQLEndpoint = {
-    init: function (port) {        
+        
+    init: function (port, credentials) {
         SQLWebApi.listen(port);
         SQLWebApi.attach('/connection', this.connectionAPI);
         SQLWebApi.attach('/request', this.requestAPI);
+        _credentials = credentials;
     },        
     close: function() {
         SQLWebApi.close();
