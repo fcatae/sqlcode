@@ -62,7 +62,7 @@ function cmdResourceStats() {
             
             finish_process();
         });
-    });    
+    }); 
 }
 
 function createFormatter(header, info) {
