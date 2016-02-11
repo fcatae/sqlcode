@@ -72,19 +72,37 @@ var SQLEndpoint = {
     },
     connectionAPI: function(req,res) {
         _currentConnection = openConnection(_localCredentials, function(err, conn) {
+            if(err) {
+                res.statusCode = 500;
+                res.end();
+                return;
+            }
             _currentConnection = conn;            
+            
             // send back connection OK!
-            res.statusCode = (conn) ? 200 : 500;
-            res.end( conn ? 'true' : 'false');
+            res.end( 'true' );
         });
     },
     requestAPI: function(req,res) {
-        var sqltext = 'select 1';
-        if(_currentConnection != null) {
+        var sqltext = req.query.q;
+        
+        if(_currentConnection != null && sqltext != null ) {
             executeCommand(_currentConnection, sqltext, function(err, dataset) {
-                console.log("d");
+                if(err) {
+                    res.statusCode = 500;
+                    res.end();
+                    return;
+                }
+                                
                 // send back dataset
+                var content = JSON.stringify(dataset);
+                
+                res.end(content);                                
             })
+        } else {
+            res.statusCode = 404;
+            res.end();
+            return;
         }
     }
 };

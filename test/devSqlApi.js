@@ -75,7 +75,15 @@ describe('SQL API', function() {
         });
 
         it('GET /request?q={req}', function(done) {
-            geturl('/request?q={req}',function(body) {
+            geturl('/request?q=select 1',function(body) {
+                var content = JSON.parse(body);
+                
+                var header = content.header;
+                var rows = content.rows;
+                
+                assert(header && header.length == 1 && header[0].type == 'INT4');
+                assert(rows && rows.length == 1 && rows[0].length == 1 && rows[0][0] == '1');
+                
                 done();
             });
         });
