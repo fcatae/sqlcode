@@ -36,7 +36,7 @@ function initSqlConnection(done) {
         database: config.SQLSERVER_DB
     }; 
                 
-    connection = new SqlConnection(credentials);
+    connection = new SqlConnection(localCredentials);
     
     connection.open(done);
 }
@@ -74,12 +74,9 @@ function cmdExecRequests() {
         
         connection.execute('select * from sys.dm_exec_requests', function(err, dataset) {
 
-            var format = Transform.create([
-                ['end_time', Transform.toDateTimeYMD, 20],
-                ['cpu', 'avg_cpu_percent', Transform.toNumberFixed.bind(null,1), 8],
-                ['data', 'avg_data_io_percent', Transform.toNumberFixed.bind(null,1), 8],
-                ['log', 'avg_log_write_percent', Transform.toNumberFixed.bind(null,1), 8]
-            ]);
+            var formatcolumns = Transform.createFormat(dataset.header); 
+            
+            var format = Transform.create(formatcolumns);
             
             format.attach(dataset.header);
             

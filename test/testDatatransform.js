@@ -53,13 +53,19 @@ describe('Data Transform', function() {
 
     
     it('Create with No definition', function() {
-        var format_resource_stats = Transform.create();
+        assert.throws(function() {
 
-        assert(format_resource_stats.length == -1, 'length == -1');        
+            var format_resource_stats = Transform.create();
+            
+        }, 'must pass at least one parameter');
+        
     });
     
     it('Attach with No definition', function() {
-        var format_resource_stats = Transform.create();
+        
+        var format = Transform.createFormat(header);
+        
+        var format_resource_stats = Transform.create(format);
         format_resource_stats.attach(header);
         
         var activeColumns = format_resource_stats.activeColumns;

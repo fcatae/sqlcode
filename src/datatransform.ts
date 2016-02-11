@@ -9,7 +9,7 @@ interface ColumnItem {
 }
 
 function formatText(val,minsize) {
-    var text = val.toString();
+    var text = (val != null) ? val.toString() : '';
     const SPACE = ' ';
     if(text.length > minsize) {
         return text.substr(0,minsize);
@@ -22,6 +22,40 @@ function formatTextSeparator(minsize) {
     return  SEPARATOR.repeat(minsize)
 }
 
+function createFormat(header) {
+    
+    var format = header.map(function(elem) {
+        return [ elem.name ]; 
+    });
+
+    return format;    
+    // var columns = format.map(this.createTransformColumn);;        
+    // return columns;
+}
+
+function createTransformColumn(elem) {
+    var isAliasSpecified = (elem.length > 1 && typeof elem[1] == 'string');
+    var namePosition = (isAliasSpecified) ? 1 : 0;
+    var transformPosition = (isAliasSpecified) ? 2 : 1;
+    var columnItem = {
+        index: -1,
+        alias: elem[0],
+        name: elem[namePosition],
+        transform: (elem.length>=transformPosition) && elem.slice(transformPosition),
+        minsize: 0
+    };
+    var lastValue = null;
+    
+    if( columnItem.transform != null && columnItem.transform.length > 0 ) {
+        lastValue = columnItem.transform.pop();
+        (columnItem.transform.length == 0) && (columnItem.transform = null);              
+    }
+    columnItem.minsize = ( lastValue != null && typeof lastValue == 'number' ) ? lastValue : columnItem.alias.length;
+    
+    return columnItem;        
+}
+    
+    
 class DataTransform {
     
     _columnSeparator = " ";
@@ -32,54 +66,19 @@ class DataTransform {
         
         var columns;
         
-        if( format ) {
-            columns = format.map(this.createTransformColumn);
+        if( !format ) {
+            throw new Error('Invalid parameter format');
         }
+        
+        columns = format.map(createTransformColumn);
         
         this._transform = columns;
     }
 
-    createTransform(header) {
-        
-        var format = header.map(function(elem) {
-            return [ elem.name ]; 
-        });
-        var columns = format.map(this.createTransformColumn);;        
-            
-        return columns;
-    }
-    
-    createTransformColumn(elem) {
-        var isAliasSpecified = (elem.length > 1 && typeof elem[1] == 'string');
-        var namePosition = (isAliasSpecified) ? 1 : 0;
-        var transformPosition = (isAliasSpecified) ? 2 : 1;
-        var columnItem = {
-            index: -1,
-            alias: elem[0],
-            name: elem[namePosition],
-            transform: (elem.length>=transformPosition) && elem.slice(transformPosition),
-            minsize: 0
-        };
-        var lastValue = null;
-        
-        if( columnItem.transform != null && columnItem.transform.length > 0 ) {
-            lastValue = columnItem.transform.pop();
-            (columnItem.transform.length == 0) && (columnItem.transform = null);              
-        }
-        columnItem.minsize = ( lastValue != null && typeof lastValue == 'number' ) ? lastValue : columnItem.alias.length;
-        
-        return columnItem;        
-    }
-        
+   
     attach(header) {
         var indexedHeader = {};
         var columns = this._transform;
-        
-        // delay constructor
-        if(columns == null) {
-            columns = this.createTransform(header);
-            this._transform = columns;
-        }
         
         header.map(function(elem,i) {
             indexedHeader[elem.name] = i;
@@ -136,7 +135,7 @@ class DataTransform {
     }
     
     get length() {
-        return (this._transform) ? this._transform.length : -1;
+        return this._transform.length;
     }
 
     get allColumns() {
@@ -185,5 +184,6 @@ function toNumberFixed(fixed,n) {
 }
 
 exports.create = create;
+exports.createFormat = createFormat;
 exports.toDateTimeYMD = toDateTimeYMD;
 exports.toNumberFixed = toNumberFixed;
