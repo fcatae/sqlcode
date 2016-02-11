@@ -4,11 +4,12 @@ endpoint
 - endpointclient é somente um wrapper ajax + jquery
 * sugestão: criar uma API decente - enviar todos os comandos de uma só vez - aplicar o json.stringify sobre o dataset
 
-index (editor)
-
 react 
-
+- documentar
 tranference code ?
+- documentar
+
+index (editor)
 
 xml
 

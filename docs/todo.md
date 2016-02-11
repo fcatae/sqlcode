@@ -49,14 +49,22 @@ DONE: Módulo NodeJS com endpoint SQL.
 - login armazendo em process.env
 - adicionado o arquivo .config para permitir testes com Mocha
 
-Mover a lógica do SQLCode para o REPL.
-
 _cleanup
+
+Mover a lógica do SQLCode para o REPL.
+Endpoints:
+- static
+- live
+- local
 
 O carregamento do XML deverá ser feito  
 
+* Relatório com attentions (timeouts)
+* Relatório de Workers
 * Relatório sobre o resource stats
 * Relatório com o tempo de queries
+* Relatório de blocking
+* Distribuição de waitstats
 
 * UI: Tela de login (?)
 
