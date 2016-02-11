@@ -89,7 +89,11 @@ class DataTransform {
     }    
     printRow() {
         
-        var args = Array.prototype.slice.call(arguments);
+        var args = arguments[0];
+        
+        if( arguments.length > 1 ) {
+            args = Array.prototype.slice.call(arguments);
+        }
         
         var columns = this._transform;
 
