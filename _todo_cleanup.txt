@@ -1,20 +1,20 @@
 endpoint
-- falta migrar a lógica de REST API
+OK falta migrar a lógica de REST API
 - HTML possui somente um cliente simples
 - endpointclient é somente um wrapper ajax + jquery
-* sugestão: criar uma API decente - enviar todos os comandos de uma só vez - aplicar o json.stringify sobre o dataset
+OK sugestão: (OK)criar uma API decente - (OK)enviar todos os comandos de uma só vez - (OK)aplicar o json.stringify sobre o dataset
 
 react 
 - documentar
 tranference code ?
 - documentar
+xml
+- transferir componentes react
 
 index (editor)
 
-xml
-
 webpack config
-
-mocha
+- criar um diretório
 
 lib
+- remover

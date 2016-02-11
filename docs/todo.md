@@ -51,7 +51,7 @@ DONE: Módulo NodeJS com endpoint SQL.
 
 _cleanup
 
-Mover a lógica do SQLCode para o REPL.
+OK - Mover a lógica do SQLCode para o REPL (nao e mais necessario) - sqlcode
 Endpoints:
 - static
 - live
