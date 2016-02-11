@@ -71,7 +71,7 @@ var SQLEndpoint = {
         SQLWebApi.close();
     },
     connectionAPI: function(req,res) {
-        _currentConnection = openConnection(_localCredentials, function(err, conn) {
+        _currentConnection = openConnection(_credentials, function(err, conn) {
             if(err) {
                 res.statusCode = 500;
                 res.end();
@@ -100,7 +100,7 @@ var SQLEndpoint = {
                 res.end(content);                                
             })
         } else {
-            res.statusCode = 404;
+            res.statusCode = 400;
             res.end();
             return;
         }
