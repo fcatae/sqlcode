@@ -62,12 +62,14 @@ var DataTransform = (function () {
     DataTransform.prototype.printRow = function () {
         var args = Array.prototype.slice.call(arguments);
         var columns = this._transform;
-        var result = args.map(function (val, i) {
-            var transform = columns[i].transform;
+        var result = columns.map(function (elem) {
+            var position = elem.index;
+            var val = args[position];
+            var transform = elem.transform;
             if (transform && transform[0]) {
                 val = transform[0](val);
             }
-            return formatText(val, columns[i].minsize);
+            return formatText(val, elem.minsize);
         });
         return result.join(this._columnSeparator);
     };

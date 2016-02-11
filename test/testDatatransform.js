@@ -85,6 +85,23 @@ describe('Data Transform', function() {
 
     it('printRow', function() {
         var format_resource_stats = Transform.create([
+            ['logwrite','avg_log_write_percent', 6],
+            ['dataio','avg_data_io_percent', 10]
+        ]);  
+        format_resource_stats.attach(header);
+        
+        var h = format_resource_stats.printHeader();
+        var s = format_resource_stats.printSeparator();
+        var r = format_resource_stats.printRow(new Date(1455156655148), 21.124, 0.00001, 80.999101);
+        
+        assert(h=='logwri dataio    ');
+        assert(s=='------ ----------');
+        assert(r=='80.999 0.00001   ');    
+        
+    });
+    
+    it('printRow with Transform', function() {
+        var format_resource_stats = Transform.create([
             ['end_time', Transform.toDateTimeYMD, 20],
             ['cpu','avg_cpu_percent', 10],
             ['dataio','avg_data_io_percent', Transform.toNumberFixed.bind(null,1), 6],

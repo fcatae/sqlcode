@@ -1,6 +1,7 @@
 var path = require('path');
 var SqlConnection = require('./endpoint').SqlConnection;
 var config = require( path.join(process.cwd(), '../.config') ).db_server_config;
+var Transform = require('./datatransform');
 
 console.log('SQL Code');
 
@@ -41,24 +42,23 @@ function cmdResourceStats() {
     
     initSqlConnection(function() {
         
-        // binding: end_time , cpu, data, log
-        // transform: localdate, strfixed2, strfixed2, strfixed2
-        // space: 8, 4, 4, 4
-
-        
         connection.execute('select * from sys.dm_db_resource_stats', function(err, dataset) {
-            dumpheader(dataset);
-            //dumprowset(dataset);
 
-            var format = createFormatter(dataset.header, [
-                ['end_time', null, 8],
-                ['avg_cpu_percent', null, 8],
-                ['avg_data_io_percent ', null, 8],
-                ['avg_log_write_percent ', null, 8]
+            var format = Transform.create([
+                ['end_time', Transform.toDateTimeYMD, 20],
+                ['cpu', 'avg_cpu_percent', Transform.toNumberFixed.bind(null,1), 8],
+                ['data', 'avg_data_io_percent', Transform.toNumberFixed.bind(null,1), 8],
+                ['log', 'avg_log_write_percent', Transform.toNumberFixed.bind(null,1), 8]
             ]);
             
-            // format.printHeader();
-            // format.printRow();
+            format.attach(dataset.header);
+            
+            console.log(format.printHeader());
+            console.log(format.printSeparator());
+            
+            dataset.rows.map(function(row) {
+                console.log(format.printRow(row));    
+            });            
             
             finish_process();
         });
