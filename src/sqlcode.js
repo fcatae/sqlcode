@@ -16,7 +16,15 @@ switch(cmd) {
     case 'er':
         cmdExecRequests();
         break;
-        
+    case 'sqltext':
+        cmdExecSqlText();
+        break;
+    case 'queryplan':
+        cmdExecQueryPlan();
+        break;
+    case 'xe':        
+        cmdXEventDatabaseSessionTargets();
+        break;
     default: 
         console.log('Invalid command: ' + cmd);
         break;        
@@ -36,7 +44,7 @@ function initSqlConnection(done) {
         database: config.SQLSERVER_DB
     }; 
                 
-    connection = new SqlConnection(localCredentials);
+    connection = new SqlConnection(credentials);
     
     connection.open(done);
 }
@@ -92,28 +100,78 @@ function cmdExecRequests() {
     }); 
 }
 
+function cmdExecSqlText() {
+    
+    initSqlConnection(function() {
+        
+        connection.execute('select t.text from sys.dm_exec_requests r cross apply sys.dm_exec_sql_text(r.sql_handle) t', function(err, dataset) {
+
+            var format = Transform.create([
+                ['text', 2000]            ]);
+            
+            format.attach(dataset.header);
+            
+            console.log(format.printHeader());
+            console.log(format.printSeparator());
+            
+            dataset.rows.map(function(row) {
+                console.log(format.printRow(row));    
+            });            
+            
+            finish_process();
+        });
+    }); 
+}
+
+function cmdExecQueryPlan() {
+    
+    initSqlConnection(function() {
+        
+        connection.execute('select t.query_plan from sys.dm_exec_requests r cross apply sys.dm_exec_query_plan(r.plan_handle) t', function(err, dataset) {
+
+            var format = Transform.create([
+                ['query_plan', 2000]            ]);
+            
+            format.attach(dataset.header);
+            
+            console.log(format.printHeader());
+            console.log(format.printSeparator());
+            
+            dataset.rows.map(function(row) {
+                console.log(format.printRow(row));    
+            });            
+            
+            finish_process();
+        });
+    }); 
+}
+
+function cmdXEventDatabaseSessionTargets() {
+    
+    initSqlConnection(function() {
+        
+        connection.execute('select * from sys.dm_xe_database_sessions s join sys.dm_xe_database_session_targets t on cast(s.address as int)= cast(t.event_session_address as int)', function(err, dataset) {
+
+            var format = Transform.create([
+                ['name', 20],
+                ['target_data', 2000]
+                ]);
+            
+            format.attach(dataset.header);
+            
+            console.log(format.printHeader());
+            console.log(format.printSeparator());
+            
+            dataset.rows.map(function(row) {
+                console.log(format.printRow(row));    
+            });            
+            
+            finish_process();
+        });
+    }); 
+}
+
+
 function finish_process() {
     process.exit(0);
 }
-
-function dumpheader(dataset) {
-    var header = dataset.header;
-    header.map(function(col) {
-        //console.log(`[${col.index}] ${col.name} (type: ${col.type}, size: ${col.size})`); // TODO: implementar o DUMP HEADER e depois mostrar na forma tabular
-        console.log(col);
-    })
-}
-
-function dumprowset(dataset) {
-    var rowset = dataset.rows;
-    rowset.map(function(row) {
-        console.log(row.join(', '));
-    })
-}
-
-
-// - listagem das colunas resource_stats
-// - listagem das colunas sys.dm_exec_requests
-// - carregamento do SQL Text
-// - carregamento do Query Plan
-// - carregamento do XML
