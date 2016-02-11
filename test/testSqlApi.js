@@ -6,6 +6,7 @@ var request = require('request');
 
 var PORT = 3030;
 var SITEURL = 'http://localhost:' + PORT;
+
 var config = require( path.join(__dirname, '../', '.config') ).db_server_config;
 
 var _remoteCredentials = {
