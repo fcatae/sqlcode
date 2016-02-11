@@ -51,6 +51,24 @@ describe('Data Transform', function() {
         assert( missingColumns[0] == '--invalid-column--', 'missing column = invalid column');
     });
 
+    
+    it('Create with No definition', function() {
+        var format_resource_stats = Transform.create();
+
+        assert(format_resource_stats.length == -1, 'length == -1');        
+    });
+    
+    it('Attach with No definition', function() {
+        var format_resource_stats = Transform.create();
+        format_resource_stats.attach(header);
+        
+        var activeColumns = format_resource_stats.activeColumns;
+        assert( activeColumns.length == 9);
+        
+        var missingColumns = format_resource_stats.missingColumns;
+        assert( missingColumns.length == 0, 'no missing column');                     
+    });
+    
     it('printHeader', function() {
         var format_resource_stats = Transform.create([            
             ['end_time'],

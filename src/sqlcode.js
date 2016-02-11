@@ -13,6 +13,9 @@ switch(cmd) {
     case 'rs':
         cmdResourceStats();
         break;
+    case 'er':
+        cmdExecRequests();
+        break;
         
     default: 
         console.log('Invalid command: ' + cmd);
@@ -65,8 +68,31 @@ function cmdResourceStats() {
     }); 
 }
 
-function createFormatter(header, info) {
+function cmdExecRequests() {
     
+    initSqlConnection(function() {
+        
+        connection.execute('select * from sys.dm_exec_requests', function(err, dataset) {
+
+            var format = Transform.create([
+                ['end_time', Transform.toDateTimeYMD, 20],
+                ['cpu', 'avg_cpu_percent', Transform.toNumberFixed.bind(null,1), 8],
+                ['data', 'avg_data_io_percent', Transform.toNumberFixed.bind(null,1), 8],
+                ['log', 'avg_log_write_percent', Transform.toNumberFixed.bind(null,1), 8]
+            ]);
+            
+            format.attach(dataset.header);
+            
+            console.log(format.printHeader());
+            console.log(format.printSeparator());
+            
+            dataset.rows.map(function(row) {
+                console.log(format.printRow(row));    
+            });            
+            
+            finish_process();
+        });
+    }); 
 }
 
 function finish_process() {

@@ -13,30 +13,47 @@ function formatTextSeparator(minsize) {
 var DataTransform = (function () {
     function DataTransform(format) {
         this._columnSeparator = " ";
-        var columns = format.map(function (elem) {
-            var isAliasSpecified = (elem.length > 1 && typeof elem[1] == 'string');
-            var namePosition = (isAliasSpecified) ? 1 : 0;
-            var transformPosition = (isAliasSpecified) ? 2 : 1;
-            var columnItem = {
-                index: -1,
-                alias: elem[0],
-                name: elem[namePosition],
-                transform: (elem.length >= transformPosition) && elem.slice(transformPosition),
-                minsize: 0
-            };
-            var lastValue = null;
-            if (columnItem.transform != null && columnItem.transform.length > 0) {
-                lastValue = columnItem.transform.pop();
-                (columnItem.transform.length == 0) && (columnItem.transform = null);
-            }
-            columnItem.minsize = (lastValue != null && typeof lastValue == 'number') ? lastValue : columnItem.alias.length;
-            return columnItem;
-        });
+        var columns;
+        if (format) {
+            columns = format.map(this.createTransformColumn);
+        }
         this._transform = columns;
     }
+    DataTransform.prototype.createTransform = function (header) {
+        var format = header.map(function (elem) {
+            return [elem.name];
+        });
+        var columns = format.map(this.createTransformColumn);
+        ;
+        return columns;
+    };
+    DataTransform.prototype.createTransformColumn = function (elem) {
+        var isAliasSpecified = (elem.length > 1 && typeof elem[1] == 'string');
+        var namePosition = (isAliasSpecified) ? 1 : 0;
+        var transformPosition = (isAliasSpecified) ? 2 : 1;
+        var columnItem = {
+            index: -1,
+            alias: elem[0],
+            name: elem[namePosition],
+            transform: (elem.length >= transformPosition) && elem.slice(transformPosition),
+            minsize: 0
+        };
+        var lastValue = null;
+        if (columnItem.transform != null && columnItem.transform.length > 0) {
+            lastValue = columnItem.transform.pop();
+            (columnItem.transform.length == 0) && (columnItem.transform = null);
+        }
+        columnItem.minsize = (lastValue != null && typeof lastValue == 'number') ? lastValue : columnItem.alias.length;
+        return columnItem;
+    };
     DataTransform.prototype.attach = function (header) {
         var indexedHeader = {};
         var columns = this._transform;
+        // delay constructor
+        if (columns == null) {
+            columns = this.createTransform(header);
+            this._transform = columns;
+        }
         header.map(function (elem, i) {
             indexedHeader[elem.name] = i;
         });
@@ -78,7 +95,7 @@ var DataTransform = (function () {
     };
     Object.defineProperty(DataTransform.prototype, "length", {
         get: function () {
-            return this._transform.length;
+            return (this._transform) ? this._transform.length : -1;
         },
         enumerable: true,
         configurable: true
