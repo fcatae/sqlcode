@@ -29,12 +29,12 @@ class DataTransform {
     _transform: Array<ColumnItem>;
     
     constructor(format) {
-        var columns = format.map(function(elem) {
+        var columns = format.map(function(elem,i) {
            var isAliasSpecified = (elem.length > 1 && typeof elem[1] == 'string');
            var namePosition = (isAliasSpecified) ? 1 : 0;
            var transformPosition = (isAliasSpecified) ? 2 : 1;
            var columnItem = {
-               index: -1,
+               index: i,
                alias: elem[0],
                name: elem[namePosition],
                transform: (elem.length>=transformPosition) && elem.slice(transformPosition),
