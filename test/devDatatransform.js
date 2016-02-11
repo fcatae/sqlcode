@@ -47,46 +47,59 @@ describe('Data Transform', function() {
         assert( activeColumns.length == 4);
         
         var missingColumns = format_resource_stats.missingColumns;
-        assert( missingColumns.length == 1);                     
-        assert( missingColumns[0] == '--invalid-column--');
+        assert( missingColumns.length == 1, 'only one missing column');                     
+        assert( missingColumns[0] == '--invalid-column--', 'missing column = invalid column');
     });
 
     it('printHeader', function() {
-        var format_resource_stats = Transform.create([
-            
-            ['end_time', null, 8],
-            ['avg_cpu_percent', null, 8],
-            ['avg_data_io_percent ', null, 8],
-            ['avg_log_write_percent ', null, 8]
+        var format_resource_stats = Transform.create([            
+            ['end_time'],
+            ['avg_cpu_percent'],
+            ['avg_data_io_percent'],
+            ['avg_log_write_percent']
         ]);  
         format_resource_stats.attach(header);
-        format_resource_stats.printHeader();
-        format_resource_stats.printSeparator();
-                            
-    });
-
-    it('printHeader', function() {
-        var format_resource_stats = Transform.create([
-            
-            ['end_time', null, 8],
-            ['avg_cpu_percent', null, 8],
-            ['avg_data_io_percent ', null, 8],
-            ['avg_log_write_percent ', null, 8]
-        ]);  
-        format_resource_stats.attach(header);
-                            
-    });
-
-    it('Bind/Use', function() {
-        var bindings = Transform.create([
-            ['end_time', null, 8],
-            ['avg_cpu_percent', null, 8],
-            ['avg_data_io_percent ', null, 8],
-            ['avg_log_write_percent ', null, 8]
-        ]);  
-        bindings.use(header);  
         
-        bindings.print(row);                    
+        var h = format_resource_stats.printHeader();
+        var s = format_resource_stats.printSeparator();
+        
+        assert(h == 'end_time avg_cpu_percent avg_data_io_percent avg_log_write_percent');
+        assert(s == '-------- --------------- ------------------- ---------------------');                            
+    });
+
+    it('printHeader with minSize', function() {
+        var format_resource_stats = Transform.create([
+            ['end_time', 3],
+            ['cpu','avg_cpu_percent', 3],
+            ['dataio','avg_data_io_percent', 3],
+            ['logwrite','avg_log_write_percent', 3]
+        ]);  
+        format_resource_stats.attach(header);
+        
+        var h = format_resource_stats.printHeader();
+        var s = format_resource_stats.printSeparator();
+        
+        assert(h == 'end cpu dat log');
+        assert(s == '--- --- --- ---');                                    
+    });
+
+    it('printRow', function() {
+        var format_resource_stats = Transform.create([
+            ['end_time', Transform.toDateTimeYMD, 20],
+            ['cpu','avg_cpu_percent', 10],
+            ['dataio','avg_data_io_percent', Transform.toNumberFixed.bind(null,1), 6],
+            ['logwrite','avg_log_write_percent', Transform.toNumberFixed.bind(null,1), 6]
+        ]);  
+        format_resource_stats.attach(header);
+        
+        var h = format_resource_stats.printHeader();
+        var s = format_resource_stats.printSeparator();
+        var r = format_resource_stats.printRow(new Date(1455156655148), 21.124, 0.00001, 80.999101);
+        
+        assert(h=='end_time             cpu        dataio logwri');
+        assert(s=='-------------------- ---------- ------ ------');
+        assert(r=='2016-02-10 23:10:55  21.124     0.0    81.0  ');    
+        
     });
     
 });
