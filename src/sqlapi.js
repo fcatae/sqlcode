@@ -46,6 +46,21 @@ var config = require( path.join(__dirname, '../', '.config') ).db_server_config;
 var SqlConnection = require('./endpoint').SqlConnection;
 var ErrorOutput = require('./endpoint').ErrorOutput;
 
+var _credentials = {
+    username: config.SQLSERVER_USER,
+    password: config.SQLSERVER_PWD,
+    servername: config.SQLSERVER_SRV,
+    database: config.SQLSERVER_DB
+};
+var _localCredentials = {
+    username: 'fabteste',
+    password: config.SQLSERVER_PWD,
+    servername: 'localhost',
+    database: 'master'
+}; 
+        
+var _currentConnection = null;
+
 var SQLEndpoint = {
     init: function (port) {        
         SQLWebApi.listen(port);
@@ -56,12 +71,44 @@ var SQLEndpoint = {
         SQLWebApi.close();
     },
     connectionAPI: function(req,res) {
-        res.end('hello') 
+        _currentConnection = openConnection(_localCredentials, function(err, conn) {
+            _currentConnection = conn;            
+            // send back connection OK!
+            res.statusCode = (conn) ? 200 : 500;
+            res.end( conn ? 'true' : 'false');
+        });
     },
     requestAPI: function(req,res) {
-        res.end('world')        
+        var sqltext = 'select 1';
+        if(_currentConnection != null) {
+            executeCommand(_currentConnection, sqltext, function(err, dataset) {
+                console.log("d");
+                // send back dataset
+            })
+        }
     }
 };
+
+function openConnection(credentials, done) {
+    var conn = new SqlConnection(credentials);
+    conn.open(function(err) {
+        if(err != null) {
+            done(err);
+            return;
+        }
+        done(null, conn);
+    })
+}
+
+function executeCommand(conn, sqltext, done) {
+    conn.execute(sqltext, function(err, dataset) {
+        if(err != null) {
+            done(err);
+            return;
+        }
+        done(null, dataset);        
+    });
+}
 
 // We need this to build our post string
 var querystring = require('querystring');

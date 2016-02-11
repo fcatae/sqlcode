@@ -58,7 +58,7 @@ describe('SQL API', function() {
                         
     }); // web
        
-    describe('SQL Connection', function() {
+    describe.only('SQL Connection', function() {
 
         before(function() {
             SQLAPI.init(PORT);
