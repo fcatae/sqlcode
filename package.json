@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "repository": { 
-      "type": "git",
-      "url": "https://github.com/fcatae/sqlcode"   
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fcatae/sqlcode"
   },
   "scripts": {
     "start": "webpack --progress --color --watch",
@@ -30,7 +30,9 @@
     "htmlparser2": "^3.9.0",
     "jquery": "^2.2.0",
     "lodash": "^4.1.0",
-    "react-contenteditable": "^1.1.0"
+    "react-contenteditable": "^1.1.0",
+    "request": "^2.69.0",
+    "require": "^2.4.20"
   },
   "comentarioOUT": {
     "start": "webpack --progress --color --watch",
