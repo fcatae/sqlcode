@@ -91,6 +91,7 @@ var SqlConnection = (function () {
         connection.on('error', function (e) {
             // TODO: handle persistent connection
             console.log('error');
+            console.log(e);
         });
         connection.on('connect', function (err) {
             var error = (err) ? new Error(err.message) : null;
