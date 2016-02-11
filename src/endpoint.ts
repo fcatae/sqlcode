@@ -40,8 +40,9 @@ class ErrorOutput {
 
 class ConsoleErrorOutput {
     reportInfo(info) {
-        console.log('infoMessage'); 
-        console.log(info);     }
+        //console.log('infoMessage'); 
+        //console.log(info);     
+    }
     reportError(error) {
         console.log('errorMessage'); 
         console.log(error); 

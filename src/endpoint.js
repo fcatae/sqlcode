@@ -46,8 +46,8 @@ var ConsoleErrorOutput = (function () {
     function ConsoleErrorOutput() {
     }
     ConsoleErrorOutput.prototype.reportInfo = function (info) {
-        console.log('infoMessage');
-        console.log(info);
+        //console.log('infoMessage'); 
+        //console.log(info);     
     };
     ConsoleErrorOutput.prototype.reportError = function (error) {
         console.log('errorMessage');
@@ -253,4 +253,3 @@ module.exports = {
     SqlConnection: SqlConnection,
     ErrorOutput: ErrorOutput
 };
-//# sourceMappingURL=endpoint.js.map
