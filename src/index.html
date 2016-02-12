@@ -6,22 +6,41 @@
     <link rel="stylesheet" href="lib/bootstrap.css">
     <script src="lib/jquery.min.js"></script>
     <script src="lib/bootstrap.min.js"></script>
+
+    <script src="sqlclient.js"></script>
+    <script src="index.js"></script>
 </head>
 <body>
+    <style>
+        .alert {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+    <div id="idAlertConnecting" class="alert alert-warning">
+        Connecting to database...
+    </div>
+    <div id="idAlertConnectionFailed" class="alert alert-danger">
+        <button id="idButtonRetry" class="btn btn-default">Retry</button><span>  Failed to connect to database... </span>
+    </div>
+    
     <div class="container">
         <div class="row">
             <h1>Processar XML</h1>
         </div>
         <div class="row">
             <div class="form-group">
-                <textarea class="form-control" name="" id="" cols="30" rows="10"></textarea>
-                <button class="btn btn-primary">Processar</button>
+                <p><textarea class="form-control" name="idTextarea" id="idTextarea" cols="30" rows="10"></textarea></p>
+                <button id="idButton" class="btn btn-primary">Processar</button>
             </div>
-        </div>
-        <div class="row">
             <div id="results" class="form-group">
                 Resultados...
             </div>
+        </div>
+        <div class="row">
+
         </div>
     </div>
 </body>
