@@ -1,4 +1,4 @@
-describe('SQL API1', function() {
+describe('SQL API', function() {
     
     it('SQL API1', function() {
     });
@@ -15,89 +15,49 @@ describe('SQL API1', function() {
     })
 });
 
-/*
-var SQL_ENDPOINT = 'http://localhost:3000'
-var SQL_ENDPOINT_GETCONNECTION = SQL_ENDPOINT + '/getConnection';
-var SQL_ENDPOINT_EXECUTE = SQL_ENDPOINT + '/execute';
-
-$(document).ready(function() {
+$(document).ready(function() {    
     
-    $('#btnExecute').prop('disabled', true);
-    
-    $.post(SQL_ENDPOINT_GETCONNECTION, null, function() {
-        setInterval(function() {
-            enableAccess();
-        }, 500)
-    });
-    
-    $('#btnExecute').click(function(ev) {
-
-        ev.preventDefault();
-
-        executeSql();
-        //alert('bom dia'); 
-        
-    });
-
-})
-
-function enableAccess() {
-    $('.stateConnecting').hide(); 
-    $('#btnExecute').prop('disabled', false);   
-}
-
-function executeSql() {
-
-    var request = $('#txtCommand').val();
-    
-    $.post(SQL_ENDPOINT_EXECUTE, { request: request }, function(data) {
-        var datarows = data.split('[;;;]');
-        datarows.pop();
-        
-        var rows = datarows.map(function(v) { return JSON.parse(v); });
-        
-        showResults(rows);
-    });
-    
-    $('#lastCommand').text(request);
-    
-}
-
-function showResults(rows) {
-
-    var resultDom = $('#results');
-     
-    resultDom.empty();
-    
-    var tableDom = $('<table></table>');
-    var theadDom = $('<thead></thead>'); 
-    var tbodyDom = $('<tbody></tbody>');
-    
-    rows.map(function(row) {
-        var columns = row.map(function(col) {
-           return '<td>' + col + '</td>'; 
-        });
-        var rowHtml =  '<tr>' + columns.join('') + '</tr>'
-        
-        tbodyDom.append(rowHtml);
+    httpGet('/connection', null, function() {
+        $('#mocha').text('hello mocha');
+    }).fail(function(){
+        $('#mocha').text('FAIL');
     })
-    tableDom.append(theadDom);
-    tableDom.append(tbodyDom);
     
-    resultDom.append(tableDom);
-    
-    //$('#results').html(JSON.stringify(rows));
-    
+});
+
+function httpGet(url, param, success, error) {
+    $.get(url, param)
+        .done(function() { success && success() })
+        .fail(function() { error && error() });
 }
 
-function escapeHtml(str) {
-    var tagsToReplace = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;'
-    };
-    return str.replace(/[&<>]/g, function(tag) {
-        return tagsToReplace[tag] || tag;
-    });
-};
-*/
+function createSqlClient() {
+    
+    var _conn;
+    var _req = null;
+    
+    var obj = {
+        open: function() {
+            httpGet('/connection', null, function(handle) {
+                _conn = handle;
+            });
+        },
+        execute: function(sqltext, callback) {
+            if(_req != null) {
+                throw new Error('Request in progress: ' + sqltext);
+            }
+            _req = httpGet('/request', { q: sqltext }, function(data) {
+                _req = null;
+                callback(null, data);
+            }, function(errcode) {
+                _req = null;
+                callback(errcode);
+            });
+        },
+        cancel: function() {
+            (_req) && (_req.abort());
+        }
+    }; 
+    
+    return obj;
+}
