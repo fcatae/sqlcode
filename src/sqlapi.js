@@ -4,8 +4,6 @@ var express = require('express');
 var app;
 var srv;
 
-var _ = require('lodash');
-
 // Server functions
 
 function listen(port) {
@@ -50,10 +48,13 @@ var _credentials = null;
 
 var SQLEndpoint = {
         
-    init: function (port, credentials) {
+    init: function (port, credentials, api) {
+        // provide default implementation
+        api = api || this;
+        
         SQLWebApi.listen(port);
-        SQLWebApi.attach('/connection', this.connectionAPI);
-        SQLWebApi.attach('/request', this.requestAPI);
+        SQLWebApi.attach('/connection', api.connectionAPI);
+        SQLWebApi.attach('/request', api.requestAPI);
         _credentials = credentials;
     },        
     close: function() {
