@@ -23,6 +23,10 @@ function listen(port) {
     srv = app.listen(port);
 }
 
+function define(path, dirname) {
+    app.use(path, express.static( dirname ));
+}
+
 function attach(eventname, func) {
     app.get(eventname, func);
 }
@@ -35,6 +39,7 @@ function close() {
 
 var SQLWebApi = {
     listen: listen,
+    define: define,
     attach: attach,
     close: close  
 };

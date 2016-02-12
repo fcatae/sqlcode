@@ -3,6 +3,7 @@ var SqlConnection = require('./endpoint').SqlConnection;
 var config = require( path.join(process.cwd(), '../.config') ).db_server_config;
 var Transform = require('./datatransform');
 var SQLAPI = require('./sqlapi');
+var SQLWebApi = require('./sqlapi').SQLWebApi;
 
 function init() {
     
@@ -206,6 +207,8 @@ function cmdSetupEndpointStatic() {
     
     SQLAPI.init(8080, null, api);
     console.log('Endpoint static listening on 8080');
+    SQLWebApi.define('/test', path.join(__dirname,'../','test/', 'html/'));
+    console.log('Enabled /test path');
     
     function connectionAPI(req,res) {
         res.end( 'true' );
