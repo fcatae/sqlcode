@@ -1,29 +1,38 @@
 describe('SQL API', function() {
     
-    it('SQL API1', function() {
+    var _sqlclient;
+    
+    beforeEach(function() {
+        _sqlclient = createSqlClient();    
+    })
+    
+    it('createSqlClient', function() {
+        assert( _sqlclient != null, 'createSqlClient() success');
     });
     
-    it('teste 12s browser', function() {
-        assert(1 == 1);
-    });
     
-    it('este 1d browser', function() {
-        assert(1 == 1);
-    })
-    it('teste 1 browser', function() {
-        assert(1 == 2);
-    })
+    // 
+    // it('teste 12s browser', function() {
+    //     assert(1 == 1);
+    // });
+    // 
+    // it('este 1d browser', function() {
+    //     assert(1 == 1);
+    // })
+    // it('teste 1 browser', function() {
+    //     assert(1 == 2);
+    // })
 });
-
-$(document).ready(function() {    
-    
-    httpGet('/connection', null, function() {
-        $('#mocha').text('hello mocha');
-    }).fail(function(){
-        $('#mocha').text('FAIL');
-    })
-    
-});
+// 
+// $(document).ready(function() {    
+//     
+//     httpGet('/connection', null, function() {
+//         $('#mocha').text('hello mocha');
+//     }).fail(function(){
+//         $('#mocha').text('FAIL');
+//     })
+//     
+// });
 
 function httpGet(url, param, success, error) {
     $.get(url, param)
