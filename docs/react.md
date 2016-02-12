@@ -74,3 +74,10 @@ ignorar o problema é adicionar uma definição.
     declare var ReactDOM: any;
     
 Simples!
+
+
+# Props e State
+
+Propriedades são acessadas através de this.props, enquanto que os states
+devem ser usados this.state. A variável state pode modificar durante a execução
+través do evento getInitialState({}) e depois por this.setState({}).
