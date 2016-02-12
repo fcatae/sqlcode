@@ -13,6 +13,8 @@ gulp.task('lib', function() {
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/requirejs/require.js',
         'bower_components/sax-js/lib/sax.js',        
+        'bower_components/react/react.min.js',        
+        'bower_components/react/react-dom.min.js',        
         ])
         .pipe(gulp.dest(LIB));
 });
