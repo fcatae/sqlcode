@@ -4,7 +4,10 @@ OK falta migrar a lógica de REST API
 - endpointclient é somente um wrapper ajax + jquery
 OK sugestão: (OK)criar uma API decente - (OK)enviar todos os comandos de uma só vez - (OK)aplicar o json.stringify sobre o dataset
 OK - apagar os arquivos
-- testes html (codigo embedded)
+- testes html (codigo embedded):
+  - ligar o servidor web (OK: http-server)
+  - ligar o endpoint
+  - acessar pelo navegador
 - mover a biblioteca para codigo proprio
 
 react 
