@@ -17,14 +17,18 @@ react DONE
 - documentar OK
 tranference code ? DELETE
 - documentar NO
+DONE
 
-XML
-- transferir componentes react
-
-index (editor)
+XML DONE
+- transferir componentes react OK
+DONE
 
 webpack config
 - criar um diretório
+DONE
 
 lib
 - remover
+DONE
+
+index (editor)
