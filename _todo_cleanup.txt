@@ -8,8 +8,9 @@ OK - apagar os arquivos
   - ligar o servidor web (OK: http-server)
   - ligar o endpoint (OK: endpoint-static)
   - acessar pelo navegador manualmente (OK)
-  - acessar pelo navegador codigo
-- mover a biblioteca para codigo proprio
+  - acessar pelo navegador codigo - testes OK
+- mover a biblioteca para codigo proprio OK
+- implementar a pagina index.html
 
 react 
 - documentar
