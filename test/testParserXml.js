@@ -26,7 +26,6 @@ describe('Parser XML', function() {
     });
 
     it('Carregar a dependência SAX', function() {
-        _sax = require(path.join(process.cwd(), 'lib/sax'));
         assert.notEqual(_sax, null);
     });
 
