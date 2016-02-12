@@ -9,9 +9,9 @@ Alfa-version: v0.1
 
 ## Editor
 
-[Editor](src\editor\index.html) está src\editor\index.html
+[Editor](src/editor/index.html) está src/editor/index.html
     
-As alterações são feitas em src\editor\index.jsx e compiladas com Webpack.
+As alterações são feitas em src/editor/index.jsx e compiladas com Webpack.
 
 ## SQL Code
 
