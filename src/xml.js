@@ -2,41 +2,29 @@
 "use strict";
 
 $(document).ready(function() {
-   
-   function initTeste() {
-       $('#txtXml').text('<a><b></b><b><c></c><d></d></b><b></b></a>');
-   }
-   
-   function loadTeste() {
-       $.ajax({
-           url: 'xmlsample.xml', 
-           type: 'GET',
-           dataType: 'text',
-           success: function(data) {
-              $('#txtXml').val(data);           
-           } 
-       });
 
-   }
-   
-   loadTeste();
-   
+    var initial = '<RingBufferTarget eventCount="2"> \
+        <event name="sp_statement_completed" package="sqlserver" \
+        timestamp="2016-02-02T12:39:47.375Z"></event> \
+        <event name="sp_statement_completed" package="sqlserver" \
+        timestamp="2016-02-02T12:39:47.375Z"></event> \
+        </RingBufferTarget>';
+            
+    $('#txtXml').text(initial);
+      
    $('#btnParse').click(parse);
    
    function parse() {
        
         var text = $('#txtXml').val();
 
-        var $results = $('#results');
 
-        require(['xmlclass.js'], function(xmlparse) {
-            xmlparse.ringbuffer(text, function(data) {
+        var parser = XmlParser.init(window.sax);
+        var data = parser.parse(text);
+
+        // $('#results').text(JSON.stringify(data));
                 
-                renderXmlDisplay('#results', data);
-                //$results.text(JSON.stringify(data))
-                
-            });    
-        }); 
+        renderXmlDisplay('#results', data);
    }
    
 });

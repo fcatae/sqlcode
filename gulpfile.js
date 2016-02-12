@@ -11,7 +11,6 @@ gulp.task('lib', function() {
         // JS
         'bower_components/bootstrap/dist/js/bootstrap.min.js',
         'bower_components/jquery/dist/jquery.min.js',
-        'bower_components/requirejs/require.js',
         'bower_components/sax-js/lib/sax.js',        
         'bower_components/react/react.min.js',        
         'bower_components/react/react-dom.min.js',        

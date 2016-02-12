@@ -1,6 +1,6 @@
 /* global sax */
 
-(function(module) {
+(function(exports) {
 
 "use strict";
 
@@ -173,4 +173,4 @@ function Parser(saxLibrary) {
 
 exports.init = Parser;
     
-})(typeof exports == 'undefined' ? this.XmlParser : exports );
+})(typeof exports == 'undefined' ? this.XmlParser = {} : exports );
