@@ -21,7 +21,8 @@
     "jquery": "^2.2.0",
     "react": "^0.14.7",
     "winjs": "^4.4.0",
-    "requirejs": "^2.1.22"
+    "requirejs": "^2.1.22",
+    "lodash": "^4.3.0"
   },
   "devDependencies": {
     "mocha": "^2.4.5",

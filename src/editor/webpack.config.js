@@ -11,6 +11,7 @@ module: {
 },
 externals: {
     'react': 'React',
-    'react/addons': 'React'
+    'react/addons': 'React',
+    'lodash': '_'
 }
 };
