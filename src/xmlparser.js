@@ -1,6 +1,6 @@
 /* global sax */
 
-// TODO: transform into AMD module
+(function(module) {
 
 "use strict";
 
@@ -171,7 +171,6 @@ function Parser(saxLibrary) {
 
 }
 
-module.exports = { 
-    name: 'parser', 
-    init: Parser
-    };    
+exports.init = Parser;
+    
+})(typeof exports == 'undefined' ? this.XmlParser : exports );
