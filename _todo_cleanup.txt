@@ -6,7 +6,7 @@ OK sugest√£o: (OK)criar uma API decente - (OK)enviar todos os comandos de uma s√
 OK - apagar os arquivos
 - testes html (codigo embedded):
   - ligar o servidor web (OK: http-server)
-  - ligar o endpoint
+  - ligar o endpoint (OK: endpoint-static)
   - acessar pelo navegador
 - mover a biblioteca para codigo proprio
 
