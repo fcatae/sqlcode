@@ -30,6 +30,9 @@ function init() {
             break;
         case 'endpoint':
             cmdSetupEndpoint();
+            break;                    
+        case 'endpoint-static':
+            cmdSetupEndpointStatic();
             break;
                     
         default: 
@@ -196,6 +199,25 @@ var _localCredentials = {
 
 function cmdSetupEndpoint() {
     SQLAPI.init(8080, _localCredentials);    
+}
+
+function cmdSetupEndpointStatic() {
+    var api = { connectionAPI: connectionAPI, requestAPI: requestAPI };
+    
+    SQLAPI.init(8080, null, api);
+    console.log('Endpoint static listening on 8080');
+    
+    function connectionAPI(req,res) {
+        res.end( 'true' );
+    }
+    function requestAPI(req,res) {
+        var sqltext = req.query.q;
+        
+        var dataset = sqltext;
+        var content = JSON.stringify(dataset);
+        
+        res.end(content);         
+    }
 }
 
 function finish_process() {
