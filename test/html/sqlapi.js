@@ -15,16 +15,26 @@ describe('SQL API', function() {
     });
     
     it('sqlClient.connect()', function(done) {
-        _sqlclient.open(function(err) {
+        _sqlclient.open(function(err, handle) {
             assert( err == null );
-            assert( _sqlclient.getConnection() != null );
+            assert( handle != null );
             done();
         });
     });
     
-    it('sqlClient.connect() twice should FAIL', function(done) {
+    it('sqlClient.connect() called twice', function(done) {
+        _sqlclient.open(function(err1) {
+            assert(err1 == null);
+            _sqlclient.open(function(err2) {
+                assert(err2 == null);
+                done();
+            });
+        });
+    });
+    
+    it('sqlClient.connect() overlapping calls fail', function(done) {
         _sqlclient.open();
-        assert( _sqlclient.getConnection() == null, 'connection open in progress');
+        assert( _sqlclient.isBusy(), 'connection open in progress');
         
         _sqlclient.open(function(err) {
             assert(err != null, 'connection open should fail this time');
@@ -32,12 +42,28 @@ describe('SQL API', function() {
         });                
     });
     
-    it.skip('sqlClient.cancel()', function(done) {
-        assert( _sqlclient.getConnection() != null );
+    it('sqlClient.execute()', function(done) {
+        _sqlclient.open(function(err) {
+            assert(err == null);
+            _sqlclient.execute('command', function(err2, data) {
+                assert(err2 == null);
+                done();
+            });
+        });
+    });            
+    
+    it('sqlClient.reset()', function(done) {
+        _sqlclient.open(function(err) {
+            assert(err != null);
+            assert(err.statusText == 'abort')
+            done();
+        });
+        _sqlclient.reset();
     });
     
-    it.skip('sqlClient.cancel()', function(done) {
-        assert( _sqlclient.getConnection() != null );
+    it.skip('http /testfail', function(done) {
+        // hung
+        // errors
     });
     
     // it('este 1d browser', function() {
@@ -47,16 +73,6 @@ describe('SQL API', function() {
     //     assert(1 == 2);
     // })
 });
-// 
-// $(document).ready(function() {    
-//     
-//     httpGet('/connection', null, function() {
-//         $('#mocha').text('hello mocha');
-//     }).fail(function(){
-//         $('#mocha').text('FAIL');
-//     })
-//     
-// });
 
 function httpGet(url, param, success, error) {
     return $.get(url, param)
@@ -67,21 +83,20 @@ function httpGet(url, param, success, error) {
 function createSqlClient() {
     
     var _handle;
-    var _connreq;
     var _req = null;
     
     var obj = {
         open: function(callback) {
-            if(_connreq != null) {
-                callback('Connection open request in progress');
+            if(_req != null) {
+                callback('Request in progress');
                 return;
             }
-            _connreq = httpGet('/connection', null, function(handle) {
+            _req = httpGet('/connection', null, function(handle) {
                 _handle = handle;
-                _connreq = null;
+                _req = null;
                 callback && callback(null, handle);
             }, function(errcode) {
-                _connreq = null;
+                _req = null;
                 callback && callback(errcode);
             });
         },
@@ -97,11 +112,12 @@ function createSqlClient() {
                 callback && callback(errcode);
             });
         },
-        cancel: function() {
+        reset: function() {
             (_req) && (_req.abort());
+            _req = null;
         },
-        getConnection: function() {
-            return _handle;
+        isBusy: function() {
+            return (_req != null);
         }
     }; 
     
