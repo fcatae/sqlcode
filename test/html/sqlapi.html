@@ -39,11 +39,13 @@
         var assert = chai.assert;
     </script>
 
+    <script src="/sqlclient.js"></script>
+
     <!--Test script-->
     <script src="sqlapi.js"></script>
 
     <script>
-        mocha.checkLeaks();
+        //mocha.checkLeaks();
         mocha.globals(['jQuery']);
         mocha.run();
     </script>
