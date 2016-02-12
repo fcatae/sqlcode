@@ -13,12 +13,12 @@ OK - apagar os arquivos
 - implementar a pagina index.html
 DONE
 
+react DONE 
+- documentar OK
+tranference code ? DELETE
+- documentar NO
 
-react 
-- documentar
-tranference code ?
-- documentar
-xml
+XML
 - transferir componentes react
 
 index (editor)
