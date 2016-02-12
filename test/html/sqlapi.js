@@ -6,16 +6,40 @@ describe('SQL API', function() {
         _sqlclient = createSqlClient();    
     })
     
+    afterEach(function() {
+        _sqlclient = null;
+    });
+    
     it('createSqlClient', function() {
         assert( _sqlclient != null, 'createSqlClient() success');
     });
     
+    it('sqlClient.connect()', function(done) {
+        _sqlclient.open(function(err) {
+            assert( err == null );
+            assert( _sqlclient.getConnection() != null );
+            done();
+        });
+    });
     
-    // 
-    // it('teste 12s browser', function() {
-    //     assert(1 == 1);
-    // });
-    // 
+    it('sqlClient.connect() twice should FAIL', function(done) {
+        _sqlclient.open();
+        assert( _sqlclient.getConnection() == null, 'connection open in progress');
+        
+        _sqlclient.open(function(err) {
+            assert(err != null, 'connection open should fail this time');
+            done();
+        });                
+    });
+    
+    it.skip('sqlClient.cancel()', function(done) {
+        assert( _sqlclient.getConnection() != null );
+    });
+    
+    it.skip('sqlClient.cancel()', function(done) {
+        assert( _sqlclient.getConnection() != null );
+    });
+    
     // it('este 1d browser', function() {
     //     assert(1 == 1);
     // })
@@ -35,20 +59,30 @@ describe('SQL API', function() {
 // });
 
 function httpGet(url, param, success, error) {
-    $.get(url, param)
-        .done(function() { success && success() })
-        .fail(function() { error && error() });
+    return $.get(url, param)
+        .done(function(data) { success && success(data) })
+        .fail(function(err) { error && error(err) });
 }
 
 function createSqlClient() {
     
-    var _conn;
+    var _handle;
+    var _connreq;
     var _req = null;
     
     var obj = {
-        open: function() {
-            httpGet('/connection', null, function(handle) {
-                _conn = handle;
+        open: function(callback) {
+            if(_connreq != null) {
+                callback('Connection open request in progress');
+                return;
+            }
+            _connreq = httpGet('/connection', null, function(handle) {
+                _handle = handle;
+                _connreq = null;
+                callback && callback(null, handle);
+            }, function(errcode) {
+                _connreq = null;
+                callback && callback(errcode);
             });
         },
         execute: function(sqltext, callback) {
@@ -57,14 +91,17 @@ function createSqlClient() {
             }
             _req = httpGet('/request', { q: sqltext }, function(data) {
                 _req = null;
-                callback(null, data);
+                callback && callback(null, data);
             }, function(errcode) {
                 _req = null;
-                callback(errcode);
+                callback && callback(errcode);
             });
         },
         cancel: function() {
             (_req) && (_req.abort());
+        },
+        getConnection: function() {
+            return _handle;
         }
     }; 
     
