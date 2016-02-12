@@ -1,4 +1,4 @@
-endpoint
+endpoint - DONE
 OK falta migrar a lógica de REST API
 - HTML possui somente um cliente simples
 - endpointclient é somente um wrapper ajax + jquery
@@ -11,6 +11,8 @@ OK - apagar os arquivos
   - acessar pelo navegador codigo - testes OK
 - mover a biblioteca para codigo proprio OK
 - implementar a pagina index.html
+DONE
+
 
 react 
 - documentar
