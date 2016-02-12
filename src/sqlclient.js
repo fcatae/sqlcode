@@ -1,11 +1,4 @@
 // depends on jQuery
-
-function httpGet(url, param, success, error) {
-    return $.get(url, param)
-        .done(function(data) { success && success(data) })
-        .fail(function(err) { error && error(err) });
-}
-
 function createSqlClient() {
     
     var _handle;
@@ -48,4 +41,11 @@ function createSqlClient() {
     }; 
     
     return obj;
+
+    function httpGet(url, param, success, error) {
+        return $.get(url, param)
+            .done(function(data) { success && success(data) })
+            .fail(function(err) { error && error(err) });
+    }
+
 }
