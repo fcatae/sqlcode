@@ -53,6 +53,22 @@ var App = React.createClass({
         return React.createElement("table", {"className": "table"}, React.createElement("tbody", null, eventos));
     }
 });
+var ReportAttention = React.createClass({
+    render: function () {
+        return React.createElement("h1", null, "Attention");
+    }
+});
+var ReportDuration = React.createClass({
+    render: function () {
+        return React.createElement("h1", null, "Duration");
+    }
+});
+var ReportWaitInfo = React.createClass({
+    render: function () {
+        return React.createElement("h1", null, "WaitInfo");
+    }
+});
+// disfavor app
 function renderXmlDisplay(selector, data) {
     ReactDOM.render(React.createElement(App, {"data": data}), document.querySelector(selector));
 }

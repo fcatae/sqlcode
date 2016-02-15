@@ -85,10 +85,27 @@ var App = React.createClass({
     }    
 });
 
+var ReportAttention = React.createClass({
+    render: function() {
+        return <h1>Attention</h1>;
+    }
+});
+
+var ReportDuration = React.createClass({
+    render: function() {
+        return <h1>Duration</h1>;
+    }
+});
+
+var ReportWaitInfo = React.createClass({
+    render: function() {
+        return <h1>WaitInfo</h1>;
+    }
+});
+
+// disfavor app
 function renderXmlDisplay(selector, data) {
-        
     ReactDOM.render(<App data={data}></App>,
         document.querySelector(selector)
     )
-
 }

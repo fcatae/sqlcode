@@ -20,10 +20,9 @@ var data = {
 };
 
 var processors = {
-    attention: showCommand,
-    duration: showCommand,
-    waitinfo: showCommand,
-    testParser: testParser
+    attention: processXEvents(ReportAttention),
+    duration: processXEvents(ReportDuration),
+    waitinfo: processXEvents(ReportWaitInfo)
 };
 
 $(document).ready(function() {
@@ -72,21 +71,14 @@ $(document).ready(function() {
     })
 });
         
-function showCommand(text, dest) {
-    var cmd = $('#idDropdownProcessor .name')[0].textContent;
-    alert(cmd);
-    console.log('text: ');
-    console.log(text);
-    console.log('dest: ' + dest);
-}
+var _parser = XmlParser.init(window.sax);
 
-function testParser(text, dest) {
-
-    var parser = XmlParser.init(window.sax);
-    var data = parser.parse(text);
-
-    //$(dest).text(text);
-    renderXmlDisplay(dest, data);
+function processXEvents(app) {
     
+    var renderTextFunction = function(text, selector) {
+        var data = _parser.parse(text);
+        ReactDOM.render(React.createElement(app, {"data": data}), document.querySelector(selector));
+    }
+    
+    return renderTextFunction;
 }
-
