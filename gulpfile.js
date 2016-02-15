@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 
-var LIB = 'src/lib/';
+var LIB = 'dist/html/lib/';
 
 gulp.task('lib', function() {
     return gulp.src([

@@ -1,8 +1,11 @@
-bower_components/
-node_modules/
-electron/
 .vscode/*
 !.vscode/tasks.json
+
 .config
+
+bower_components/
+dist/
+electron/
+node_modules/
 
 npm-debug.log
