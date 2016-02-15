@@ -199,7 +199,10 @@ var _localCredentials = {
 }; 
 
 function cmdSetupEndpoint() {
-    SQLAPI.init(8080, _localCredentials);    
+    SQLAPI.init(8080, _localCredentials);  
+    console.log('Endpoint static listening on 8080');
+    SQLWebApi.define('/test', path.join(__dirname,'../','test/', 'html/'));
+    console.log('Enabled /test path');  
 }
 
 function cmdSetupEndpointStatic() {
