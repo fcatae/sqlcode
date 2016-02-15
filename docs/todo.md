@@ -87,19 +87,26 @@ se necessário (talvez nao seja).
 * template config = com options - OK
 - Teste: Instanciar uma página HTML do zero usando somente services + options.
 * limpar o template.js e mover a lógica para outro arquivo (templateConfig?) - OK
+- Listar os Options na lateral
+* Usar o template default para listar as configurações
 - Separar os componentes de visualização JSX em arquivos distintos
 * Criação dos entry points para os relatórios
 - Teste: Criar uma página de visualização central
 * Criar os samples para serem processados
 * Criar uma página para carregar os componentes JSX
+- Script XEvents
+* Coletar mais dados sobre os eventos
 
 depois:
 
 - Encapsular as animações em componentes específicos de Alerts.
+    * react (?)
+    * create alert (global)
+    * create alert for #id
 - Configurar o webpack para gerar os pacotes necessários para usar o Require
 - Teste: organizar novamente a estrutura de teste 
-- Listar os Options na lateral
-- Script XEvents
+- Criar um diretório /dist com o output dos arquivos
+- Compilação em typescript com suporte a debug
 
 ## Exemplo
 
