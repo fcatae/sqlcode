@@ -2,9 +2,11 @@
 
     var config = {
         index: {
+            title: 'execute SQL',
             process: templateIndexHtml
         },
         xml: {
+            title: 'process XML',
             process: templateXmlHtml
         },
         default: {
@@ -29,9 +31,11 @@
         ui.textarea.hide();
         ui.results.text('');
         
-        var location = window.location.href;
+        var location = window.location.pathname;
         for(var elem in config) {
-            ui.results.append(`<p><a href="${location}?${elem}">${location}?${elem}</a></p>`);
+            if(config[elem].title) {
+                ui.results.append(`<p><a href="${location}?${elem}">${config[elem].title}</a></p>`);
+            }
         }
     }
 

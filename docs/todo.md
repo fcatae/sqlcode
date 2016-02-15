@@ -85,12 +85,12 @@ se necessário (talvez nao seja).
 * coletar a query string - OK
 * selecionar o template - OK
 * template config = com options - OK
-- limpar o template.js e mover a lógica para outro arquivo (templateConfig?)
+- Teste: Instanciar uma página HTML do zero usando somente services + options.
+* limpar o template.js e mover a lógica para outro arquivo (templateConfig?) - OK
 
 
 depois:
 
-- Teste: Instanciar uma página HTML do zero usando somente services + options.
 - Separar os componentes de visualização JSX em arquivos distintos
 - Teste: Criar uma página de visualização central
 - Encapsular as animações em componentes específicos de Alerts.
