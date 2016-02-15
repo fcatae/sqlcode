@@ -28,12 +28,9 @@ var EventoWait = React.createClass({
     render: function () {
         var id = this.props.id;
         var timestamp = dateParse(this.props.timestamp).toLocaleString();
-        var start = getStartTime(dateParse(this.props.timestamp), this.props.data.duration / 1000).toLocaleTimeString();
-        var name = this.props.name;
-        var duration = (this.props.data.duration) ? (this.props.data.duration / 1000000).toFixed(1) : '';
-        var cpu_time = (this.props.data.cpu_time) ? (this.props.data.cpu_time / 1000000).toFixed(1) : '';
-        var physical_reads = (this.props.data.physical_reads) ? this.props.data.physical_reads : '';
-        var writes = (this.props.data.writes) ? this.props.data.writes : '';
+        var start = getStartTime(dateParse(this.props.timestamp), this.props.data.duration).toLocaleTimeString();
+        var name = this.props.data.wait_type;
+        var duration = (this.props.data.duration) ? (this.props.data.duration * 1).toFixed(0) : '';
         var statement = this.props.data.statement || this.props.data.batch_text;
         var data = JSON.stringify(this.props.data);
         return React.createElement("tr", null, React.createElement("td", null, id), React.createElement("td", null, start), React.createElement("td", null, timestamp), React.createElement("td", null, name), React.createElement("td", null, duration), React.createElement("td", null, statement), React.createElement("td", null, data));
@@ -78,7 +75,13 @@ var ReportDuration = React.createClass({
 });
 var ReportWaitInfo = React.createClass({
     render: function () {
-        return React.createElement("h1", null, "WaitInfo");
+        var events = this.props.data.events;
+        var eventos = events.map(function (el, i) {
+            if (el.name != 'wait_info')
+                return null;
+            return React.createElement(EventoWait, {"key": i, "id": i, "name": el.name, "timestamp": el.timestamp, "data": el.data}, "Evento");
+        });
+        return React.createElement("table", {"className": "table"}, React.createElement("tbody", null, eventos));
     }
 });
 // disfavor app
