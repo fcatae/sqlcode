@@ -1,0 +1,201 @@
+<RingBufferTarget truncated="0" processingTime="0" totalEventsProcessed="10" eventCount="10" droppedCount="0" memoryUsed="115573">
+  <event name="sql_batch_completed" package="sqlserver" timestamp="2016-02-02T12:39:39.063Z">
+    <data name="cpu_time">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>11034</value>
+    </data>
+    <data name="physical_reads">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="logical_reads">
+      <type name="uint64" package="package0" />
+      <value>63</value>
+    </data>
+    <data name="writes">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="row_count">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="result">
+      <type name="rpc_return_result" package="sqlserver" />
+      <value>0</value>
+      <text>OK</text>
+    </data>
+    <data name="batch_text">
+      <type name="unicode_string" package="package0" />
+      <value>
+alter event session fabricio on server
+	state = start</value>
+    </data>
+  </event>
+
+  <event name="attention" package="sqlserver" timestamp="2016-02-02T12:39:47.373Z">
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>437</value>
+    </data>
+    <data name="request_id">
+      <type name="int32" package="package0" />
+      <value>2</value>
+    </data>
+  </event>
+  <event name="attention" package="sqlserver" timestamp="2016-02-02T12:39:47.373Z">
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>437</value>
+    </data>
+    <data name="request_id">
+      <type name="int32" package="package0" />
+      <value>2</value>
+    </data>
+  </event>
+  <event name="sp_statement_completed" package="sqlserver" timestamp="2016-02-02T12:39:47.375Z">
+    <data name="source_database_id">
+      <type name="uint32" package="package0" />
+      <value>1</value>
+    </data>
+    <data name="object_id">
+      <type name="int32" package="package0" />
+      <value>295448214</value>
+    </data>
+    <data name="object_type">
+      <type name="object_type" package="sqlserver" />
+      <value>20816</value>
+      <text>PREPARED</text>
+    </data>
+    <data name="duration">
+      <type name="int64" package="package0" />
+      <value>313</value>
+    </data>
+    <data name="cpu_time">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="physical_reads">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="logical_reads">
+      <type name="uint64" package="package0" />
+      <value>6</value>
+    </data>
+    <data name="writes">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="row_count">
+      <type name="uint64" package="package0" />
+      <value>1</value>
+    </data>
+    <data name="last_row_count">
+      <type name="uint64" package="package0" />
+      <value>1</value>
+    </data>
+    <data name="nest_level">
+      <type name="uint16" package="package0" />
+      <value>2</value>
+    </data>
+    <data name="line_number">
+      <type name="int32" package="package0" />
+      <value>1</value>
+    </data>
+    <data name="offset">
+      <type name="int32" package="package0" />
+      <value>56</value>
+    </data>
+    <data name="offset_end">
+      <type name="int32" package="package0" />
+      <value>316</value>
+    </data>
+    <data name="object_name">
+      <type name="unicode_string" package="package0" />
+      <value />
+    </data>
+    <data name="statement">
+      <type name="unicode_string" package="package0" />
+      <value>SELECT
+dtb.collation_name AS [Collation],
+dtb.name AS [DatabaseName2]
+FROM
+master.sys.databases AS dtb
+WHERE
+(dtb.name=@_msparam_0)</value>
+    </data>
+  </event>
+  <event name="attention" package="sqlserver" timestamp="2016-02-02T12:39:47.376Z">
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>437</value>
+    </data>
+    <data name="request_id">
+      <type name="int32" package="package0" />
+      <value>2</value>
+    </data>
+  </event> 
+  <event name="rpc_completed" package="sqlserver" timestamp="2016-02-02T12:39:47.376Z">
+    <data name="cpu_time">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>2521</value>
+    </data>
+    <data name="physical_reads">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="logical_reads">
+      <type name="uint64" package="package0" />
+      <value>6</value>
+    </data>
+    <data name="writes">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="result">
+      <type name="rpc_return_result" package="sqlserver" />
+      <value>0</value>
+      <text>OK</text>
+    </data>
+    <data name="row_count">
+      <type name="uint64" package="package0" />
+      <value>1</value>
+    </data>
+    <data name="connection_reset_option">
+      <type name="connection_reset_option" package="sqlserver" />
+      <value>0</value>
+      <text>None</text>
+    </data>
+    <data name="object_name">
+      <type name="unicode_string" package="package0" />
+      <value>sp_executesql</value>
+    </data>
+    <data name="statement">
+      <type name="unicode_string" package="package0" />
+      <value>exec sp_executesql N'SELECT
+dtb.collation_name AS [Collation],
+dtb.name AS [DatabaseName2]
+FROM
+master.sys.databases AS dtb
+WHERE
+(dtb.name=@_msparam_0)',N'@_msparam_0 nvarchar(4000)',@_msparam_0=N'master'</value>
+    </data>
+    <data name="data_stream">
+      <type name="binary_data" package="package0" />
+      <value />
+    </data>
+    <data name="output_parameters">
+      <type name="xml" package="package0" />
+      <value />
+    </data>
+  </event>
+</RingBufferTarget>
