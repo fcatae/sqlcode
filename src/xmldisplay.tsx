@@ -87,8 +87,17 @@ var App = React.createClass({
 
 var ReportAttention = React.createClass({
     render: function() {
-        return <h1>Attention</h1>;
-    }
+        var events = this.props.data.events;
+        var eventos = events.map(function(el,i) {
+            
+            if(el.name != 'attention') 
+                 return null;
+
+            return <Evento key={i} id={i} name={el.name} timestamp={el.timestamp} data={el.data}></Evento>
+        });
+        
+        return <table className="table"><tbody>
+        {eventos}</tbody></table>;      }
 });
 
 var ReportDuration = React.createClass({

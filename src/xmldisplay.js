@@ -55,7 +55,13 @@ var App = React.createClass({
 });
 var ReportAttention = React.createClass({
     render: function () {
-        return React.createElement("h1", null, "Attention");
+        var events = this.props.data.events;
+        var eventos = events.map(function (el, i) {
+            if (el.name != 'attention')
+                return null;
+            return React.createElement(Evento, {"key": i, "id": i, "name": el.name, "timestamp": el.timestamp, "data": el.data});
+        });
+        return React.createElement("table", {"className": "table"}, React.createElement("tbody", null, eventos));
     }
 });
 var ReportDuration = React.createClass({
