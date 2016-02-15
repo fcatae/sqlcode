@@ -4,6 +4,7 @@
 function templateInit(options) {
     
     var ui = {
+        title: $('#idTitle'),
         defaultButton: $('#idButton'),
         progressBar: $('#idProgress'),
         textarea: $('#idTextarea'),
@@ -21,5 +22,6 @@ function templateInit(options) {
     ui.alertConnecting.hide();
     ui.alertConnectionFailed.hide();
     ui.alertExecute.hide();
-    
+
+    ui.title.text(options.title);    
 }

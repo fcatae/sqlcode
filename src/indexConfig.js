@@ -2,18 +2,42 @@
 
     var config = {
         index: {
-            title: 'execute SQL',
-            process: templateIndexHtml
-        },
-        xml: {
-            title: 'process XML',
-            process: templateXmlHtml
+            title: 'SQL Endpoint',
+            process: templateSqlEndpoint
         },
         default: {
             process: templateDefault
-        }
+        },
+        attention: {
+            title: 'Attentions',
+            process: reportTemplate
+        },
+        workers: {
+            title: 'Workers',
+            process: reportTemplate
+        },
+        resourceStats: {
+            title: 'Resource stats',
+            process: reportTemplate
+        },
+        queryDuration: {
+            title: 'Query duration',
+            process: reportTemplate
+        },
+        blocking: {
+            title: 'Blocking',
+            process: reportTemplate
+        },
+        waitstats: {
+            title: 'Waitstats',
+            process: reportTemplate
+        },
+        xml: {
+            title: '-- old process XML',
+            process: templateXmlHtml
+        }        
     };
-    
+
     var current = window.location.search.substring(1);
     
     var options = config[current] || config.default;
@@ -23,7 +47,7 @@
         
         (options.process) && options.process(options.ui);
 
-        //templateIndexHtml(options.ui);
+        //templateSqlEndpoint(options.ui);
     })
 
     function templateDefault(ui) {
@@ -41,7 +65,7 @@
 
 })();
 
-function templateIndexHtml(ui) {
+function templateSqlEndpoint(ui) {
         
     var conn = createSqlClient();
 
@@ -113,6 +137,61 @@ function templateIndexHtml(ui) {
 }
 
 function templateXmlHtml(ui) {
+    
+    var initial = '<RingBufferTarget eventCount="2"> \
+        <event name="sp_statement_completed" package="sqlserver" \
+        timestamp="2016-02-02T12:39:47.375Z"></event> \
+        <event name="sp_statement_completed" package="sqlserver" \
+        timestamp="2016-02-02T12:39:47.375Z"></event> \
+        </RingBufferTarget>';
+            
+   ui.textarea.text(initial);
+      
+   ui.defaultButton.click(parse);
+   
+   function parse() {
+       
+        var text = ui.textarea.val();
+
+        var parser = XmlParser.init(window.sax);
+        var data = parser.parse(text);
+
+        // $('#results').text(JSON.stringify(data));
+          
+        renderXmlDisplay(ui.results.selector, data);
+   }
+   
+}
+
+
+function reportAttention(ui) {
+    
+    var initial = '<RingBufferTarget eventCount="2"> \
+        <event name="sp_statement_completed" package="sqlserver" \
+        timestamp="2016-02-02T12:39:47.375Z"></event> \
+        <event name="sp_statement_completed" package="sqlserver" \
+        timestamp="2016-02-02T12:39:47.375Z"></event> \
+        </RingBufferTarget>';
+            
+   ui.textarea.text(initial);
+      
+   ui.defaultButton.click(parse);
+   
+   function parse() {
+       
+        var text = ui.textarea.val();
+
+        var parser = XmlParser.init(window.sax);
+        var data = parser.parse(text);
+
+        // $('#results').text(JSON.stringify(data));
+          
+        renderXmlDisplay(ui.results.selector, data);
+   }
+   
+}
+
+function reportTemplate(ui) {
     
     var initial = '<RingBufferTarget eventCount="2"> \
         <event name="sp_statement_completed" package="sqlserver" \
