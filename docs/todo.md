@@ -77,8 +77,18 @@ criação de testes individuais com o Mocha.
 
 ## Ação
 
+agora:
+- Criar um template HTML
+
 - Garantir que a página HTML inicial é customizável, substituindo o jQuery por React
 se necessário (talvez nao seja). 
+* coletar a query string - OK
+* selecionar o template - OK
+* template config = com options - OK
+
+
+depois:
+
 - Teste: Instanciar uma página HTML do zero usando somente services + options.
 - Separar os componentes de visualização JSX em arquivos distintos
 - Teste: Criar uma página de visualização central
