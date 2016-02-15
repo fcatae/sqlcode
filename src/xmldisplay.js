@@ -66,7 +66,14 @@ var ReportAttention = React.createClass({
 });
 var ReportDuration = React.createClass({
     render: function () {
-        return React.createElement("h1", null, "Duration");
+        var events = this.props.data.events;
+        var eventos = events.map(function (el, i) {
+            if (el.name != 'rpc_completed' &&
+                el.name != 'sql_batch_completed')
+                return null;
+            return React.createElement(Evento, {"key": i, "id": i, "name": el.name, "timestamp": el.timestamp, "data": el.data});
+        });
+        return React.createElement("table", {"className": "table"}, React.createElement("tbody", null, eventos));
     }
 });
 var ReportWaitInfo = React.createClass({

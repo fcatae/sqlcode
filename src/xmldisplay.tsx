@@ -102,7 +102,18 @@ var ReportAttention = React.createClass({
 
 var ReportDuration = React.createClass({
     render: function() {
-        return <h1>Duration</h1>;
+        var events = this.props.data.events;
+        var eventos = events.map(function(el,i) {
+            
+            if(el.name != 'rpc_completed' && 
+                el.name != 'sql_batch_completed')
+                return null;
+                
+            return <Evento key={i} id={i} name={el.name} timestamp={el.timestamp} data={el.data}></Evento>
+        });
+        
+        return <table className="table"><tbody>
+        {eventos}</tbody></table>;  
     }
 });
 
