@@ -114,6 +114,24 @@ var ReportDuration = React.createClass({
     }
 });
 
+var ReportStmtDuration = React.createClass({
+    render: function() {
+        var events = this.props.data.events;
+        var eventos = events.map(function(el,i) {
+            
+            if(el.name != 'sp_statement_completed' && 
+                el.name != 'sql_statement_completed')
+                return null;
+                
+            return <Evento key={i} id={i} name={el.name} timestamp={el.timestamp} data={el.data}></Evento>
+        });
+        
+        return <table className="table"><tbody>
+        {eventos}</tbody></table>;  
+    }
+});
+
+
 var ReportWaitInfo = React.createClass({
     render: function() {
         var events = this.props.data.events;

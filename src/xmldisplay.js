@@ -73,6 +73,18 @@ var ReportDuration = React.createClass({
         return React.createElement("table", {"className": "table"}, React.createElement("tbody", null, eventos));
     }
 });
+var ReportStmtDuration = React.createClass({
+    render: function () {
+        var events = this.props.data.events;
+        var eventos = events.map(function (el, i) {
+            if (el.name != 'sp_statement_completed' &&
+                el.name != 'sql_statement_completed')
+                return null;
+            return React.createElement(Evento, {"key": i, "id": i, "name": el.name, "timestamp": el.timestamp, "data": el.data});
+        });
+        return React.createElement("table", {"className": "table"}, React.createElement("tbody", null, eventos));
+    }
+});
 var ReportWaitInfo = React.createClass({
     render: function () {
         var events = this.props.data.events;

@@ -22,6 +22,7 @@ var data = {
 var processors = {
     attention: processXEvents(ReportAttention),
     duration: processXEvents(ReportDuration),
+    stmtDuration: processXEvents(ReportStmtDuration),
     waitinfo: processXEvents(ReportWaitInfo)
 };
 
