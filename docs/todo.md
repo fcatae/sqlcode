@@ -85,6 +85,7 @@ se necessário (talvez nao seja).
 * coletar a query string - OK
 * selecionar o template - OK
 * template config = com options - OK
+- limpar o template.js e mover a lógica para outro arquivo (templateConfig?)
 
 
 depois:
