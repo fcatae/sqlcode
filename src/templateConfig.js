@@ -1,33 +1,40 @@
 (function() {
 
     var config = {
+        index: {
+            process: templateIndexHtml
+        },
         xml: {
-            aviso: 'Hey!!!'
+            process: templateXmlHtml
+        },
+        default: {
+            process: templateDefault
         }
     };
     
     var current = window.location.search.substring(1);
     
-    var options = config[current] || {};
+    var options = config[current] || config.default;
     
     $(document).ready(function() {
         templateInit(options);
+        
+        (options.process) && options.process(options.ui);
+
         //templateIndexHtml(options.ui);
     })
 
-    // // query string
-    // function getQueryVariable(variable) {
-    //     // assumes no hash
-    //     var query = window.location.search.substring(1);
-    //     var vars = query.split('&');
-    //     for (var i = 0; i < vars.length; i++) {
-    //         var pair = vars[i].split('=');
-    //         if (decodeURIComponent(pair[0]) == variable) {
-    //             return decodeURIComponent(pair[1]);
-    //         }
-    //     }
-    // }
-    
+    function templateDefault(ui) {
+        ui.defaultButton.hide();
+        ui.textarea.hide();
+        ui.results.text('');
+        
+        var location = window.location.href;
+        for(var elem in config) {
+            ui.results.append(`<p><a href="${location}?${elem}">${location}?${elem}</a></p>`);
+        }
+    }
+
 })();
 
 function templateIndexHtml(ui) {
@@ -99,4 +106,31 @@ function templateIndexHtml(ui) {
 
     ui.alertExecute.hide();
     ui.results.hide();
+}
+
+function templateXmlHtml(ui) {
+    
+    var initial = '<RingBufferTarget eventCount="2"> \
+        <event name="sp_statement_completed" package="sqlserver" \
+        timestamp="2016-02-02T12:39:47.375Z"></event> \
+        <event name="sp_statement_completed" package="sqlserver" \
+        timestamp="2016-02-02T12:39:47.375Z"></event> \
+        </RingBufferTarget>';
+            
+   ui.textarea.text(initial);
+      
+   ui.defaultButton.click(parse);
+   
+   function parse() {
+       
+        var text = ui.textarea.val();
+
+        var parser = XmlParser.init(window.sax);
+        var data = parser.parse(text);
+
+        // $('#results').text(JSON.stringify(data));
+          
+        renderXmlDisplay(ui.results.selector, data);
+   }
+   
 }
