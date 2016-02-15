@@ -1,6 +1,11 @@
+SQL Code
+=========
 
-Problemas
-==========
+Ferramenta moderna de coleta de dados do Azure
+
+# Introdução
+
+## Problemas
 
 * Limitações do SMSS
    * Lentidão (carregamento)
@@ -18,22 +23,30 @@ Solução: Editor com Dashboard
 * Entender o impacto do Waitstats
    * Não está claro o impacto dos waitstats sobre o resource-stats
 
-
-Objetivo
-==========
+## Cenários
 
 * Identificar os pontos de gargalo de uma aplicação
 * Obter um dashboard com informações básicas sobre o servidor
 * Levantamento do resource_stats para identificar os momentos mais críticos
 * Levantar o tempo de execução de query e o consumo correspondente
 
-Outros
-=======
+### Outros
 
 * Editor de texto com suporte a syntax highlighting (ACE textmate)
 
-Plano
-=======
+
+Roadmap
+========
+
+## 0.2
+- Versão web para consultas SQL
+- Relatórios
+
+
+Execução
+=========
+
+## Cenários
 
 * Relatório com attentions (timeouts)
 * Relatório de Workers
@@ -43,6 +56,8 @@ Plano
 * Distribuição de waitstats
 
 * UI: Tela de login (?)
+
+## Organização
 
 O carregamento do XML deverá ser feito em partes:
 - HTML: navigation
@@ -60,7 +75,8 @@ redundância.
 3. Os módulos e serviços devem ser estruturados através do CommonJS. Isso facilita a
 criação de testes individuais com o Mocha.
 
-Ação:
+## Ação
+
 - Garantir que a página HTML inicial é customizável, substituindo o jQuery por React
 se necessário (talvez nao seja). 
 - Teste: Instanciar uma página HTML do zero usando somente services + options.
@@ -70,41 +86,30 @@ se necessário (talvez nao seja).
 - Configurar o webpack para gerar os pacotes necessários para usar o Require
 - Teste: organizar novamente a estrutura de teste 
 - Listar os Options na lateral
+- Script XEvents
+
+## Exemplo
 
 Situação: 
 - parser do attention
 
+Etc
+=====
 
-## Lab: Processar XMl
+## Referências Futuras
 
-## Lab: ChartJS
+### Lab: Processar XMl
+
+### Lab: ChartJS
 * ChartJS: http://www.chartjs.org/docs/#bar-chart-introduction
 * NvD3: http://nvd3.org/examples/bullet.html
 
 
 
+Histórico
+==========
 
-
-
-## Alpha v0.1
-
-v0.1: Cenário : entrar no aplicativo para obter as últimas informações sobre o desempenho do sistema.
-
-DONE: console:
-- listagem das colunas resource_stats
-- listagem das colunas sys.dm_exec_requests
-- carregamento do SQL Text
-- carregamento do Query Plan
-- carregamento do XML
-
-DONE: Módulo NodeJS com endpoint SQL.
-- login armazendo em process.env
-- adicionado o arquivo .config para permitir testes com Mocha
-
-DONE: _cleanup
-
-DONE: - Mover a lógica do SQLCode para o REPL (nao e mais necessario) - sqlcode
-Endpoints:
-- static
-- live
-- local
+## 0.1 (Alpha)
+- Cleanup dos arquivos no root
+- Versão console para consultas SQL
+- Testes com Mocha
