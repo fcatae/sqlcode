@@ -1,0 +1,470 @@
+<RingBufferTarget truncated="0" processingTime="0" totalEventsProcessed="13" eventCount="13" droppedCount="0" memoryUsed="1742">
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T13:47:28.285Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>66</value>
+      <text>PAGEIOLATCH_SH</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>30</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000008f1528e540</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>56</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T13:47:28.675Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>66</value>
+      <text>PAGEIOLATCH_SH</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>380</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000008f1528fa40</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>56</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T13:47:28.895Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>66</value>
+      <text>PAGEIOLATCH_SH</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>13</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000008f152917c0</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>56</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T13:47:29.098Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>66</value>
+      <text>PAGEIOLATCH_SH</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>14</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000008f15294ac0</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>56</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T13:47:29.317Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>66</value>
+      <text>PAGEIOLATCH_SH</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>30</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000008f152983c0</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>56</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T13:47:29.567Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>123</value>
+      <text>SOS_SCHEDULER_YIELD</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>11</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>11</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000000000000000</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>56</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T16:51:12.442Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>181</value>
+      <text>WRITELOG</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>108</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000000000000000</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>53</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T16:52:52.851Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>97</value>
+      <text>IO_COMPLETION</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>177</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000000000000000</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>53</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T16:52:53.006Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>97</value>
+      <text>IO_COMPLETION</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>116</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000000000000000</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>53</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T16:55:33.323Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>6</value>
+      <text>LCK_M_IS</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>15740</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x000000a4f901c840</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>7147320847829716525</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>15207413913343471625</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>54</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T16:56:42.452Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>6</value>
+      <text>LCK_M_IS</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>12367</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x000000a4f5bdcc80</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>7147320847829716525</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>15207413913343471625</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>54</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-11T16:59:03.781Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>97</value>
+      <text>IO_COMPLETION</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>125</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000000000000000</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>53</value>
+    </action>
+  </event>
+  <event name="wait_info" package="sqlos" timestamp="2016-02-12T01:26:39.923Z">
+    <data name="wait_type">
+      <type name="wait_types" package="sqlos" />
+      <value>404</value>
+      <text>XE_BUFFERMGR_ALLPROCESSED_EVENT</text>
+    </data>
+    <data name="opcode">
+      <type name="event_opcode" package="sqlos" />
+      <value>1</value>
+      <text>End</text>
+    </data>
+    <data name="duration">
+      <type name="uint64" package="package0" />
+      <value>408</value>
+    </data>
+    <data name="signal_duration">
+      <type name="uint64" package="package0" />
+      <value>0</value>
+    </data>
+    <data name="wait_resource">
+      <type name="ptr" package="package0" />
+      <value>0x0000000000000000</value>
+    </data>
+    <action name="query_plan_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>12424520122696413744</value>
+    </action>
+    <action name="query_hash" package="sqlserver">
+      <type name="uint64" package="package0" />
+      <value>16173956160658736290</value>
+    </action>
+    <action name="session_id" package="sqlserver">
+      <type name="uint16" package="package0" />
+      <value>53</value>
+    </action>
+  </event>
+</RingBufferTarget>

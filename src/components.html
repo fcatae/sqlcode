@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Components</title>
+    <link rel="stylesheet" href="lib/bootstrap.css">
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+
+    <!--Import external libraries-->
+    <script src="lib/sax.js"></script>
+    <script src="lib/react.min.js"></script>
+    <script src="lib/react-dom.min.js"></script>    
+
+    <!--Import Xml parsers and renders-->
+    <script src="xmlparser.js"></script>
+    <script src="xmldisplay.js"></script>
+    
+    <script src="components.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1 id="idTitle">Component</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="dropdown" id="idDropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="myDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Available Templates <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </div>                 
+                    <p></p>                    
+                    
+                    <p><textarea class="form-control" name="idTextarea" spellCheck="false" id="idTextarea" cols="30" rows="10"></textarea></p>
+                    
+                    
+                    <button id="idButton" class="btn btn-primary">Processar</button>
+                    
+                    <div class="btn-group" id="idDropdownProcessor">
+                            
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="name">name...</span> <span class="caret"></span>
+                        </button>
+                        
+                        <ul class="dropdown-menu">
+                        </ul>
+                        
+                    </div>
+                    <progress id="idProgress"></progress>            
+                </div> 
+            </div>
+            <div class="col-md-12">
+                <div id="idResults">
+                    [Resultados]
+                </div>
+            </div>
+            
+        </div>
+    </div>    
+    
+</body>
+</html>
