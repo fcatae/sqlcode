@@ -22,7 +22,8 @@ var data = {
 var processors = {
     attention: showCommand,
     duration: showCommand,
-    waitinfo: showCommand
+    waitinfo: showCommand,
+    testParser: testParser
 };
 
 $(document).ready(function() {
@@ -35,7 +36,7 @@ $(document).ready(function() {
         button: $('#idButton'),
         dropdownProcessorName: $('#idDropdownProcessor .name'),
         dropdownProcessors: $('#idDropdownProcessor .dropdown-menu'),
-        results: $('idResults')
+        results: $('#idResults')
     } 
     ui.progressBar.hide();
         
@@ -70,7 +71,6 @@ $(document).ready(function() {
 
     })
 });
-
         
 function showCommand(text, dest) {
     var cmd = $('#idDropdownProcessor .name')[0].textContent;
@@ -79,3 +79,14 @@ function showCommand(text, dest) {
     console.log(text);
     console.log('dest: ' + dest);
 }
+
+function testParser(text, dest) {
+
+    var parser = XmlParser.init(window.sax);
+    var data = parser.parse(text);
+
+    //$(dest).text(text);
+    renderXmlDisplay(dest, data);
+    
+}
+
