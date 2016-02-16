@@ -1,3 +1,26 @@
+Arquitetura
+=============
+
+## Organização
+
+O carregamento do XML deverá ser feito em partes:
+- HTML: navigation
+- JSX: UI components 
+- Modules: Services and non-UI dependencies 
+
+1. Criamos uma página HTML customizável com init(services, options) para realizar os 
+bindings necessários entre os componentes. Inicialmente teremos apenas uma página
+HTML com o esqueleto.
+
+2. Os componentes de visualização podem ser construídos com o JSX. Uma página de teste
+deve permitir associar os Models aos Componentes JSX de forma centralizada, evitando
+redundância.
+
+3. Os módulos e serviços devem ser estruturados através do CommonJS. Isso facilita a
+criação de testes individuais com o Mocha.
+
+
+
 Visao Geral
 =============
 

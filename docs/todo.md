@@ -10,108 +10,104 @@ Ferramenta moderna de coleta de dados do Azure
 * Limitações do SMSS
    * Lentidão (carregamento)
    * Gerenciamento de login/pwd
-Alternativa: dicas de onde clicar (e onde não clicar)   
-Solução: Editor com Dashboard
 
 * Limitação do Blocker Script
+   * Necessidade de estar sempre conectado e falhas intermitentes
+   * Não está claro o impacto dos waitstats sobre o resource-stats
+
+* Dificuldade de usar Extended Events
    * Interpretação do resultado XML
 
-* Limitação do serviço de endpoint SQL
-   * Necessidade de estar sempre conectado
-   * Dificuldade em depuração?
 
-* Entender o impacto do Waitstats
-   * Não está claro o impacto dos waitstats sobre o resource-stats
+Notas:
+* Alternativa: dicas de onde clicar (e onde não clicar)   
+* Solução: Editor com Dashboard
 
 ## Cenários
 
-* Identificar os pontos de gargalo de uma aplicação
-* Obter um dashboard com informações básicas sobre o servidor
-* Levantamento do resource_stats para identificar os momentos mais críticos
-* Levantar o tempo de execução de query e o consumo correspondente
+* Usar como **ferramenta** do dia a dia 
+* Identificar os **pontos de gargalo** de uma aplicação
+* Apresentar um **dashboard** com informações básicas sobre o servidor
+* Visualizar os momentos com **maior consumo de recursos**
+* Criar **relatórios automatizados** e **gráficos**
 
-### Outros
+## Solução
+
+* Relatórios
+* Editor de texto
+* Salvar arquivos
+
+### Relatórios
+
+* Relatório com attentions (timeouts)
+* Relatório com o tempo de queries
+* Distribuição de waitstats
+
+### Editor de Texto Avançado
 
 * Editor de texto com suporte a syntax highlighting (ACE textmate)
+
 
 
 Roadmap
 ========
 
+## 0.3
+- Script XEvents: Duration e Wait types
+- Dashboards para múltiplos servers
+- Relatórios adicionais   
+- Workspace: salvar arquivos
+    
+PLAN
+======
 
+## Situation
 
-Execução
-=========
+* Rodar XEvents contra 4 servidores
+    * ter script pronto
+    * ter relatórios de dashboard
+    * suporte a endpoint com multiplas conexões
+    * configurar xevents automaticamente
+    * obter relatorio do xevents automaticamente
+    * salvar os arquivos do xevents
 
-## Cenários
+## Tasks
 
-* Relatório com attentions (timeouts)
-* Relatório de Workers
-* Relatório sobre o resource stats
-* Relatório com o tempo de queries
-* Relatório de blocking
-* Distribuição de waitstats
-
+* Script
+    * Relatório de blocking
+* [melhoria] Integração Typescript
+    * Fácil depuração
+* Componentes Dashboard
+    * master
+    * resource_stats
+    * workers
+    * XEvents
+* Charts
+    * Versão Texto
+    * Versão Gráfica    
+* Parser de RPT
+    * Carregamento do resource stats
+* Gravação de arquivos
+* /Dist
+    * Integrado com o Gulp ou outro workflow + webpack
+    * Reorganizar o diretório de testes
 * UI: Tela de login (?)
-
-## Organização
-
-O carregamento do XML deverá ser feito em partes:
-- HTML: navigation
-- JSX: UI components 
-- Modules: Services and non-UI dependencies 
-
-1. Criamos uma página HTML customizável com init(services, options) para realizar os 
-bindings necessários entre os componentes. Inicialmente teremos apenas uma página
-HTML com o esqueleto.
-
-2. Os componentes de visualização podem ser construídos com o JSX. Uma página de teste
-deve permitir associar os Models aos Componentes JSX de forma centralizada, evitando
-redundância.
-
-3. Os módulos e serviços devem ser estruturados através do CommonJS. Isso facilita a
-criação de testes individuais com o Mocha.
-
-## Ação
-
-depois:
-
-- Script XEvents
-- Encapsular as animações em componentes específicos de Alerts.
-    * react (?)
+* Reestruturar Alerts 
     * create alert (global)
     * create alert for #id
-- Configurar o webpack para gerar os pacotes necessários para usar o Require
-    * Teste: organizar novamente a estrutura de teste 
-- Criar um diretório /dist com o output dos arquivos
-- Compilação em typescript com suporte a debug
 
-## Exemplo
+## Actions
 
-Situação: 
-- parser do attention
 
 Etc
 =====
 
 ## Referências Futuras
 
-### Lab: Processar XMl
+### Lab: Debugging Typescript
+
+### Lab: Debugging Chrome
 
 ### Lab: ChartJS
 * ChartJS: http://www.chartjs.org/docs/#bar-chart-introduction
 * NvD3: http://nvd3.org/examples/bullet.html
-
-
-
-Histórico
-==========
-
-## 0.2
-- Versão web para consultas SQL
-- Relatórios baseados em template HTML
-
-## 0.1 (Alpha)
-- Cleanup dos arquivos no root
-- Versão console para consultas SQL
-- Testes com Mocha
