@@ -38,9 +38,6 @@ Solução: Editor com Dashboard
 Roadmap
 ========
 
-## 0.2
-- Versão web para consultas SQL
-- Relatórios
 
 
 Execução
@@ -77,34 +74,15 @@ criação de testes individuais com o Mocha.
 
 ## Ação
 
-agora:
-- Criar um template HTML
-
-- Garantir que a página HTML inicial é customizável, substituindo o jQuery por React
-se necessário (talvez nao seja). 
-* coletar a query string - OK
-* selecionar o template - OK
-* template config = com options - OK
-- Teste: Instanciar uma página HTML do zero usando somente services + options.
-* limpar o template.js e mover a lógica para outro arquivo (templateConfig?) - OK
-- Listar os Options na lateral
-* Usar o template default para listar as configurações
-- Separar os componentes de visualização JSX em arquivos distintos
-* Criação dos entry points para os relatórios
-- Teste: Criar uma página de visualização central
-* Criar os samples para serem processados
-* Criar uma página para carregar os componentes JSX
-- Script XEvents
-* Coletar mais dados sobre os eventos
-
 depois:
 
+- Script XEvents
 - Encapsular as animações em componentes específicos de Alerts.
     * react (?)
     * create alert (global)
     * create alert for #id
 - Configurar o webpack para gerar os pacotes necessários para usar o Require
-- Teste: organizar novamente a estrutura de teste 
+    * Teste: organizar novamente a estrutura de teste 
 - Criar um diretório /dist com o output dos arquivos
 - Compilação em typescript com suporte a debug
 
@@ -128,6 +106,10 @@ Etc
 
 Histórico
 ==========
+
+## 0.2
+- Versão web para consultas SQL
+- Relatórios baseados em template HTML
 
 ## 0.1 (Alpha)
 - Cleanup dos arquivos no root
