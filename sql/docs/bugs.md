@@ -23,3 +23,9 @@ Operation failed. Operation will cause database event session memory to exceed a
 XML: truncated=1 - limite de 4MB
 
 design change: nao é possivel usar variaveis para estabelecer filtros
+
+
+na master: 
+alter database dbp1 set delayed_durability = allowed
+funciona!!! mas select * from sys.databases nao reflete o status correto.
+
