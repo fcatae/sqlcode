@@ -1,0 +1,89 @@
+DTU
+
+# Service and Performance Tiers
+Basic (5DTU)
+
+S0 (10DTU)
+S1 (20DTU)
+S2 (50DTU)
+S3 (100DTU)
+
+P1 (125DTU)
+P2 (250DTU)
+P4 (500DTU)
+P6 (1000DTU)
+P11 (1750DTU)
+
+
+# Storage
+Basic: 2GB
+Standard: 250GB
+Premium: 500GB
+P11: 1TB
+
+# Backup
+Basic: 7 days
+Standard: 14 days
+Premium: 35 days
+
+# InMemory Features - Hekaton and Columnstore (Premium)
+P1: 1GB
+P2: 2GB
+P4: 4GB
+P6: 8GB
+P11: 14GB
+
+# Requests and Sessions
+Basic: 30/300
+S0: 60/600
+S1: 90/900
+S3: 120/1200
+S4: 200/2400
+P1: 200/2400
+P2: 400/4800
+P4: 800/9600
+P6: 1600/19200
+P11: 2400/32000
+
+# CPU
+
+Basic: 5%
+S0: 10%
+S1: 20%
+S2: 50%
+S3: 100%
+
+P1 (125DTU) 1 CPU
+P2 (250DTU) 2 CPU
+P4 (500DTU) 4 CPU
+P6 (1000DTU) 8 CPU
+P11 (1750DTU) 14 CPU
+
+# Disk Data: IOPS
+
+Basic (5DTU): 16 IOPS (128kb)
+
+S0 (10DTU): 30 IOPS (240kb)
+S1 (20DTU): 45 IOPS (360kb)
+S2 (50DTU): 90 IOPS (720kb)
+S3 (100DTU): 160 IOPS (1280kb)
+
+P1 (125DTU) 1500 IOPS
+P2 (250DTU) 3000 IOPS
+P4 (500DTU) 6000 IOPS
+P6 (1000DTU) 10000 IOPS
+P11 (1750DTU) 21000 IOPS
+
+# Log bytes: MB
+
+Basic (5DTU): 200kb
+
+S0 (10DTU): 600kb
+S1 (20DTU): 650kb
+S2 (50DTU): 900kb
+S3 (100DTU): 1300kb 
+
+P1 (125DTU) 2Mb/s
+P2 (250DTU) 5Mb/s
+P4 (500DTU) 11Mb/s
+P6 (1000DTU) 23Mb/s
