@@ -1,3 +1,25 @@
+SELECT * FROM 
+(VALUES
+	('Edition', CAST(SERVERPROPERTY('Edition') AS VARCHAR)), 
+	('ProductVersion', CAST(SERVERPROPERTY('ProductVersion') AS VARCHAR)),
+	('productLevel', CAST(SERVERPROPERTY('ProductLevel') AS VARCHAR)),
+	('ResourceVersion', CAST(SERVERPROPERTY('ResourceVersion') AS VARCHAR)),
+	('ResourceLastUpdate', CONVERT(VARCHAR,SERVERPROPERTY('ResourceLastUpdateDateTime'),102)),
+	('',''),
+	('ServerName', @@SERVERNAME),
+	('Database', DB_NAME()),
+	('', ''),
+	('Edition', CAST(DATABASEPROPERTYEX(DB_NAME(),'Edition') AS VARCHAR)),
+	('ServiceObjective', CAST(DATABASEPROPERTYEX(DB_NAME(),'ServiceObjective') AS VARCHAR)),
+	('MaxSizeInMBytes', CAST(CAST(DATABASEPROPERTYEX(DB_NAME(),'MaxSizeInBytes') AS BIGINT)/1024/1024 AS VARCHAR)),
+	('',''),
+	('Session', CAST(@@SPID AS VARCHAR)),
+	('Date(UTC)', CONVERT(VARCHAR,GETUTCDATE(),120))
+) 
+A([SQL Azure],[Database Overview])
+
+
+
 
 select * from sys.databases
 
