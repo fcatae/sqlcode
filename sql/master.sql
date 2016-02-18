@@ -28,7 +28,7 @@ A([SQL Azure],[Database Overview]);
 
 
 PRINT ''
-PRINT '-- SELECT * FROM sys.[databases]' -- list all databases
+PRINT ' -- SELECT * FROM sys.[databases]' -- list all databases
 PRINT ''
 SELECT @time = GETDATE()
 
@@ -56,11 +56,11 @@ FROM sys.databases;
 -- ALTER DATABASE <database> SET READ_ONLY
 -- ALTER DATABASE <database> SET DELAYED_DURABILITY = FORCED
 
-PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
+PRINT '  (Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
 
 PRINT ''
-PRINT '-- SELECT * FROM sys.[elastic_pool_resource_stats]' -- resource consumption (elastic pool)
+PRINT ' -- SELECT * FROM sys.[elastic_pool_resource_stats]' -- resource consumption (elastic pool)
 PRINT ''
 SELECT @time = GETDATE()
 
@@ -80,11 +80,11 @@ SELECT
 FROM sys.elastic_pool_resource_stats --ORDER BY 1 DESC
 WHERE end_time > DATEADD(s,-3600,GETDATE())
 
-PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
+PRINT '  (Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
 
 PRINT ''
-PRINT '-- SELECT * FROM sys.[resource_stats]' -- resource consumption (servers)
+PRINT ' -- SELECT * FROM sys.[resource_stats]' -- resource consumption (servers)
 PRINT ''
 SELECT @time = GETDATE()
 
@@ -106,10 +106,10 @@ SELECT TOP(@numdb)
 FROM sys.resource_stats ORDER BY 1 DESC
 -- Bug: Filtering with WHERE is slow. Use TOP + ORDER_BY instead.
 
-PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
+PRINT '  (Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
 PRINT ''
-PRINT '-- SELECT * FROM sys.[database_connection_stats]' 
+PRINT ' -- SELECT * FROM sys.[database_connection_stats]' 
 PRINT ''
 SELECT @time = GETDATE()
 
@@ -129,11 +129,11 @@ BEGIN
 	ORDER BY end_time DESC
 END
 
-PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
+PRINT '  (Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
 
 PRINT ''
-PRINT '-- SELECT * FROM sys.[user_token]'
+PRINT ' -- SELECT * FROM sys.[user_token]'
 PRINT ''
 SELECT @time = GETDATE()
 
@@ -144,11 +144,11 @@ SELECT principal_id,
 	[sid]
 FROM sys.user_token
 
-PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
+PRINT '  (Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
 
 PRINT ''
-PRINT '-- SELECT * FROM sys.[sql_logins] JOIN sys.[database_principals]'
+PRINT ' -- SELECT * FROM sys.[sql_logins] JOIN sys.[database_principals]'
 PRINT ''
 SELECT @time = GETDATE()
 
@@ -160,11 +160,11 @@ SELECT l.principal_id,
 	l.sid
 FROM sys.sql_logins l LEFT JOIN sys.database_principals p ON l.sid = p.sid
 
-PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
+PRINT '  (Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
 
 PRINT ''
-PRINT '-- SELECT * FROM sys.[database_role_members]'
+PRINT ' -- SELECT * FROM sys.[database_role_members]'
 PRINT ''
 SELECT @time = GETDATE()
 
@@ -174,11 +174,11 @@ SELECT
 FROM sys.database_role_members rm
 ORDER BY role_name
 
-PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
+PRINT '  (Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
 
 PRINT ''
-PRINT '-- WITH() SELECT * FROM sys.[resource_stats]'
+PRINT ' -- WITH() SELECT * FROM sys.[resource_stats]'
 PRINT ''
 SELECT @time = GETDATE()
 
@@ -209,4 +209,4 @@ select
 from vwDatabases order by database_name, timeslot
 
 
-PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)'
+PRINT '  (Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)'
