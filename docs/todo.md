@@ -52,25 +52,6 @@ Notas:
 Roadmap
 ========
 
-Command CLI???
-### process spawner 
-    - child_process.spawn(command[, args][, options])
-    - https://nodejs.org/api/child_process.html#child_process_options_detached
-- env var setting
-- prompt: set prompt=[%computername%] $p$g
-
-### execute script
-### salvar arquivo
-- report
-- xml
-
-### launcher para os demais cli
-
-### Dashboards para múltiplos servers?
-- adicionar endpoint /post para getconnection
-- passar as credenciais para o getconnection e receber o handler
-- chamar o comando /request usando o handle 
-
 ## 0.3
 - Script XEvents: Duration e Wait types
 - Dashboards para múltiplos servers
@@ -94,8 +75,13 @@ PLAN
 
 * Script
     * Relatório de blocking
+    - master.sql
+    - elastic.md
 * [melhoria] Integração Typescript
     * Fácil depuração
+* Command Line
+    * Input
+    * Process Env    
 * Componentes Dashboard
     * master
     * resource_stats
@@ -117,6 +103,24 @@ PLAN
 
 ## Actions
 
+Command CLI???
+### process spawner 
+    - child_process.spawn(command[, args][, options])
+    - https://nodejs.org/api/child_process.html#child_process_options_detached
+- env var setting
+- prompt: set prompt=[%computername%] $p$g
+
+### execute script
+### salvar arquivo
+- report
+- xml
+
+### launcher para os demais cli
+
+### Dashboards para múltiplos servers?
+- adicionar endpoint /post para getconnection
+- passar as credenciais para o getconnection e receber o handler
+- chamar o comando /request usando o handle 
 
 Etc
 =====
