@@ -1,7 +1,7 @@
-SET NOCOUNT ON
-
-DECLARE @time DATETIME
 DECLARE @fast BIT = 1
+DECLARE @time DATETIME
+
+SET NOCOUNT ON
 
 SELECT * FROM 
 (VALUES
@@ -61,10 +61,11 @@ PRINT '-- SELECT * FROM sys.[elastic_pool_resource_stats]' -- resource consumpti
 PRINT ''
 SELECT @time = GETDATE()
 
-SELECT TOP 20 
+SELECT 
 	start_time, 
 	end_time, 
 	elastic_pool_name=CAST(elastic_pool_name AS VARCHAR(32)), 
+	max_dtu = CAST(IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent ) AS VARCHAR(6)),
 	elastic_pool_dtu_limit, 
 	elastic_pool_storage_limit_mb, 
 	avg_storage_percent, 
@@ -73,8 +74,8 @@ SELECT TOP 20
 	avg_log_write_percent, 
 	max_worker_percent, 
 	max_session_percent 
-FROM sys.elastic_pool_resource_stats ORDER BY 1 DESC
--- Bug: Filtering with WHERE is slow. Use TOP + ORDER_BY instead.
+FROM sys.elastic_pool_resource_stats --ORDER BY 1 DESC
+WHERE end_time > DATEADD(s,-3600,GETDATE())
 
 PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
@@ -84,7 +85,22 @@ PRINT '-- SELECT * FROM sys.[resource_stats]' -- resource consumption (servers)
 PRINT ''
 SELECT @time = GETDATE()
 
-SELECT TOP 20 * FROM sys.resource_stats ORDER BY 1 DESC
+DECLARE @numdb INT = (SELECT COUNT(*)-1 FROM sys.databases)
+
+SELECT TOP(@numdb) 
+	start_time, 
+	end_time, 
+	database_name = CAST(database_name AS VARCHAR(32)), 
+	max_dtu = CAST(IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent ) AS VARCHAR(6)),
+	sku = CAST(sku AS VARCHAR(6)),  
+	dtu_limit,
+	storage_in_megabytes, 
+	avg_cpu_percent, 
+	avg_data_io_percent, 
+	avg_log_write_percent, 
+	max_worker_percent, 
+	max_session_percent		
+FROM sys.resource_stats ORDER BY 1 DESC
 -- Bug: Filtering with WHERE is slow. Use TOP + ORDER_BY instead.
 
 PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
@@ -95,8 +111,20 @@ PRINT ''
 SELECT @time = GETDATE()
 
 IF @fast=0
-SELECT TOP 20 * FROM sys.database_connection_stats ORDER BY 2 DESC
--- detailed information (slow): select * from sys.event_log
+BEGIN
+	SELECT
+		database_name, 
+		start_time, 
+		end_time, 
+		success_count, 
+		total_failure_count, 
+		connection_failure_count, 
+		terminated_connection_count, 
+		throttled_connection_count	
+	FROM sys.database_connection_stats 
+	WHERE end_time > DATEADD(s,-3600,GETDATE())
+	ORDER BY end_time DESC
+END
 
 PRINT '(Processing time: '  + convert(VARCHAR(12), datediff(ms,@time,getdate())) + 'ms)';
 
