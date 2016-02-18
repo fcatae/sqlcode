@@ -1,3 +1,6 @@
+PRINT 'Master Script v1.0'
+PRINT ''
+
 DECLARE @fast BIT = 0
 DECLARE @time DATETIME
 
@@ -7,7 +10,7 @@ SELECT * FROM
 (VALUES
 	('Edition', CAST(SERVERPROPERTY('Edition') AS VARCHAR)), 
 	('ProductVersion', CAST(SERVERPROPERTY('ProductVersion') AS VARCHAR)),
-	('productLevel', CAST(SERVERPROPERTY('ProductLevel') AS VARCHAR)),
+	('ProductLevel', CAST(SERVERPROPERTY('ProductLevel') AS VARCHAR)),
 	('ResourceVersion', CAST(SERVERPROPERTY('ResourceVersion') AS VARCHAR)),
 	('ResourceLastUpdate', CONVERT(VARCHAR,SERVERPROPERTY('ResourceLastUpdateDateTime'),102)),
 	('',''),
