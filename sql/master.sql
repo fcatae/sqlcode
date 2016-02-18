@@ -1,7 +1,7 @@
-PRINT 'Master Script v1.0.1'
+PRINT 'Master Script v1.1.1'
 PRINT ''
 
-DECLARE @fast BIT = 0
+DECLARE @fast BIT = 1
 DECLARE @time DATETIME
 
 SET NOCOUNT ON
@@ -68,7 +68,7 @@ SELECT
 	start_time, 
 	end_time, 
 	elastic_pool_name=CAST(elastic_pool_name AS VARCHAR(32)), 
-	max_dtu = CAST(IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent ) AS VARCHAR(6)),
+	dtu = CAST(0.01 * elastic_pool_dtu_limit * IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent ) AS VARCHAR(6)),
 	elastic_pool_dtu_limit, 
 	elastic_pool_storage_limit_mb, 
 	avg_storage_percent, 
@@ -94,7 +94,7 @@ SELECT TOP(@numdb)
 	start_time, 
 	end_time, 
 	database_name = CAST(database_name AS VARCHAR(32)), 
-	max_dtu = CAST(IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent ) AS VARCHAR(6)),
+	dtu = CAST((0.5+0.01 * dtu_limit * IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent )) AS int),
 	sku = CAST(sku AS VARCHAR(10)),  
 	dtu_limit,
 	storage_in_megabytes, 
@@ -191,18 +191,19 @@ with vwDatabases As
 select top(@db)
 	timeslot = ( convert(varchar(15),end_time,121 )),
 	database_name = cast(database_name as varchar(32)),
-	max_dtu = max(IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent )),
+	max_percent = max(IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent )),
 	max_cpu_percent = max(avg_cpu_percent), 
 	max_data_io_percent = max(avg_data_io_percent), 
-	max_log_write_percent = max(avg_log_write_percent) 
+	max_log_write_percent = max(avg_log_write_percent),
+    dtu_limit = max(dtu_limit)
 from sys.resource_stats group by database_name, convert(varchar(15),end_time,121 )
 order by 1 desc
 )
 select
 	timeslot = timeslot + '0', 
 	database_name, 
-	max_dtu = cast(max_dtu as int), 
-	max_dtu_graph = cast( replicate('*',cast(max_dtu/5 as int)) as varchar(20)),
+	max_percent = cast(max_percent as int), 
+	max_dtu_graph = cast( replicate('*',cast(max_percent/5 as int)) as varchar(20)),
 	max_cpu_percent = cast(max_cpu_percent as int), 
 	max_data_io_percent = cast(max_data_io_percent as int), 
 	max_log_write_percent = cast(max_log_write_percent as int)
