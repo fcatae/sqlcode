@@ -1,4 +1,4 @@
-PRINT 'Master Script v1.0'
+PRINT 'Master Script v1.0.1'
 PRINT ''
 
 DECLARE @fast BIT = 0
@@ -95,7 +95,7 @@ SELECT TOP(@numdb)
 	end_time, 
 	database_name = CAST(database_name AS VARCHAR(32)), 
 	max_dtu = CAST(IIF( IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent)>avg_log_write_percent , IIF(avg_cpu_percent>avg_data_io_percent, avg_cpu_percent, avg_data_io_percent), avg_log_write_percent ) AS VARCHAR(6)),
-	sku = CAST(sku AS VARCHAR(6)),  
+	sku = CAST(sku AS VARCHAR(10)),  
 	dtu_limit,
 	storage_in_megabytes, 
 	avg_cpu_percent, 
