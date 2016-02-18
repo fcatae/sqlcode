@@ -1,0 +1,1 @@
+connect server [database] [user] [password] 
