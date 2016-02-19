@@ -26,10 +26,12 @@
   },
   "dependencies": {
     "body-parser": "^1.14.2",
+    "chalk": "^1.1.1",
     "express": "^4.13.4",
     "htmlparser2": "^3.9.0",
     "jquery": "^2.2.0",
     "lodash": "^4.1.0",
+    "minimist": "^1.2.0",
     "react-contenteditable": "^1.1.0",
     "request": "^2.69.0",
     "require": "^2.4.20",
