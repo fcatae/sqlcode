@@ -4,11 +4,16 @@ var chalk = require('chalk');
 var prompt = require('prompt');
 
 var DEFAULT_DATABASE = '<default>';
-var mode = false; // none/server/user
+var noSpawn = false;
 
 if(process.env.SQLSERVER_SRV) {
     process.env.SQLSERVER_USER = null;
     process.env.SQLSERVER_PWD = null;
+    noSpawn = true;
+}
+
+if(process.env.SQLSERVER_USER && (!argv._[0])) {
+    noSpawn = true;    
 }
 
 var server = process.env.SQLSERVER_SRV || argv._[0];
@@ -54,7 +59,7 @@ function getUserPassword(callback) {
     
 }
 
-getUserPassword(function(err, result) {
+(!noSpawn) && getUserPassword(function(err, result) {
 
     username = result.username;
     password = result.password;
