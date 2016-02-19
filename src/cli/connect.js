@@ -13,6 +13,7 @@ if(process.env.SQLSERVER_SRV) {
 }
 
 if(process.env.SQLSERVER_USER && (!argv._[0])) {
+    process.env.SQLSERVER_PWD = null;
     noSpawn = true;    
 }
 
@@ -21,17 +22,7 @@ var database = process.env.SQLSERVER_DB || argv._[1];
 var username = process.env.SQLSERVER_USER || argv._[2];
 var password = process.env.SQLSERVER_PWD || argv._[3];
 
-if(process.env.SQLSERVER_USER && (!server)) {    
-    // set the password
-    process.exit(0);
-}
-
-// sintaxe: server + database
-// opt: user + pwd
-
-// connect server + database
-// store user + pwd
-
+password = null;
 function getUserPassword(callback) {
 
     prompt.start();
@@ -42,7 +33,7 @@ function getUserPassword(callback) {
         name: 'username',
         description: 'User:',
         required: false,
-        default: username,
+        default: username  || '',
         ask: function() { return (username == null || username == '')}
         }, {
         name: 'password',
@@ -50,7 +41,7 @@ function getUserPassword(callback) {
         hidden: true,
         required: false,
         replace: '*',
-        default: password,
+        default: password || '',
         ask: function() { return (password == null || password == '')}
         }], function (err, result) {
         
@@ -59,11 +50,12 @@ function getUserPassword(callback) {
     
 }
 
-(!noSpawn) && getUserPassword(function(err, result) {
+getUserPassword(function(err, result) {
 
-    username = result.username;
-    password = result.password;
+    username = result.username || username;
+    password = result.password || password;
     
+    (!noSpawn) &&    
     (server || result.username) && spawnCommand();
     
 });
@@ -104,6 +96,6 @@ function getEnv(server, database, username, password) {
     }
     if(username) {
         env.SQLSERVER_USER = username;
-        env.SQLSERVER_PWD = password;
+        (password) && (env.SQLSERVER_PWD = password);
     }
 }
