@@ -32,6 +32,7 @@
     "jquery": "^2.2.0",
     "lodash": "^4.1.0",
     "minimist": "^1.2.0",
+    "prompt": "^1.0.0",
     "react-contenteditable": "^1.1.0",
     "request": "^2.69.0",
     "require": "^2.4.20",
