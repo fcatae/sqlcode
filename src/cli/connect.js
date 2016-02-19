@@ -1,10 +1,13 @@
 var spawn = require('child_process').spawn;
+var chalk = require('chalk');
 
 function getEnv(server, database) {
     // inherit environment variables
     var env = process.env;
 
-    env.PROMPT = `[${server}/${database}] $P$G`;    
+    var header = (server + '/' + database).toUpperCase();
+
+    env.PROMPT = chalk.green.bold(header) + ' $P$G';    
 }
 
 
