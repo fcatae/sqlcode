@@ -22,7 +22,6 @@ var database = process.env.SQLSERVER_DB || argv._[1];
 var username = process.env.SQLSERVER_USER || argv._[2];
 var password = process.env.SQLSERVER_PWD || argv._[3];
 
-password = null;
 function getUserPassword(callback) {
 
     prompt.start();
