@@ -1,0 +1,1 @@
+select teste=count(*) from sys.dm_exec_requests
