@@ -1,1 +1,2 @@
-select top 1 target_data from sys.dm_xe_session_targets
+select filename=name+'.txt', data=target_data from sys.dm_xe_sessions s join sys.dm_xe_session_targets t on s.address = t.event_session_address
+--select top 2 filename = 'saida' + cast(session_id as varchar) + '.txt', start_time from sys.dm_exec_requests

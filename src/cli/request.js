@@ -19,7 +19,8 @@ var output;
 var params = {
     filename: argv.f,
     adhoc: argv.c,
-    output: argv.o    
+    output: argv.o,
+    multiple_files: argv.m
 };
 
 if( params.output == params.filename ) {
@@ -43,8 +44,6 @@ if( params.output != null ) {
     output = new Console(process.stdout, process.stderr);
 }
 
-var isSingleRow = ( argv.s !== undefined );
-
 if( commandList.length == 0 ) {
     console.log('No command provided. Use either -c <adhoc> or -f <filename>');
     process.exit(-1);
@@ -52,21 +51,25 @@ if( commandList.length == 0 ) {
 
 commandList.map(function(sqlcmd) {
 
-    if (isSingleRow) {
-        executeCommandSingleRow(sqlcmd, finalizarProcesso);        
+    if ( params.multiple_files ) {
+        executeCommandFileData( sqlcmd, finalizarProcesso );        
     } else {
-        executeCommand(sqlcmd, finalizarProcesso)
+        executeCommand( sqlcmd, finalizarProcesso )
     }   
 });
  
 function finalizarProcesso() {
 
-    // async clean up: needs to flush the content to file prior to exiting the process
-    output_file.end();
-    
-    output_file.on('close', function() {
-        process.exit(0);   
-    })
+    if(output_file) {
+        // async clean up: needs to flush the content to file prior to exiting the process
+        output_file.end();
+        
+        output_file.on('close', function() {
+            process.exit(0);   
+        })            
+    } else {
+        process.exit(0);
+    }
 }
 
 function executeCommand(commandText, callback) {
@@ -116,6 +119,43 @@ function executeCommandSingleRow(commandText, callback) {
             output.log(xml);
             
             callback();      
+        });
+        
+    })    
+}
+
+function executeCommandFileData(commandText, callback) {
+    var conn = new SqlConnection(credentials);
+
+    conn.open(function() {
+        conn.execute(commandText, function(err, data) {
+            if(err) {
+                callback(err);
+                return;
+            }
+            
+            if(data.header.length != 2) {
+                console.log('Invalid number of output columns');
+                callback();
+            }
+            
+            data.rows.map(function(row) {
+                var filename = row[0].trim();
+                var filedata = row[1];
+                
+                if(isValidName(filename)) {
+                    fs.writeFileSync(filename, filedata);   
+                    console.log('File created: ' + filename);
+                }
+                
+            })
+            
+            callback();
+            
+            function isValidName(filename) {
+                return (filename) && (filename.length > 0) && 
+                    (!filename.match(/[/\\]/));
+            }      
         });
         
     })    
