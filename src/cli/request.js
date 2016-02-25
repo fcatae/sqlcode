@@ -23,11 +23,25 @@ if( argv.c != null ) {
     commandList.push(text);
 }
 
+var isSingleRow = (argv.s !== undefined );
+
 commandList.map(function(sqlcmd) {
-    executeCommand(sqlcmd);
+
+    if (isSingleRow) {
+        executeCommandSingleRow(sqlcmd);        
+    } else {
+        executeCommand(sqlcmd, finalizarProcesso)
+    }
+
+    executeCommandSingleRow(sqlcmd, finalizarProcesso);       
+    
 });
 
-function executeCommand(commandText) {
+function finalizarProcesso() {
+    process.exit(0);
+}
+
+function executeCommand(commandText, callback) {
     var conn = new SqlConnection(credentials);
 
     conn.open(function() {
@@ -49,9 +63,23 @@ function executeCommand(commandText) {
                 console.log(r);   
             })
 
-            process.exit(0);         
+            callback();
         });
         
-    })
-    
+    })    
+}
+
+function executeCommandSingleRow(commandText, callback) {
+    var conn = new SqlConnection(credentials);
+
+    conn.open(function() {
+        conn.execute(commandText, function(err, data) {
+            var xml = data.rows[0][0];
+
+            console.log(xml);
+            
+            callback();      
+        });
+        
+    })    
 }

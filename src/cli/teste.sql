@@ -1,1 +1,1 @@
-select teste=count(*) from sys.dm_exec_requests
+select session_id from sys.dm_exec_requests

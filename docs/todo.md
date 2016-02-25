@@ -71,22 +71,25 @@ PLAN
     * obter relatorio do xevents automaticamente
     * salvar os arquivos do xevents
 
-## Tasks
+## Tasks    
 
 * Script
     * Relatório de blocking
     - master.sql
     - elastic.md
-* [melhoria] Integração Typescript
+* Integração Typescript
     * Fácil depuração
 * Command Line
     * Input
     * Process Env    
+    * SELECT 1
+    * XML
 * Componentes Dashboard
     * master
     * resource_stats
     * workers
     * XEvents
+
 * Charts
     * Versão Texto
     * Versão Gráfica    
@@ -105,10 +108,10 @@ PLAN
 
 Command CLI???
 ### process spawner 
-    - child_process.spawn(command[, args][, options])
-    - https://nodejs.org/api/child_process.html#child_process_options_detached
-- env var setting
-- prompt: set prompt=[%computername%] $p$g
+    ok- child_process.spawn(command[, args][, options])
+    ok- https://nodejs.org/api/child_process.html#child_process_options_detached
+    ok- env var setting
+-   ok- prompt: set prompt=[%computername%] $p$g
 
 ### execute script
 ### salvar arquivo
