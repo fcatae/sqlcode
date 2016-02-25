@@ -1,6 +1,7 @@
 var argv = require('minimist')(process.argv.slice(2));
 var fs = require('fs');
 
+var Console = require('console').Console; 
 var SqlConnection = require('../endpoint').SqlConnection;
 var ErrorOutput = require('../endpoint').ErrorOutput;
 var Transform = require('../datatransform');
@@ -13,20 +14,41 @@ var credentials = {
 };
 
 var commandList = [];
+var output;
 
-var filename = argv.f;
-var adhoc = argv.c;
+var params = {
+    filename: argv.f,
+    adhoc: argv.c,
+    output: argv.o    
+};
 
-if( adhoc != null ) {
+if( params.output == params.filename ) {
+    console.log('Input file and output file must be different');
+    process.exit(-1);
+}
+
+if( params.adhoc != null ) {
     commandList.push(argv.c);    
 } 
 
-if( filename != null ) {    
-    var text = fs.readFileSync(filename, 'utf8');    
+if( params.filename != null ) {    
+    var text = fs.readFileSync(params.filename, 'utf8');    
     commandList.push(text);
 }
 
+if( params.output != null ) {
+    var output_file = fs.createWriteStream(params.output);
+    output = new Console(output_file, process.stderr);
+} else {
+    output = new Console(process.stdout, process.stderr);
+}
+
 var isSingleRow = ( argv.s !== undefined );
+
+if( commandList.length == 0 ) {
+    console.log('No command provided. Use either -c <adhoc> or -f <filename>');
+    process.exit(-1);
+}
 
 commandList.map(function(sqlcmd) {
 
@@ -36,9 +58,15 @@ commandList.map(function(sqlcmd) {
         executeCommand(sqlcmd, finalizarProcesso)
     }   
 });
-
+ 
 function finalizarProcesso() {
-    process.exit(0);
+
+    // async clean up: needs to flush the content to file prior to exiting the process
+    output_file.end();
+    
+    output_file.on('close', function() {
+        process.exit(0);   
+    })
 }
 
 function executeCommand(commandText, callback) {
@@ -46,6 +74,10 @@ function executeCommand(commandText, callback) {
 
     conn.open(function() {
         conn.execute(commandText, function(err, data) {
+            if(err) {
+                callback(err);
+                return;
+            }
             var header = data.header;
             var format = Transform.createFormat(header);
             var format_output = Transform.create(format);
@@ -55,12 +87,12 @@ function executeCommand(commandText, callback) {
             var h = format_output.printHeader();
             var s = format_output.printSeparator();
             
-            console.log(h);
-            console.log(s);
+            output.log(h);
+            output.log(s);
             
             data.rows.map(function(row) {
                 var r = format_output.printRow(row);
-                console.log(r);   
+                output.log(r);   
             })
 
             callback();
@@ -74,9 +106,14 @@ function executeCommandSingleRow(commandText, callback) {
 
     conn.open(function() {
         conn.execute(commandText, function(err, data) {
+            if(err) {
+                callback(err);
+                return;
+            }
+            
             var xml = data.rows[0][0];
 
-            console.log(xml);
+            output.log(xml);
             
             callback();      
         });

@@ -18,4 +18,7 @@ connect server [database] [user] [password]
 # request
 
     request -c "select * from table"
-    request -f "file"
+    request -f "file" -o output.rpt
+    request -c "select filename,data from table" -m
+    
+    
