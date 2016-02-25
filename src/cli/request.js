@@ -14,27 +14,27 @@ var credentials = {
 
 var commandList = [];
 
-if( argv.c != null ) {
+var filename = argv.f;
+var adhoc = argv.c;
+
+if( adhoc != null ) {
     commandList.push(argv.c);    
-} else {
-    var filename = argv._[0];
-    var text = fs.readFileSync(filename, 'utf8');
-    
+} 
+
+if( filename != null ) {    
+    var text = fs.readFileSync(filename, 'utf8');    
     commandList.push(text);
 }
 
-var isSingleRow = (argv.s !== undefined );
+var isSingleRow = ( argv.s !== undefined );
 
 commandList.map(function(sqlcmd) {
 
     if (isSingleRow) {
-        executeCommandSingleRow(sqlcmd);        
+        executeCommandSingleRow(sqlcmd, finalizarProcesso);        
     } else {
         executeCommand(sqlcmd, finalizarProcesso)
-    }
-
-    executeCommandSingleRow(sqlcmd, finalizarProcesso);       
-    
+    }   
 });
 
 function finalizarProcesso() {
