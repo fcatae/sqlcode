@@ -6,6 +6,14 @@ var prompt = require('prompt');
 var DEFAULT_DATABASE = '<default>';
 var noSpawn = false;
 
+var argopts = { boolean: ['local'] }
+var argv = require('minimist')(process.argv.slice(2), argopts);
+var server_suffix = '.database.windows.net'
+
+if( argv.local ) {
+    server_suffix = '';    
+}
+
 if(process.env.SQLSERVER_SRV) {
     process.env.SQLSERVER_USER = null;
     process.env.SQLSERVER_PWD = null;
@@ -22,6 +30,8 @@ var database = process.env.SQLSERVER_DB || argv._[1];
 var username = process.env.SQLSERVER_USER || argv._[2];
 var password = process.env.SQLSERVER_PWD || argv._[3];
 
+console.log('Server: ' + server + server_suffix);
+        
 function getUserPassword(callback) {
 
     prompt.start();
@@ -63,14 +73,14 @@ function spawnCommand() {
     var cmd = 'cmd';
     var args = ['/k','start'];
     var options = {
-        env: getEnv(server, database, username, password),
+        env: getEnv(server, database, username, password, server_suffix),
         stdio: 'ignore',
         detached: true
     };
     spawn(cmd, args, options);
 }
 
-function getEnv(server, database, username, password) {
+function getEnv(server, database, username, password, server_suffix) {
     // set process environment variables
     var env = process.env;
 
@@ -90,11 +100,11 @@ function getEnv(server, database, username, password) {
     env.PROMPT = decorate(header) + '$P$G';
     
     if(server) {
-        env.SQLSERVER_SRV = server;
+        env.SQLSERVER_SRV = server + server_suffix;
         (database) && (env.SQLSERVER_DB = database);
     }
     if(username) {
         env.SQLSERVER_USER = username;
-        (password) && (env.SQLSERVER_PWD = password);
+        (password) && (env.SQLSERVER_PWD = password);      
     }
 }

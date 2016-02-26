@@ -3,7 +3,9 @@ Scripts
 
 # connect
 
-connect server [database] [user] [password] 
+    connect <azure_server> [database] [user] [password] 
+
+    -- assume the server is at database.windows.net
 
     -> user (spawn/store credentials)
     -> server (spawn/store server info)
@@ -13,7 +15,8 @@ connect server [database] [user] [password]
 
     server -> server
     server -> user
-    
+
+    connect -s localhost    
 
 # request
 
