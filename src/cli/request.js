@@ -23,7 +23,7 @@ var params = {
     multiple_files: argv.m
 };
 
-if( params.output == params.filename ) {
+if( (params.filename) && params.output == params.filename ) {
     console.log('Input file and output file must be different');
     process.exit(-1);
 }
