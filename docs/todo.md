@@ -84,6 +84,8 @@ PLAN
     * Process Env    
     * SELECT 1
     * XML
+* Improve command line output
+
 * Componentes Dashboard
     * master
     * resource_stats
